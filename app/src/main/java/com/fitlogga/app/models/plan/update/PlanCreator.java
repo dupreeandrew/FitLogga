@@ -18,7 +18,14 @@ import java.util.Set;
 
 public class PlanCreator {
 
-    public static class Builder {
+    public interface PlanCreationListener {
+        /**
+         * Called whenever a plan is created.
+         */
+        void onCreated();
+    }
+
+    private static class Builder {
         private Context context;
         private PlanSummary planSummary;
         private EnumMap<Day, List<Exercise>> dailyRoutineMap;
@@ -51,8 +58,11 @@ public class PlanCreator {
     private PlanSummary planSummary;
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private SharedPreferences.Editor editor;
-    private static PlanEditor.PlanSummaryListener planSummaryListener;
+    private static PlanCreationListener planCreationListener;
 
+    public static Builder getBuilder() {
+        return new Builder();
+    }
 
     @SuppressLint("CommitPrefEdits")
     private PlanCreator(Context context, PlanSummary planSummary, EnumMap<Day, List<Exercise>> dailyRoutineMap) {
@@ -90,8 +100,8 @@ public class PlanCreator {
 
         editor.apply();
 
-        if (planSummaryListener != null) {
-            planSummaryListener.onSummmariesUpdated();
+        if (planCreationListener != null) {
+            planCreationListener.onCreated();
         }
 
     }
@@ -118,10 +128,10 @@ public class PlanCreator {
     }
 
     /**
-     * Sets the listener that is called whenever a plan is ADDED.
+     * Sets the listener that is called whenever a plan is ADDED or REMOVED.
      */
-    public static void setPlanSummaryListener(PlanEditor.PlanSummaryListener listener) {
-        planSummaryListener = listener;
+    public static void setPlanCreationListener(PlanCreationListener listener) {
+        planCreationListener = listener;
     }
 
 

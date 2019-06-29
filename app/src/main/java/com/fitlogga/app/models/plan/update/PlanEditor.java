@@ -14,8 +14,6 @@ import java.util.List;
 
 public class PlanEditor {
 
-    private final String planName;
-
     public interface PlanSummaryListener {
         void onSummmariesUpdated();
     }
@@ -23,6 +21,7 @@ public class PlanEditor {
     private Context context;
     private PlanSummary planSummary;
     private boolean deleted = false;
+    private final String planName;
 
 
     public PlanEditor(Context context, String planName) {
