@@ -147,7 +147,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     }
 
     private void writeChangesToDisk() {
-        PlanWriter
+        //
     }
 
     private void checkForDailyRoutineFinish() {

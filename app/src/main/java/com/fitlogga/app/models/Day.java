@@ -37,7 +37,6 @@ public enum Day {
         GregorianCalendar calendar = new GregorianCalendar();
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
         return Day.values()[dayNum - 1];
-
     }
 
 }
