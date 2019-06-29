@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/tv_almost_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="You're almost done!"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_plan_name_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_almost_done"
+            app:layout_constraintStart_toStartOf="@+id/tv_almost_done"
+            app:layout_constraintTop_toBottomOf="@+id/tv_almost_done">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_plan_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name of plan"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_plan_description_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_almost_done"
+            app:layout_constraintStart_toStartOf="@+id/tv_almost_done"
+            app:layout_constraintTop_toBottomOf="@+id/input_plan_name_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_plan_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description "
+                android:inputType="text"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/cb_set_as_current_plan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Set as current plan"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_plan_description_layout" />
+
+        <Button
+            android:id="@+id/btn_create_plan"
+            style="@style/AppTheme.AccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableStart="@drawable/ic_done"
+            android:text="Create Plan"
+            android:textColor="@color/colorPrimaryText"
+            app:layout_constraintEnd_toEndOf="@+id/input_plan_description_layout"
+            app:layout_constraintStart_toStartOf="@+id/input_plan_description_layout"
+            app:layout_constraintTop_toBottomOf="@+id/cb_set_as_current_plan" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

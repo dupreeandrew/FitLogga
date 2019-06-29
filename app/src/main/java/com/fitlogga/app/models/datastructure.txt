@@ -1,0 +1,32 @@
+Fitness Plan
+ - Daily Routines
+   - Exercises
+
+
+
+Fitness Plan Fields
+- Name
+- Description
+- Daily Routines
+
+Exercise Fields:
+- Type
+- name
+- seconds
+- distance
+- num_sets
+- num_reps
+- num_weight
+- desc
+- rest_time
+- finished?
+
+FitnessPlans.xml
+|
++ "1" : {"name":"My_Fitness_Plan", "active":"true", "last_used":91231212"}
++ "2" : {"name":"Another_Fitness_Plan", "active":"false", "last_used":32132134"}
++ "27": {"name":"Last_Fitness_plan", "active":"false", "last_used":4123122"}
+
+My_Fitness_Plan-%dayOfWeek%.xml:
++ "Front Squat":  {"type": 0, "num_weight": 135, "finished": true}
++ "Run 100m": {"type": 1, "distance": "1600 meters", "finished": false}

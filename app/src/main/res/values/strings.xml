@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">FitLogga</string>
+    <string name="title_activity_testtt">Testtt</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_testttt">testttt</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="powerup">Powerup</string>
+    <string name="plans">Plans</string>
+    <string name="performance">Performance</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_plan">Edit Plan</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="profile">Profile</string>
+    <string name="please_finish_making_changes_first">Please finish making changes first</string>
+    <string name="graph">Graph</string>
+
+
+    <string-array name="plan_creation_options">
+        <item>Create my own plan</item>
+        <item>View the plan library</item>
+    </string-array>
+
+
+    <string-array name="exercise_creation_options">
+        <item>Timed Run</item>
+        <item>Meter Run</item>
+        <item>Repetition Exercise</item>
+        <item>Free Weight Exercise</item>
+        <item>Time of Resting</item>
+    </string-array>
+
+</resources>

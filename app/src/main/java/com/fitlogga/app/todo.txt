@@ -1,0 +1,1 @@
+# Timed Run does not have its properties verified :( it's a sad day in history.

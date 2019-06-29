@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/include3"
+                layout="@layout/vh_exercise_collapse_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="70dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="40dp" />
+
+            <!--
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_weight_scale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="iv_weight_up, tv_weight, tv_weight_unit, iv_weight_down" />
+            -->
+
+
+            <ImageView
+                android:id="@+id/iv_weight_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/include3"
+                app:srcCompat="@drawable/ic_arrow_up" />
+
+            <TextView
+                android:id="@+id/tv_weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/iv_weight_up"
+                app:layout_constraintStart_toStartOf="@+id/iv_weight_up"
+                app:layout_constraintTop_toBottomOf="@+id/iv_weight_up"
+                tools:text="520" />
+
+            <TextView
+                android:id="@+id/tv_weight_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="@+id/tv_weight"
+                app:layout_constraintStart_toStartOf="@+id/tv_weight"
+                app:layout_constraintTop_toBottomOf="@+id/tv_weight"
+                tools:text="lb" />
+
+            <ImageView
+                android:id="@+id/iv_weight_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/tv_weight_unit"
+                app:layout_constraintStart_toStartOf="@+id/tv_weight_unit"
+                app:layout_constraintTop_toBottomOf="@+id/tv_weight_unit"
+                app:srcCompat="@drawable/ic_arrow_down" />
+
+            <TextView
+                android:id="@+id/tv_num_sets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_weight_up"
+                app:layout_constraintTop_toBottomOf="@+id/include3"
+                tools:text="3/5 sets" />
+
+            <Button
+                android:id="@+id/btn_complete_set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="Finish Set"
+                app:layout_constraintStart_toEndOf="@+id/tv_weight_unit"
+                app:layout_constraintTop_toBottomOf="@+id/tv_num_sets" />
+
+            <ProgressBar
+                android:id="@+id/pb_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/progress_circle_background"
+                android:indeterminate="false"
+                android:progress="50"
+                android:progressDrawable="@drawable/progress_circle"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintTop_toBottomOf="@+id/include3" />
+
+            <ImageView
+                android:id="@+id/iv_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/pb_progress"
+                app:layout_constraintEnd_toEndOf="@+id/pb_progress"
+                app:layout_constraintStart_toStartOf="@+id/pb_progress"
+                app:layout_constraintTop_toTopOf="@+id/pb_progress"
+                app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/pb_progress"
+                app:layout_constraintStart_toStartOf="@+id/pb_progress"
+                app:layout_constraintTop_toBottomOf="@+id/iv_clock"
+                tools:text="3:00" />
+
+            <Button
+                android:id="@+id/btn_end_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Timer"
+                app:layout_constraintEnd_toEndOf="@+id/pb_progress"
+                app:layout_constraintStart_toStartOf="@+id/pb_progress"
+                app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

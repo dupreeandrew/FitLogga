@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/vh_new_collapse_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="70dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_border"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="40dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_exercise_description_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/include">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_exercise_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Desciption (can be empty)"
+                    android:inputType="text"
+                    android:textSize="12sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_run_minutes_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/input_exercise_description_layout"
+                app:layout_constraintWidth_percent="0.3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_run_minutes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="# minutes"
+                    android:textSize="12sp"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_run_seconds_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@+id/input_run_minutes_layout"
+                app:layout_constraintTop_toBottomOf="@+id/input_exercise_description_layout"
+                app:layout_constraintWidth_percent="0.3">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_run_seconds"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="# seconds"
+                    android:textSize="12sp"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_run_min_sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="input_run_minutes_layout, input_run_seconds_layout" />
+
+            <View
+                android:id="@+id/vh_separator"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toEndOf="@id/left_border"
+                app:layout_constraintEnd_toStartOf="@id/right_border"
+                app:layout_constraintTop_toBottomOf="@id/barrier_run_min_sec"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider" />
+
+            <include
+                layout="@layout/vh_new_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintTop_toBottomOf="@+id/vh_separator" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
