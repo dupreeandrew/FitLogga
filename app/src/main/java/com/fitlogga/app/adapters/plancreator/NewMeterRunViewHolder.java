@@ -51,12 +51,12 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[]{
-                view.findViewById(R.id.input_run_distance_layout),
-                view.findViewById(R.id.input_run_units_layout),
-                view.findViewById(R.id.input_exercise_description_layout),
-                view.findViewById(R.id.btn_delete)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[]{
+                R.id.input_run_distance_layout,
+                R.id.input_run_units_layout,
+                R.id.input_exercise_description_layout,
+                R.id.btn_delete
         };
     }
 

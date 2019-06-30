@@ -62,7 +62,6 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
         descriptionView.setText(description);
     }
 
-
     private void setSets(int numSetsFinished, int numSetsTotal) {
         TextView setsRepsView = view.findViewById(R.id.tv_num_sets);
         String text = numSetsFinished + "/" + numSetsTotal + " sets";
@@ -159,18 +158,23 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[] {
-                view.findViewById(R.id.tv_num_sets),
-                view.findViewById(R.id.iv_weight_up),
-                view.findViewById(R.id.iv_weight_down),
-                view.findViewById(R.id.tv_weight),
-                view.findViewById(R.id.tv_weight_unit),
-                view.findViewById(R.id.btn_complete_set),
-                view.findViewById(R.id.pb_progress),
-                view.findViewById(R.id.iv_clock),
-                view.findViewById(R.id.tv_timer),
-                view.findViewById(R.id.btn_end_timer)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[] {
+                R.id.tv_num_sets,
+                R.id.iv_weight_up,
+                R.id.iv_weight_down,
+                R.id.tv_weight,
+                R.id.tv_weight_unit,
+                R.id.btn_complete_set,
+                R.id.pb_progress,
+                R.id.iv_clock,
+                R.id.tv_timer,
+                R.id.btn_end_timer,
+                R.id.iv_weight_icon,
+                R.id.iv_num_set_completed,
+                R.id.iv_info,
+                R.id.iv_clock,
+                R.id.divider3
         };
     }
 }

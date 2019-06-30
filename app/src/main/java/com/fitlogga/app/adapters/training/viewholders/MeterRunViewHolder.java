@@ -21,8 +21,8 @@ public class MeterRunViewHolder extends ExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[0];
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[0];
     }
 
 }

@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents a view holder that can be expanded.
  * When extending this class, the view "iv_expand_collapse" MUST exist!
@@ -25,7 +28,7 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
     final void handleCollapseContent(boolean isExpanded) {
         view.setActivated(isExpanded);
 
-        View[] collapsibleViews = getCollapsibleViews();
+        View[] collapsibleViews = getCollapsibleViewsa();
         for (View collapsibleView : collapsibleViews) {
             collapsibleView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
@@ -43,10 +46,18 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    private View[] getCollapsibleViewsa() {
+        List<View> viewList = new ArrayList<>();
+        for (int viewResourceId : getCollapsibleViewResourceIds()) {
+            viewList.add(view.findViewById(viewResourceId));
+        }
+        return viewList.toArray(new View[0]);
+    }
+
     /**
      * Gets the views that can be collapsed/expanded.
      */
-    protected abstract View[] getCollapsibleViews();
+    protected abstract int[] getCollapsibleViewResourceIds();
 
     final void setExpandCollapseClickListener(View.OnClickListener listener) {
         view.findViewById(R.id.iv_expand_collapse).setOnClickListener(listener);

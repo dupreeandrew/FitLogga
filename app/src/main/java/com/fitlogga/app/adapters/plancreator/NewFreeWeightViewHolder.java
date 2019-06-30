@@ -88,17 +88,17 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[] {
-                view.findViewById(R.id.input_exercise_name_layout),
-                view.findViewById(R.id.input_exercise_description_layout),
-                view.findViewById(R.id.input_num_sets_layout),
-                view.findViewById(R.id.input_num_reps_layout),
-                view.findViewById(R.id.input_num_weight_layout),
-                view.findViewById(R.id.input_num_weight_units_layout),
-                view.findViewById(R.id.input_rest_time_minutes_layout),
-                view.findViewById(R.id.input_rest_time_seconds_layout),
-                view.findViewById(R.id.btn_delete)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[] {
+                R.id.input_exercise_name_layout,
+                R.id.input_exercise_description_layout,
+                R.id.input_num_sets_layout,
+                R.id.input_num_reps_layout,
+                R.id.input_num_weight_layout,
+                R.id.input_num_weight_units_layout,
+                R.id.input_rest_time_minutes_layout,
+                R.id.input_rest_time_seconds_layout,
+                R.id.btn_delete
         };
     }
 

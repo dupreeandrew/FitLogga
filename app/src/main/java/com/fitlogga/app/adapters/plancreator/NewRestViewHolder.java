@@ -54,11 +54,11 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[] {
-                view.findViewById(R.id.input_rest_time_minutes_layout),
-                view.findViewById(R.id.input_rest_time_seconds_layout),
-                view.findViewById(R.id.btn_delete)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[] {
+                R.id.input_rest_time_minutes_layout,
+                R.id.input_rest_time_seconds_layout,
+                R.id.btn_delete
         };
     }
 

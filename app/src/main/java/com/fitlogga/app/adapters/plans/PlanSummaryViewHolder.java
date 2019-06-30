@@ -53,12 +53,12 @@ public class PlanSummaryViewHolder extends CollapsibleViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[]{
-                view.findViewById(R.id.btn_activate),
-                view.findViewById(R.id.btn_delete),
-                view.findViewById(R.id.divider),
-                view.findViewById(R.id.tv_collapse_content)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[]{
+                R.id.btn_activate,
+                R.id.btn_delete,
+                R.id.divider,
+                R.id.tv_collapse_content
         };
     }
 

@@ -112,13 +112,13 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
     }
 
     @Override
-    protected View[] getCollapsibleViews() {
-        return new View[] {
-                view.findViewById(R.id.pb_progress),
-                view.findViewById(R.id.iv_runner),
-                view.findViewById(R.id.tv_timer),
-                view.findViewById(R.id.btn_start),
-                view.findViewById(R.id.btn_reset)
+    protected int[] getCollapsibleViewResourceIds() {
+        return new int[] {
+                R.id.pb_progress,
+                R.id.iv_runner,
+                R.id.tv_timer,
+                R.id.btn_start,
+                R.id.btn_reset
         };
     }
 
