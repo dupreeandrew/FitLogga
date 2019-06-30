@@ -162,10 +162,15 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
             }
         }
 
+        setupDailyRoutineFinish();
+
+
+    }
+
+    private void setupDailyRoutineFinish() {
+        alreadyCompleted = true;
         sendDailyRoutineFinishAlert();
         updateDailyRoutineToStorage();
-        alreadyCompleted = true;
-
     }
 
     private void sendDailyRoutineFinishAlert() {

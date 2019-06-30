@@ -54,6 +54,7 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
         initEndTimerButton();
         initFinishSetButton(freeWeightExercise);
         initIncrementWeightButton(freeWeightExercise);
+        initDecrementWeightButton(freeWeightExercise);
 
     }
 
@@ -150,6 +151,21 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     private void setWeightNumberView(int newWeight) {
         TextView weightNumberView = view.findViewById(R.id.tv_weight);
         weightNumberView.setText(String.valueOf(newWeight));
+    }
+
+    private void initDecrementWeightButton(FreeWeightExercise freeWeightExercise) {
+        ImageView decrementWeightButton = view.findViewById(R.id.iv_weight_down);
+        decrementWeightButton.setOnClickListener(imageView -> {
+            int newWeight = freeWeightExercise.getAmountOfWeight() - 1;
+
+            if (newWeight <= 0) {
+                return;
+            }
+
+            freeWeightExercise.setAmountOfWeight(newWeight);
+            setWeightNumberView(newWeight);
+
+        });
     }
 
     private void setWeightUnitView(String weightUnit) {

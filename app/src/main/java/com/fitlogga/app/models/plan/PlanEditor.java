@@ -59,7 +59,7 @@ public class PlanEditor {
         context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
                 .edit()
-                .putString(day.toString(), exerciseListJson)
+                .putString(String.valueOf(day.getValue()), exerciseListJson)
                 .apply();
     }
 
