@@ -7,15 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.adapters.collapsible.CollapsibleRecyclerAdapter;
-import com.fitlogga.app.models.plan.PlanReader;
+import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PlanWriter;
 import com.google.gson.Gson;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
@@ -24,11 +22,9 @@ import java.util.List;
 public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanSummaryViewHolder> {
 
     private List<PlanSummary> planSummaries;
-    private RecyclerView recyclerView;
 
-    public PlanSummaryRecyclerAdapter(List<PlanSummary> planSummaries, RecyclerView recyclerView) {
+    public PlanSummaryRecyclerAdapter(List<PlanSummary> planSummaries) {
         this.planSummaries = planSummaries;
-        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -51,9 +47,9 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     }
 
     private void activatePlan(View view, PlanSummary planSummary, int position) {
-        PlanWriter planWriter = new PlanWriter(view.getContext());
-        planWriter.setAsCurrentPlan(planSummary);
 
+        PlanEditor planEditor = new PlanEditor(view.getContext(), planSummary.getName());
+        planEditor.setAsCurrentPlan();
 
         planSummaries.remove(position);
         notifyItemRemoved(position);
@@ -79,8 +75,8 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     }
 
     private void deletePlan(View view, PlanSummary planSummary, int position) {
-        PlanWriter planWriter = new PlanWriter(view.getContext());
-        planWriter.deleteFitnessPlan(planSummary.getName());
+        PlanEditor planEditor= new PlanEditor(view.getContext(), planSummary.getName());
+        planEditor.delete();
 
         planSummaries.remove(planSummary);
         notifyItemRemoved(position);
@@ -93,7 +89,6 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
         Gson gson = new Gson();
         String planSummaryJson = gson.toJson(planSummary);
 
-        PlanReader planReader = new PlanReader(view.getContext());
         Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
         intent.putExtra(PlanCreatorActivity.PREFILLED_PLAN_SUMMARY_JSON_KEY, planSummaryJson);
         view.getContext().startActivity(intent);

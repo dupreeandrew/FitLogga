@@ -18,8 +18,8 @@ import androidx.fragment.app.Fragment;
 import com.fitlogga.app.R;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PlanWriter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -39,11 +39,11 @@ public class DailyRoutineFinisherFragment extends Fragment {
         // Required empty public constructor
     }
 
+    // Plan Summary will be non-null IF user is editing a plan, and not editing.
     public DailyRoutineFinisherFragment(EnumMap<Day, List<Exercise>> dailyRoutineMap, @Nullable PlanSummary planSummary) {
         this.dailyRoutineMap = dailyRoutineMap;
         this.planSummary = planSummary;
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -121,25 +121,20 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
     private void createPlan(Context context, String inputNameString, String inputDescString, boolean setAsActivePlan) {
 
-
-
         long currentTime = new Date().getTime();
         if (setAsActivePlan) {
             currentTime += 1000;
         }
 
 
-
-        PlanWriter planWriter = new PlanWriter(context);
-
-        if (this.planSummary != null) { // it's being edited
-            planWriter.deleteFitnessPlan(this.planSummary.getName());
-        }
-
         PlanSummary planSummary = new PlanSummary(inputNameString, inputDescString, currentTime);
-        planWriter.fullWrite(planSummary, dailyRoutineMap);
+        PlanCreator.getBuilder()
+                .setContext(context)
+                .setPlanSummary(planSummary)
+                .setDailyRoutineMap(dailyRoutineMap)
+                .create();
 
-
+        // todo:: handle new plans w/ same name of existing plan. This will overwrite it.
 
         //noinspection ConstantConditions
         getActivity().finish();

@@ -1,4 +1,4 @@
-package com.fitlogga.app.models.plan.update;
+package com.fitlogga.app.models.plan;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
-import com.fitlogga.app.models.plan.PlanReader;
-import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PreferenceNamer;
 
 import java.util.Date;
 import java.util.EnumMap;
@@ -25,7 +22,7 @@ public class PlanCreator {
         void onCreated();
     }
 
-    private static class Builder {
+    public static class Builder {
         private Context context;
         private PlanSummary planSummary;
         private EnumMap<Day, List<Exercise>> dailyRoutineMap;
@@ -48,6 +45,9 @@ public class PlanCreator {
         /**
          * Writes a Fitness Plan onto file.
          * If the specified Fitness Plan Name already exists, it will be overwritten.
+         *
+         * By default, if an active plan exists, it's lastUsed property is updated to 1ms in
+         * the future. Adjust the given PlanSummary to compensate if needed.
          */
         public void create() {
             new PlanCreator(context, planSummary, dailyRoutineMap).write();
@@ -70,7 +70,7 @@ public class PlanCreator {
         this.planSummary = planSummary;
         this.dailyRoutineMap = dailyRoutineMap;
 
-        String preferenceName = PreferenceNamer.fromPlanName(planSummary.getName());
+        String preferenceName = PlanIOUtils.getIOSafeFileID(planSummary.getName());
         editor = context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
                 .edit();

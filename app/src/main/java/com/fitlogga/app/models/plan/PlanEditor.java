@@ -1,12 +1,9 @@
-package com.fitlogga.app.models.plan.update;
+package com.fitlogga.app.models.plan;
 
 import android.content.Context;
 
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
-import com.fitlogga.app.models.plan.PlanReader;
-import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PreferenceNamer;
 
 import java.util.Date;
 import java.util.List;
@@ -14,17 +11,13 @@ import java.util.List;
 
 public class PlanEditor {
 
-    public interface PlanSummaryListener {
-        void onSummmariesUpdated();
-    }
-
     private Context context;
     private PlanSummary planSummary;
     private boolean deleted = false;
     private final String planName;
 
 
-    public PlanEditor(Context context, String planName) {
+    public PlanEditor(Context context, String planName) throws NullPointerException {
         this.context = context;
         this.planName = planName;
 
@@ -37,13 +30,15 @@ public class PlanEditor {
     }
 
     public void delete() {
+
+        String preferenceName = PlanIOUtils.getIOSafeFileID(planName);
+
         context
                 .getSharedPreferences("registered_plans", Context.MODE_PRIVATE)
                 .edit()
-                .remove(PreferenceNamer.fromPlanName(planName))
+                .remove(preferenceName)
                 .apply();
 
-        String preferenceName = PreferenceNamer.fromPlanName(planName);
         context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
                 .edit()
@@ -58,9 +53,9 @@ public class PlanEditor {
 
         checkForDeleted();
 
+        String preferenceName = PlanIOUtils.getIOSafeFileID(planName);
         String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
 
-        String preferenceName = PreferenceNamer.fromPlanName(planName);
         context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
                 .edit()

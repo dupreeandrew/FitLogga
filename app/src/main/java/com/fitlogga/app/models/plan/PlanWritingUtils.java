@@ -1,27 +1,24 @@
-package com.fitlogga.app.models.plan.update;
+package com.fitlogga.app.models.plan;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.fitlogga.app.models.exercises.Exercise;
-import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PreferenceNamer;
 import com.google.gson.Gson;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlanWritingUtils {
+class PlanWritingUtils {
 
     static void writePlanSummary(Context context, PlanSummary planSummary) {
         SharedPreferences.Editor editor = context
                 .getSharedPreferences("registered_plans", Context.MODE_PRIVATE)
                 .edit();
 
-
-
-        String keyNameOfPlanData = PreferenceNamer.fromPlanName(planSummary.getName());
+        String planName = planSummary.getName();
+        String keyNameOfPlanData = PlanIOUtils.getIOSafeFileID(planName);
         Gson gson = new Gson();
         String planSummaryJson = gson.toJson(planSummary);
         editor.putString(keyNameOfPlanData, planSummaryJson);
@@ -44,8 +41,6 @@ public class PlanWritingUtils {
         return gson.toJson(exerciseMap);
     }
 
-    static String getIOSafeFileID(String planName) {
-        return planName.replace(' ', '_');
-    }
+
 
 }

@@ -1,7 +1,9 @@
 package com.fitlogga.app.models.plan;
 
-public class PreferenceNamer {
-    public static String fromPlanName(String planName) {
+class PlanIOUtils {
+
+    static String getIOSafeFileID(String planName) {
         return planName.replace(' ', '_');
     }
+
 }

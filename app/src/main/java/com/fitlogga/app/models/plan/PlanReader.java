@@ -58,7 +58,7 @@ public class PlanReader {
 
     public List<Exercise> getDailyRoutine(String planName, Day day) {
 
-        String preferenceName = PreferenceNamer.fromPlanName(planName);
+        String preferenceName = PlanIOUtils.getIOSafeFileID(planName);
 
         Log.d("aaaa", "Reading from " + preferenceName + ", Day: " + day.ordinal());
 
@@ -113,14 +113,14 @@ public class PlanReader {
     }
 
     public boolean isDayEmpty(@NonNull String planName, Day day) {
-        String preferenceName = PreferenceNamer.fromPlanName(planName);
+        String preferenceName = PlanIOUtils.getIOSafeFileID(planName);
         return !context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
                 .contains(String.valueOf(day.ordinal()));
     }
 
     @Nullable
-    public PlanSummary getPlanSummaryFromName(String planName) {
+    PlanSummary getPlanSummaryFromName(String planName) {
         for (PlanSummary planSummary : getPlanSummaries()) {
             if (planSummary.getName().equals(planName)) {
                 return planSummary;

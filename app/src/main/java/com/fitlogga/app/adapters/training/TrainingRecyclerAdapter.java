@@ -21,7 +21,7 @@ import com.fitlogga.app.adapters.training.viewholders.TimedRunViewHolder;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
-import com.fitlogga.app.models.plan.PlanWriter;
+import com.fitlogga.app.models.plan.PlanEditor;
 
 import java.util.List;
 
@@ -183,8 +183,8 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     }
 
     private void updateDailyRoutineToStorage() {
-        PlanWriter planWriter = new PlanWriter(context);
-        planWriter.updateDailyRoutine(planName, day, exerciseList);
+        PlanEditor planEditor = new PlanEditor(context, planName);
+        planEditor.updateDailyRoutine(day, exerciseList);
     }
 
     @Override

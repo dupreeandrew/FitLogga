@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fitlogga.app.R;
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.adapters.plans.PlanSummaryRecyclerAdapter;
+import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
-import com.fitlogga.app.models.plan.PlanWriter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
@@ -39,7 +39,7 @@ public class PlansFragment extends Fragment {
         initRecyclerView(view);
         initFabAddPost(view);
 
-        PlanWriter.setPlanSummaryListener(() -> initRecyclerView(view));
+        PlanCreator.setPlanCreationListener(() -> initRecyclerView(view));
 
     }
 
@@ -49,7 +49,8 @@ public class PlansFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         List<PlanSummary> planSummaries = new PlanReader(view.getContext()).getPlanSummaries();
-        recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries, recyclerView));
+        recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries));
+
     }
 
     private void initFabAddPost(View view) {
