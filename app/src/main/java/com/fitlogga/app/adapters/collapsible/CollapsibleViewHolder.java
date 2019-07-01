@@ -28,8 +28,7 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
     final void handleCollapseContent(boolean isExpanded) {
         view.setActivated(isExpanded);
 
-        View[] collapsibleViews = getCollapsibleViews();
-        for (View collapsibleView : collapsibleViews) {
+        for (View collapsibleView : getCollapsibleViews()) {
             collapsibleView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
 
@@ -46,12 +45,20 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    private View[] getCollapsibleViews() {
+    private List<View> getCollapsibleViews() {
         List<View> viewList = new ArrayList<>();
         for (int viewResourceId : getCollapsibleViewResourceIds()) {
-            viewList.add(view.findViewById(viewResourceId));
+            View collapsibleView = view.findViewById(viewResourceId);
+
+            if (collapsibleView == null) {
+                String resourceIdString = view.getResources().getResourceName(viewResourceId);
+                String message = "Received a null view ID: " + resourceIdString;
+                throw new NullPointerException(message);
+            }
+
+            viewList.add(collapsibleView);
         }
-        return viewList.toArray(new View[0]);
+        return viewList;
     }
 
     /**

@@ -70,12 +70,7 @@ public class ViewPagerPlus extends ViewPager {
     private void setTabClickEnabled(TabLayout tabLayout, boolean enabled) {
 
         LinearLayout tabStrip = (LinearLayout)tabLayout.getChildAt(0);
-        tabStrip.setEnabled(enabled);
-
-        final float ENABLED_OPACITY = 1.00f;
-        final float DISABLED_OPACITY = .5f;
-
-        tabStrip.setAlpha(enabled ? ENABLED_OPACITY : DISABLED_OPACITY);
+        ViewEnabler.setEnabled(tabStrip, enabled);
 
         final int LAST_TAB_INDEX = 8;
         for (int i = 0; i < LAST_TAB_INDEX; i++) {

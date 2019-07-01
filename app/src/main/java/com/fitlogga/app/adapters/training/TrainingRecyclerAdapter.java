@@ -119,7 +119,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
                 viewHolderLayout = inflater.inflate(R.layout.vh_repetition, parent, false);
                 return new RepetitionViewHolder(viewHolderLayout);
             case FREE_WEIGHT_EXERCISE:
-                viewHolderLayout = inflater.inflate(R.layout.vh_free_weight, parent, false);
+                viewHolderLayout = inflater.inflate(R.layout.vh_free_weight_new, parent, false);
                 return new FreeWeightViewHolder(viewHolderLayout);
             case REST:
                 viewHolderLayout = inflater.inflate(R.layout.vh_new_rest, parent, false);
@@ -163,7 +163,6 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
         }
 
         setupDailyRoutineFinish();
-
 
     }
 

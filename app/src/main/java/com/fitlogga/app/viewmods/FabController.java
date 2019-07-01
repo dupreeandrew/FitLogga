@@ -11,10 +11,6 @@ public class FabController {
     }
 
     public void setEnabled(boolean enable) {
-        fab.setEnabled(enable);
-
-        final float ENABLED_OPACITY = 1.00f;
-        final float DISABLED_OPACITY = .75f;
-        fab.setAlpha(enable ? ENABLED_OPACITY : DISABLED_OPACITY);
+        ViewEnabler.setEnabled(fab, enable);
     }
 }

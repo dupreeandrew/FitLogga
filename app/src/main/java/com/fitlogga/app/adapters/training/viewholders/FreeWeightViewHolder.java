@@ -1,6 +1,7 @@
 package com.fitlogga.app.adapters.training.viewholders;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.FreeWeightExercise;
 import com.fitlogga.app.utils.CountDownTimerPlus;
 import com.fitlogga.app.utils.Time;
+import com.fitlogga.app.viewmods.ViewEnabler;
 
 public class FreeWeightViewHolder extends ExerciseViewHolder {
 
@@ -59,13 +61,18 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     }
 
     private void setDescription(String description) {
+
+        if (TextUtils.isEmpty(description)) {
+            description = "Remember, safety first! Lift only as much as your body allows!";
+        }
+
         TextView descriptionView = itemView.findViewById(R.id.tv_description);
         descriptionView.setText(description);
     }
 
     private void setSets(int numSetsFinished, int numSetsTotal) {
         TextView setsRepsView = view.findViewById(R.id.tv_num_sets);
-        String text = numSetsFinished + "/" + numSetsTotal + " sets";
+        String text = numSetsFinished + "/" + numSetsTotal + " Sets Completed";
         setsRepsView.setText(text);
     }
 
@@ -105,8 +112,8 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
             @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
-                finishSetButton.setEnabled(true);
-                endTimerButton.setEnabled(false);
+                ViewEnabler.setEnabled(finishSetButton, true);
+                ViewEnabler.setEnabled(endTimerButton, false);
             }
         };
 
@@ -124,8 +131,9 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
             }
 
             setSets(numSetsCompleted, freeWeightExercise.getNumberOfSets());
-            finishSetButton.setEnabled(false);
-            endTimerButton.setEnabled(true);
+
+            ViewEnabler.setEnabled(finishSetButton, false);
+            ViewEnabler.setEnabled(endTimerButton, true);
             timer.reset();
             timer.resume();
             
@@ -134,9 +142,9 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     }
 
     private void initEndTimerButton() {
-        endTimerButton.setOnClickListener(buttonView -> {
-            timer.fadeEnd();
-        });
+        endTimerButton.setOnClickListener(
+                buttonView -> timer.fadeEnd()
+        );
     }
 
     private void initIncrementWeightButton(FreeWeightExercise freeWeightExercise) {
@@ -176,21 +184,20 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     @Override
     protected int[] getCollapsibleViewResourceIds() {
         return new int[] {
-                R.id.tv_num_sets,
-                R.id.iv_weight_up,
                 R.id.iv_weight_down,
+                R.id.iv_weight_up,
                 R.id.tv_weight,
                 R.id.tv_weight_unit,
-                R.id.btn_complete_set,
                 R.id.pb_progress,
                 R.id.iv_clock,
                 R.id.tv_timer,
-                R.id.btn_end_timer,
-                R.id.iv_weight_icon,
-                R.id.iv_num_set_completed,
+                R.id.tv_num_sets,
+                R.id.divider_one,
                 R.id.iv_info,
-                R.id.iv_clock,
-                R.id.divider3
+                R.id.tv_description,
+                R.id.divider_two,
+                R.id.btn_complete_set,
+                R.id.btn_end_timer,
         };
     }
 }
