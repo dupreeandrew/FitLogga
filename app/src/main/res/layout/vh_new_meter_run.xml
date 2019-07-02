@@ -46,9 +46,9 @@
                     android:id="@+id/input_run_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# distance"
-                    android:textSize="12sp"
-                    android:inputType="number" />
+                    android:hint="@string/vh_new_meter_run_number_distance"
+                    android:inputType="number"
+                    android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +67,7 @@
                     android:id="@+id/input_run_units"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="meters/miles/km"
+                    android:hint="@string/vh_new_meter_run_possible_units"
                     android:inputType="text"
                     android:textSize="12sp" />
 
@@ -98,7 +98,7 @@
                     android:id="@+id/input_exercise_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Desciption (can be empty)"
+                    android:hint="@string/vh_new_description"
                     android:inputType="text"
                     android:textSize="12sp" />
 

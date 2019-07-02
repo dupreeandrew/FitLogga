@@ -77,7 +77,7 @@ public class DailyRoutineCreatorFragment extends Fragment {
     }
 
     private void promptAddExercise(View view, NewDailyRoutineAdapter adapter) {
-        String[] choices = view.getResources().getStringArray(R.array.exercise_creation_options);
+        String[] choices = view.getResources().getStringArray(R.array.daily_routine_creator_creation_options);
         final int TIMED_RUN_INDEX = 0;
         final int METER_RUN_INDEX = 1;
         final int REPETITION_EXERCISE = 2;

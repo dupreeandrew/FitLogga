@@ -18,10 +18,13 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
 
     private View view;
     private CountDownTimerPlus timer;
+    private String startString;
 
     public TimedRunViewHolder(@NonNull View itemView) {
         super(itemView);
         this.view = itemView;
+
+        startString = itemView.getResources().getString(R.string.vh_timed_run_start);
     }
 
     @Override
@@ -30,9 +33,11 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
         TimedRunExercise timedRunExercise = (TimedRunExercise)exercise;
         int seconds = timedRunExercise.getSeconds();
 
-        String subtitle = Time.toHHMMFormat(seconds) + " Timed Run";
+        // "Timed Run"
+        String timedRunString = view.getResources().getString(R.string.vh_timed_run_timed_run);
+        String subtitle = Time.toHHMMFormat(seconds) + " " + timedRunString;
 
-        setTitle("Timed Run");
+        setTitle(timedRunString);
         setSubtitle(subtitle);
         initTimer(timedRunExercise);
         initStartButton();
@@ -73,7 +78,7 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
             @Override
             public void onFinish() {
                 Button startButton = view.findViewById(R.id.btn_start);
-                startButton.setText("Start");
+                startButton.setText(startString);
                 TextView timerTextView = view.findViewById(R.id.tv_timer);
                 timerTextView.setText("0:00");
 
@@ -89,15 +94,16 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
     }
 
     private void initStartButton() {
+        String pauseString = view.getResources().getString(R.string.vh_timed_run_pause);
         Button startButton = view.findViewById(R.id.btn_start);
         startButton.setOnClickListener(view -> {
             if (timer.isPaused()) {
                 timer.resume();
-                startButton.setText("Pause");
+                startButton.setText(pauseString);
             }
             else {
                 timer.pause();
-                startButton.setText("Start");
+                startButton.setText(startString);
             }
         });
     }
@@ -106,7 +112,7 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
         Button startButton = view.findViewById(R.id.btn_start);
         Button resetButton = view.findViewById(R.id.btn_reset);
         resetButton.setOnClickListener(view -> {
-            startButton.setText("Start");
+            startButton.setText(startString);
             timer.reset();
         });
     }

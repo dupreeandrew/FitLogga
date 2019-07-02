@@ -43,7 +43,10 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
         int numWeight = freeWeightExercise.getAmountOfWeight();
         String weightUnit = freeWeightExercise.getAmountOfWeightUnits();
 
-        String subtitle = numSets + "x" + numReps + " Repetition Exercise";
+        // "Free Weight Exercise"
+        String freeWeightExerciseString = view.getResources()
+                .getString(R.string.vh_free_weight_free_weight_exercise);
+        String subtitle = numSets + "x" + numReps + " " + freeWeightExerciseString;
 
         setTitle(name);
         setSubtitle(subtitle);
@@ -63,7 +66,8 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
     private void setDescription(String description) {
 
         if (TextUtils.isEmpty(description)) {
-            description = "Remember, safety first! Lift only as much as your body allows!";
+            description = view.getResources()
+                    .getString(R.string.vh_free_weight_default_description);
         }
 
         TextView descriptionView = itemView.findViewById(R.id.tv_description);
@@ -72,7 +76,10 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
 
     private void setSets(int numSetsFinished, int numSetsTotal) {
         TextView setsRepsView = view.findViewById(R.id.tv_num_sets);
-        String text = numSetsFinished + "/" + numSetsTotal + " Sets Completed";
+
+        // "Sets Completed"
+        String setsCompleted = view.getResources().getString(R.string.vh_free_weight_sets_completed);
+        String text = numSetsFinished + "/" + numSetsTotal + setsCompleted;
         setsRepsView.setText(text);
     }
 

@@ -12,37 +12,37 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SU" />
+            android:text="@string/tab_sunday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MO" />
+            android:text="@string/tab_monday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TU" />
+            android:text="@string/tab_tuesday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WE" />
+            android:text="@string/tab_wednesday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TH" />
+            android:text="@string/tab_thursday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="fr" />
+            android:text="@string/tab_friday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SA" />
+            android:text="@string/tab_saturday_abbreviation" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"

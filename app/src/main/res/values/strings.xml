@@ -1,14 +1,130 @@
 <resources>
-    <string name="app_name">FitLogga</string>
-    <string name="title_activity_testtt">Testtt</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_testttt">testttt</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="powerup">Powerup</string>
-    <string name="plans">Plans</string>
+
+    <!-- global strings start -->
+    <string name="global_app_name">FitLogga</string>
+    <!-- global strings end -->
+
+
+    <!-- tab names start -->
+    <string name="tab_powerup">Powerup</string>
+    <string name="tab_plans">Plans</string>
+    <string name="tab_graph">Graph</string>
+    <string name="tab_sunday_abbreviation">SU</string>
+    <string name="tab_monday_abbreviation">MO</string>
+    <string name="tab_tuesday_abbreviation">TU</string>
+    <string name="tab_wednesday_abbreviation">WE</string>
+    <string name="tab_thursday_abbreviation">TH</string>
+    <string name="tab_friday_abbreviation">FR</string>
+    <string name="tab_saturday_abbreviation">SA</string>
+    <!-- tab names end -->
+
+    <!-- powerup fragment begin -->
+    <string name="powerup_welcome_back">Welcome back!</string>
+    <string name="powerup_start_todays_exercise">Start Today\'s Exercise</string>
+    <string name="powerup_schedule">Schedule</string>
+    <string name="powerup_weather">Weather</string>
+    <!-- powerup fragment end -->
+
+    <!-- plans fragment begin -->
+    <string-array name="plan_creation_options">
+        <item>Create my own plan</item>
+        <item>View the plan library</item>
+    </string-array>
+    <!-- plans fragment end -->
+
+    <!-- daily routine creator fragment begin -->
+    <string-array name="daily_routine_creator_creation_options">
+        <item>Timed Run</item>
+        <item>Meter Run</item>
+        <item>Repetition Exercise</item>
+        <item>Free Weight Exercise</item>
+        <item>Time of Resting</item>
+    </string-array>
+    <!-- daily routine creator fragment end -->
+
+    <!-- daily routine finisher fragment begin -->
+    <string name="daily_routine_finisher_youre_almost_done">You\'re almost done!</string>
+    <string name="daily_routine_finisher_name_of_plan">Name of plan</string>
+    <string name="daily_routine_finisher_description">Description </string>
+    <string name="daily_routine_finisher_set_as_current_plan">Set as current plan</string>
+    <string name="daily_routine_finisher_create_plan">Create plan</string>
+    <!-- daily routine finisher fragment end -->
+
+    <!-- vh_plan begin -->
+    <string name="vh_plan_activated">Activated</string>
+    <string name="vh_plan_activate">Activate</string>
+    <string name="vh_plan_delete">Delete</string>
+    <!-- vh_plan end -->
+
+    <!-- vh_free_weight begin -->
+    <string name="vh_free_weight_free_weight_exercise">Free Weight Exercise</string>
+    <string name="vh_free_weight_sets_completed">Sets Completed</string>
+    <string name="vh_free_weight_default_description">
+        Remember, safety first! Lift only as much as your body allows!
+    </string>
+    <string name="vh_free_weight_finish_set">Finish Set</string>
+    <string name="vh_free_weight_end_timer">End Timer</string>
+    <!-- vh_free_weight end -->
+
+    <!-- vh_new_buttons begin -->
+    <string name="vh_new_buttons_delete">Delete</string>
+    <!-- vh_new_buttons end -->
+
+    <!-- vh_new_*_description begin -->
+    <string name="vh_new_description">Description (can be empty)</string>
+    <!-- vh_new_*_description end -->
+
+    <!-- vh_new_free_weight begin -->
+    <string name="vh_new_free_weight_name_of_exercise">Name of exercise</string>
+    <string name="vh_new_free_weight_number_of_sets"># of sets</string>
+    <string name="vh_new_free_weight_number_of_reps"># of reps</string>
+    <string name="vh_new_free_weight_number_weight"># weight</string>
+    <string name="vh_new_free_weight_possible_units">lb/kg/plates</string>
+    <string name="vh_new_free_weight_min_to_rest"># min to rest</string>
+    <string name="vh_new_free_weight_number_seconds_to_rest"># seconds to rest</string>
+    <!-- vh_new_free_weight end -->
+
+    <!-- vh_new_meter_run begin -->
+    <string name="vh_new_meter_run_number_distance"># distance</string>
+    <string name="vh_new_meter_run_possible_units">meters/miles/km</string>
+    <!-- vh_new_meter_run begin -->
+
+    <!-- vh_new_repetition begin -->
+    <string name="vh_new_repetition_name_of_exercise">Name of exercise</string>
+    <string name="vh_new_repetition_number_of_sets"># of sets</string>
+    <string name="vh_new_repetition_number_of_reps"># of reps</string>
+    <string name="vh_new_repetition_min_to_rest"># min to rest</string>
+    <string name="vh_new_repetition_number_seconds_to_rest"># seconds to rest</string>
+    <!-- vh_new_free_weight end -->
+
+    <!-- vh_new_rest begin -->
+    <string name="vh_new_rest_number_minutes"># minutes</string>
+    <string name="vh_new_rest_number_seconds"># seconds</string>
+    <!-- vh_new_rest end -->
+
+    <!-- vh_new_timed_run begin -->
+    <string name="vh_new_timed_run_minutes"># minutes</string>
+    <string name="vh_new_timed_run_seconds"># seconds</string>
+    <!-- vh_new_timed_run end -->
+
+    <!-- vh_timed_run begin -->
+    <string name="vh_timed_run_timed_run">Timed Run</string>
+    <string name="vh_timed_run_start">Start</string>
+    <string name="vh_timed_run_pause">Pause</string>
+    <string name="vh_timed_run_reset">Reset</string>
+    <!-- vh_timed_run end -->
+
+    <!-- dialog_complete begin -->
+    <string name="dialog_complete_nice_job">Nice job!</string>
+    <string name="dialog_complete_body">
+        You completed all of your exercises today. Keep on exercising well!
+    </string>
+    <string name="dialog_complete_ok">Ok</string>
+    <!-- dialog_complete end -->
+
+
+
+
     <string name="performance">Performance</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,21 +134,12 @@
     <string name="delete">Delete</string>
     <string name="profile">Profile</string>
     <string name="please_finish_making_changes_first">Please finish making changes first</string>
-    <string name="graph">Graph</string>
 
 
-    <string-array name="plan_creation_options">
-        <item>Create my own plan</item>
-        <item>View the plan library</item>
-    </string-array>
 
 
-    <string-array name="exercise_creation_options">
-        <item>Timed Run</item>
-        <item>Meter Run</item>
-        <item>Repetition Exercise</item>
-        <item>Free Weight Exercise</item>
-        <item>Time of Resting</item>
-    </string-array>
+
+
+
 
 </resources>

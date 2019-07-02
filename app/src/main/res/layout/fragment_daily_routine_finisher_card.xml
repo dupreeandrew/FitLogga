@@ -19,7 +19,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="You're almost done!"
+            android:text="@string/daily_routine_finisher_youre_almost_done"
             android:textColor="@color/colorSecondaryText"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
                 android:id="@+id/input_plan_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Name of plan"
+                android:hint="@string/daily_routine_finisher_name_of_plan"
                 android:inputType="text"
                 android:textSize="14sp" />
 
@@ -61,7 +61,7 @@
                 android:id="@+id/input_plan_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Description "
+                android:hint="@string/daily_routine_finisher_description"
                 android:inputType="text"
                 android:textSize="14sp" />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Set as current plan"
+            android:text="@string/daily_routine_finisher_set_as_current_plan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_plan_description_layout" />
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_done"
-            android:text="Create Plan"
+            android:text="@string/daily_routine_finisher_create_plan"
             android:textColor="@color/colorPrimaryText"
             app:layout_constraintEnd_toEndOf="@+id/input_plan_description_layout"
             app:layout_constraintStart_toStartOf="@+id/input_plan_description_layout"

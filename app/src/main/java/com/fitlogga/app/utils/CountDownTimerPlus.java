@@ -15,6 +15,7 @@ public abstract class CountDownTimerPlus {
     private long millisTimerDuration;
     private long remainingMillisecondsOfTimer;
     private boolean isTimerPaused;
+    private static final int REFRESH_INTERVAL_MILLIS = 20;
 
     public CountDownTimerPlus(long milliseconds) {
 
@@ -75,7 +76,7 @@ public abstract class CountDownTimerPlus {
 
         cancelAnyTimerCountDown();
 
-        timer = new CountDownTimer(millisecondsOfTimer, 20) {
+        timer = new CountDownTimer(millisecondsOfTimer, REFRESH_INTERVAL_MILLIS) {
             @Override
             public void onTick(long millisUntilFinished) {
                 remainingMillisecondsOfTimer = millisUntilFinished;

@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Start"
+                android:text="@string/vh_timed_run_start"
                 app:layout_constraintEnd_toStartOf="@+id/btn_reset"
                 app:layout_constraintStart_toStartOf="@id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/pb_progress" />
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Reset"
+                android:text="@string/vh_timed_run_reset"
                 app:layout_constraintEnd_toEndOf="@id/right_border"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/btn_start"

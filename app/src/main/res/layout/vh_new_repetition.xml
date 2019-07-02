@@ -48,7 +48,7 @@
                     android:id="@+id/input_exercise_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Name of exercise"
+                    android:hint="@string/vh_new_repetition_name_of_exercise"
                     android:inputType="text"
                     android:textSize="12sp" />
 
@@ -71,7 +71,7 @@
                     android:id="@+id/input_exercise_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description (can be empty)"
+                    android:hint="@string/vh_new_description"
                     android:inputType="text"
                     android:textSize="12sp" />
 
@@ -91,7 +91,7 @@
                     android:id="@+id/input_num_sets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# of sets"
+                    android:hint="@string/vh_new_repetition_number_of_sets"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -112,7 +112,7 @@
                     android:id="@+id/input_num_reps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# of reps"
+                    android:hint="@string/vh_new_repetition_number_of_reps"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -139,9 +139,9 @@
                     android:id="@+id/input_rest_time_minutes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# min to rest"
-                    android:textSize="12sp"
-                    android:inputType="number" />
+                    android:hint="@string/vh_new_repetition_min_to_rest"
+                    android:inputType="number"
+                    android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -160,9 +160,9 @@
                     android:id="@+id/input_rest_time_seconds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# seconds to rest"
-                    android:textSize="12sp"
-                    android:inputType="number" />
+                    android:hint="@string/vh_new_repetition_number_seconds_to_rest"
+                    android:inputType="number"
+                    android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

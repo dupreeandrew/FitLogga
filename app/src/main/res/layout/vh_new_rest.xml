@@ -46,9 +46,9 @@
                     android:id="@+id/input_rest_time_minutes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# minutes"
-                    android:textSize="12sp"
-                    android:inputType="number" />
+                    android:hint="@string/vh_new_rest_number_minutes"
+                    android:inputType="number"
+                    android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,9 +67,9 @@
                     android:id="@+id/input_rest_time_seconds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="# seconds"
-                    android:textSize="12sp"
-                    android:inputType="number" />
+                    android:hint="@string/vh_new_rest_number_seconds"
+                    android:inputType="number"
+                    android:textSize="12sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

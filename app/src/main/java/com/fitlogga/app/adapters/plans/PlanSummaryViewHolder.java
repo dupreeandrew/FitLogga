@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.collapsible.CollapsibleViewHolder;
+import com.fitlogga.app.viewmods.ViewEnabler;
 
 public class PlanSummaryViewHolder extends CollapsibleViewHolder {
 
@@ -26,12 +27,11 @@ public class PlanSummaryViewHolder extends CollapsibleViewHolder {
         checkmark.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
 
         Button activateButton = view.findViewById(R.id.btn_activate);
-        activateButton.setEnabled(!b);
-        activateButton.setText(b ? "Activated" : "Activate");
+        ViewEnabler.setEnabled(activateButton, !b);
 
-        final int DISABLED_OPACITY = 120;
-        final int ENABLED_OPACITY = 255;
-        activateButton.getBackground().setAlpha(b ? DISABLED_OPACITY : ENABLED_OPACITY);
+        String activated = view.getResources().getString(R.string.vh_plan_activated);
+        String activate = view.getResources().getString(R.string.vh_plan_activate);
+        activateButton.setText(b ? activated : activate);
 
     }
 
