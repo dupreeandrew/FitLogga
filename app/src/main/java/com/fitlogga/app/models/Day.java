@@ -1,5 +1,10 @@
 package com.fitlogga.app.models;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.fitlogga.app.R;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -20,6 +25,28 @@ public enum Day {
 
     public int getValue() {
         return value;
+    }
+
+    public static String getStringRepresentation(Context context, Day day) {
+        Resources resources = context.getResources();
+        switch (day.getValue()) {
+            case 0:
+                return resources.getString(R.string.global_sunday);
+            case 1:
+                return resources.getString(R.string.global_monday);
+            case 2:
+                return resources.getString(R.string.global_tuesday);
+            case 3:
+                return resources.getString(R.string.global_wednesday);
+            case 4:
+                return resources.getString(R.string.global_thursday);
+            case 5:
+                return resources.getString(R.string.global_friday);
+            case 6:
+                return resources.getString(R.string.global_saturday);
+            default:
+                throw new IllegalArgumentException("Invalid day received");
+        }
     }
 
     public static Day fromValue(int value) {

@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class PlanReader {
+
+    // todo:: apply a more OOP-themed approach.
+
     private Context context;
 
     public PlanReader(Context context) {
@@ -88,12 +91,27 @@ public class PlanReader {
 
     }
 
+    @Nullable
     public EnumMap<Day, List<Exercise>> getDailyRoutines(String planName) {
+
+        if (!planExists(planName)) {
+            return null;
+        }
+
         EnumMap<Day, List<Exercise>> dailyRoutineMap = new EnumMap<>(Day.class);
         for (Day day : Day.values()) {
-            dailyRoutineMap.put(day, getDailyRoutine(planName, day));
+            List<Exercise> dailyRoutine = getDailyRoutine(planName, day);
+            dailyRoutineMap.put(day, dailyRoutine);
         }
+
         return dailyRoutineMap;
+    }
+
+    private boolean planExists(String planName) {
+        String planFileName = PlanIOUtils.getIOSafeFileID(planName);
+        return context
+                .getSharedPreferences("registered_plans", Context.MODE_PRIVATE)
+                .contains(planFileName);
     }
 
     private Exercise getExerciseFromMap(Map<String, Object> exerciseMap) {

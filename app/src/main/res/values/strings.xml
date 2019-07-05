@@ -2,8 +2,14 @@
 
     <!-- global strings start -->
     <string name="global_app_name">FitLogga</string>
+    <string name="global_sunday">Sunday</string>
+    <string name="global_monday">Monday</string>
+    <string name="global_tuesday">Tuesday</string>
+    <string name="global_wednesday">Wednesday</string>
+    <string name="global_thursday">Thursday</string>
+    <string name="global_friday">Friday</string>
+    <string name="global_saturday">Saturday</string>
     <!-- global strings end -->
-
 
     <!-- tab names start -->
     <string name="tab_powerup">Powerup</string>

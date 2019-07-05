@@ -8,9 +8,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="4dp"
-        android:paddingTop="2dp"
-        android:paddingRight="4dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp">
 
         <TextView
@@ -30,7 +30,7 @@
         <ImageView
             android:id="@+id/iv_avatar"
             android:layout_width="240dp"
-            android:layout_height="230dp"
+            android:layout_height="240dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,17 +46,27 @@
             android:drawableStart="@drawable/ic_exercise"
             android:text="@string/powerup_start_todays_exercise"
             android:textColor="@color/colorPrimaryText"
-            app:layout_constraintEnd_toEndOf="@+id/iv_avatar"
+            app:layout_constraintEnd_toStartOf="@+id/btn_select_daily_routine"
             app:layout_constraintStart_toStartOf="@+id/iv_avatar"
             app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+        <ImageButton
+            android:id="@+id/btn_select_daily_routine"
+            style="@style/AppTheme.DeepAccentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_event"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_powerup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_powerup" />
 
         <Button
             android:id="@+id/btn_calendar"
             style="@style/AppTheme.AccentButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableTop="@drawable/ic_calendar"
+            android:drawableStart="@drawable/ic_calendar"
             android:text="@string/powerup_schedule"
             android:textColor="@color/colorPrimaryText"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -66,13 +76,13 @@
         <Button
             android:id="@+id/btn_weather"
             style="@style/AppTheme.AccentButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:drawableTop="@drawable/ic_weather"
+            android:drawableStart="@drawable/ic_weather"
             android:text="@string/powerup_weather"
             android:textColor="@color/colorPrimaryText"
-            app:layout_constraintEnd_toEndOf="@+id/btn_powerup"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/btn_powerup" />
 
