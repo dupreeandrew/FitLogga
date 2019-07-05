@@ -19,6 +19,7 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanCreator;
+import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -71,6 +72,13 @@ public class DailyRoutineFinisherFragment extends Fragment {
         TextInputEditText inputDescView = view.findViewById(R.id.input_plan_description);
         inputNameView.setText(planSummary.getName());
         inputDescView.setText(planSummary.getDescription());
+
+        String currentPlanName = new PlanReader(view.getContext()).getCurrentPlanName();
+        if (planSummary.getName().equals(currentPlanName)) {
+            CheckBox setAsActiveCheckBox = view.findViewById(R.id.cb_set_as_current_plan);
+            setAsActiveCheckBox.setChecked(true);
+            setAsActiveCheckBox.setEnabled(false);
+        }
 
     }
 
