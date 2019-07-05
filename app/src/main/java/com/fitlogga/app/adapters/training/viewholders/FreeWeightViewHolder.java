@@ -79,7 +79,7 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
 
         // "Sets Completed"
         String setsCompleted = view.getResources().getString(R.string.vh_free_weight_sets_completed);
-        String text = numSetsFinished + "/" + numSetsTotal + setsCompleted;
+        String text = numSetsFinished + "/" + numSetsTotal + " " + setsCompleted;
         setsRepsView.setText(text);
     }
 

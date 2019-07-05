@@ -96,8 +96,12 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
             return false;
         });
 
+        viewHolder.setCloseButtonClickListener(view ->
+                viewHolder.simulateCollapseButtonClick());
+
         viewHolder.setDeleteButtonClickListener(view ->
                 promptDelete(view, viewHolder.getAdapterPosition()));
+
 
     }
 

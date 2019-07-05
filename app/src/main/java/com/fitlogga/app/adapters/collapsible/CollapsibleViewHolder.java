@@ -19,10 +19,12 @@ import java.util.List;
 public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
 
     private View view;
+    private ImageView arrow;
 
     public CollapsibleViewHolder(@NonNull View itemView) {
         super(itemView);
         this.view = itemView;
+        this.arrow = view.findViewById(R.id.iv_expand_collapse);
     }
 
     final void handleCollapseContent(boolean isExpanded) {
@@ -31,8 +33,6 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
         for (View collapsibleView : getCollapsibleViews()) {
             collapsibleView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
-
-        ImageView arrow = view.findViewById(R.id.iv_expand_collapse);
 
         if (isExpanded) {
             Drawable upArrow = view.getResources().getDrawable(R.drawable.ic_arrow_up);
@@ -68,6 +68,10 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
 
     final void setExpandCollapseClickListener(View.OnClickListener listener) {
         view.findViewById(R.id.iv_expand_collapse).setOnClickListener(listener);
+    }
+
+    public final void simulateCollapseButtonClick() {
+        arrow.callOnClick();
     }
 
 

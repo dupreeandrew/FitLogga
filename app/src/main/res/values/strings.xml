@@ -73,6 +73,7 @@
     <!-- vh_free_weight end -->
 
     <!-- vh_new_buttons begin -->
+    <string name="vh_new_buttons_close">Close</string>
     <string name="vh_new_buttons_delete">Delete</string>
     <!-- vh_new_buttons end -->
 

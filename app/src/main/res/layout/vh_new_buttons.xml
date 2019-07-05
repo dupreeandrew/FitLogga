@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <Button
         android:id="@+id/btn_delete"
         style="@style/AppTheme.WarningButton"
@@ -14,6 +13,17 @@
         android:text="@string/vh_new_buttons_delete"
         android:textColor="@color/colorPrimaryText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_close"
+        style="@style/AppTheme.AccentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_done"
+        android:text="@string/vh_new_buttons_close"
+        android:textColor="@color/colorPrimaryText"
+        app:layout_constraintEnd_toStartOf="@id/btn_delete"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

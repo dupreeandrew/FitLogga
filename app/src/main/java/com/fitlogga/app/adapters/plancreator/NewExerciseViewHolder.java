@@ -50,6 +50,11 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         deleteButton.setOnClickListener(listener);
     }
 
+    final void setCloseButtonClickListener(View.OnClickListener listener) {
+        Button closeButton = view.findViewById(R.id.btn_close);
+        closeButton.setOnClickListener(listener);
+    }
+
 
     @SuppressLint("ClickableViewAccessibility")
     final void setDragHandleTouchListener(View.OnTouchListener listener) {
@@ -84,7 +89,7 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         errorTextInputLayouts.clear();
     }
 
-    boolean isUnacceptableNumber(String parsableInt) {
+    final boolean isUnacceptableNumber(String parsableInt) {
         try {
             int parsedInt = Integer.parseInt(parsableInt);
             return (parsedInt < 1);
