@@ -66,6 +66,7 @@ public class PlansFragment extends Fragment {
 
         new LovelyChoiceDialog(view.getContext())
                 .setTopColorRes(R.color.colorPrimaryDark)
+                .setIcon(R.drawable.ic_add_white)
                 .setTitle("Plan Creator")
                 .setMessage("How do you want to create a plan?")
                 .setItems(choices, (position, item) -> {
