@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +19,17 @@ import androidx.fragment.app.Fragment;
 import com.fitlogga.app.R;
 import com.fitlogga.app.activities.TrainingActivity;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.DaySuffix;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class PowerupFragment extends Fragment {
@@ -33,8 +38,11 @@ public class PowerupFragment extends Fragment {
         private final List<String> dayStrings;
         private final SparseIntArray dayAdapterMapper;
 
-        private DayStringAdapterMapper(List<String> dayStrings, SparseIntArray dayAdapterMapper) {
-            this.dayStrings = dayStrings;
+        /**
+         * @param dayAdapterMapper K: adapterPos, V: dayValue
+         */
+        private DayStringAdapterMapper(List<String> availableDays, SparseIntArray dayAdapterMapper) {
+            this.dayStrings = availableDays;
             this.dayAdapterMapper = dayAdapterMapper;
         }
 
@@ -60,9 +68,29 @@ public class PowerupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initCalendarView(view);
         initPowerupButton(view);
         initSelectDailyRoutineButton(view);
         planReader = new PlanReader(view.getContext());
+    }
+
+    private void initCalendarView(View view) {
+
+        Calendar calendar = Calendar.getInstance();
+        String monthName = new SimpleDateFormat("LLLL", Locale.getDefault())
+                .format(calendar.getTime());
+        int monthDay = calendar.get(Calendar.DAY_OF_MONTH);
+        String monthDayAndSuffix = DaySuffix.getDaySuffix(monthDay);
+
+        String monthDayText = monthName + " " + monthDayAndSuffix;
+        String dayNameText = calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
+
+        TextView monthDayTextView = view.findViewById(R.id.tv_month_day);
+        monthDayTextView.setText(monthDayText);
+
+        TextView dayNameTextView = view.findViewById(R.id.tv_day_name);
+        dayNameTextView.setText(dayNameText);
+
     }
 
     private void initPowerupButton(View view) {

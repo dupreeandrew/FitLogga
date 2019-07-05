@@ -28,14 +28,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_avatar"
+            android:id="@+id/iv_calendar"
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:src="@tools:sample/avatars[0]" />
+            app:srcCompat="@drawable/ic_calendar_today_large" />
+
+        <TextView
+            android:id="@+id/tv_month_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            tools:text="July 4th,"
+            app:layout_constraintEnd_toEndOf="@+id/iv_calendar"
+            app:layout_constraintStart_toStartOf="@+id/iv_calendar"
+            app:layout_constraintTop_toTopOf="@+id/iv_calendar" />
+
+        <TextView
+            android:id="@+id/tv_day_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="30dp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_calendar"
+            app:layout_constraintStart_toStartOf="@+id/iv_calendar"
+            app:layout_constraintTop_toBottomOf="@+id/tv_month_day"
+            tools:text="Thursday" />
 
         <Button
             android:id="@+id/btn_powerup"
@@ -47,8 +69,8 @@
             android:text="@string/powerup_start_todays_exercise"
             android:textColor="@color/colorPrimaryText"
             app:layout_constraintEnd_toStartOf="@+id/btn_select_daily_routine"
-            app:layout_constraintStart_toStartOf="@+id/iv_avatar"
-            app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+            app:layout_constraintStart_toStartOf="@+id/iv_calendar"
+            app:layout_constraintTop_toBottomOf="@id/iv_calendar" />
 
         <ImageButton
             android:id="@+id/btn_select_daily_routine"
