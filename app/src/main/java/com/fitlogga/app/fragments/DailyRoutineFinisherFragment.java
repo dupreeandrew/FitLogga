@@ -74,7 +74,7 @@ public class DailyRoutineFinisherFragment extends Fragment {
         inputDescView.setText(planSummary.getDescription());
 
         String currentPlanName = new PlanReader(view.getContext()).getCurrentPlanName();
-        if (planSummary.getName().equals(currentPlanName)) {
+        if (currentPlanName.equals(planSummary.getName())) {
             CheckBox setAsActiveCheckBox = view.findViewById(R.id.cb_set_as_current_plan);
             setAsActiveCheckBox.setChecked(true);
             setAsActiveCheckBox.setEnabled(false);
