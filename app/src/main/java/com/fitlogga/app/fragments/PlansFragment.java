@@ -55,10 +55,10 @@ public class PlansFragment extends Fragment {
 
     private void initFabAddPost(View view) {
         FloatingActionButton fab = view.findViewById(R.id.fab_add_plan);
-        fab.setOnClickListener(this::promptCreatePlanDialog);
+        fab.setOnClickListener(fabView -> promptCreatePlanDialog(view));
     }
 
-    private void promptCreatePlanDialog(View view) {
+    static void promptCreatePlanDialog(View view) {
 
         String[] choices = view.getResources().getStringArray(R.array.plan_creation_options);
         final int CREATE_NEW_PLAN_INDEX = 0;
@@ -82,9 +82,9 @@ public class PlansFragment extends Fragment {
                 .show();
     }
 
-    private void openPlanCreator(View view) {
+    private static void openPlanCreator(View view) {
         Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
-        startActivity(intent);
+        view.getContext().startActivity(intent);
     }
 
 

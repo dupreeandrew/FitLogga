@@ -22,6 +22,7 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.DaySuffix;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanReader;
+import com.google.android.material.snackbar.Snackbar;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.text.SimpleDateFormat;
@@ -103,7 +104,7 @@ public class PowerupFragment extends Fragment {
         String currentPlanName = planReader.getCurrentPlanName();
 
         if (currentPlanName == null) {
-            showNoPlanToast();
+            showNoPlanSnackbar(view);
             return;
         }
 
@@ -116,8 +117,11 @@ public class PowerupFragment extends Fragment {
 
     }
 
-    private void showNoPlanToast() {
-        Toast.makeText(getContext(), "You do not have a plan.", Toast.LENGTH_SHORT).show();
+    private void showNoPlanSnackbar(View view) {
+        Snackbar snackbar = Snackbar.make(view, "You do not have a plan.", Snackbar.LENGTH_LONG);
+        snackbar.setAction("Create plan",
+                snackBarView -> PlansFragment.promptCreatePlanDialog(view));
+        snackbar.show();
     }
 
     private void startTrainingActivity(Context context, Day day) {
@@ -138,7 +142,7 @@ public class PowerupFragment extends Fragment {
         String currentPlanName = planReader.getCurrentPlanName();
 
         if (currentPlanName == null) {
-            showNoPlanToast();
+            showNoPlanSnackbar(view);
             return;
         }
 
