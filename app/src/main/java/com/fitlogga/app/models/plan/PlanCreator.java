@@ -27,6 +27,10 @@ public class PlanCreator {
         private PlanSummary planSummary;
         private EnumMap<Day, List<Exercise>> dailyRoutineMap;
 
+        private Builder() {
+            // empty constructor
+        }
+
         public Builder setContext(Context context) {
             this.context = context;
             return this;
@@ -73,7 +77,8 @@ public class PlanCreator {
         String preferenceName = PlanIOUtils.getIOSafeFileID(planSummary.getName());
         editor = context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
-                .edit();
+                .edit()
+                .clear();
     }
 
     private void write() {
@@ -86,8 +91,8 @@ public class PlanCreator {
         for (Day usedDay : usedDays) {
             List<Exercise> dailyRoutine = dailyRoutineMap.get(usedDay);
 
-            if (dailyRoutine == null) {
-                return;
+            if (dailyRoutine == null || dailyRoutine.size() == 0) {
+                continue;
             }
 
             int dayNumber = usedDay.ordinal();

@@ -29,6 +29,9 @@
     <string name="powerup_start_todays_exercise">Start Today\'s Exercise</string>
     <string name="powerup_schedule">Schedule</string>
     <string name="powerup_weather">Weather</string>
+    <string name="powerup_choose_a_routine">Choose a routine</string>
+    <string name="powerup_you_do_not_have_a_routine">You do not have a routine</string>
+    <string name="powerup_create_routine">Create routine</string>
     <!-- powerup fragment end -->
 
     <!-- plans fragment begin -->
