@@ -3,8 +3,14 @@ package com.fitlogga.app.utils;
 public class Time {
 
     public static int getSeconds(String minutes, String seconds) {
-        int minutesInt = Integer.parseInt(minutes);
-        int secondsInt = Integer.parseInt(seconds);
+
+        int minutesInt, secondsInt;
+
+        try { minutesInt = Integer.parseInt(minutes); }
+        catch (Exception ex) { minutesInt = 0; }
+        try { secondsInt = Integer.parseInt(seconds); }
+        catch (Exception ex) { secondsInt = 0; }
+
         return getSeconds(minutesInt, secondsInt);
     }
 

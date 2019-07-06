@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.fitlogga.app.R;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.RepetitionExercise;
+import com.fitlogga.app.utils.Time;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class NewRepetitionViewHolder extends NewExerciseViewHolder {
@@ -103,6 +104,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
         String inputNumRepsString = inputNumRepsView.getText().toString();
         String inputRestMinutesString = inputRestMinutesView.getText().toString();
         String inputRestSecondsString = inputRestSecondsView.getText().toString();
+        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
 
         boolean isSaveable = true;
 
@@ -131,17 +133,9 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
             isSaveable = false;
         }
 
-        if (TextUtils.isEmpty(inputRestMinutesString)) {
-            applyRequiredError(R.id.input_rest_time_minutes_layout);
-            isSaveable = false;
-        }
-        else if (isUnacceptableNumber(inputRestMinutesString)) {
-            applyBadNumberError(R.id.input_rest_time_minutes_layout);
-            isSaveable = false;
-        }
-
-        if (TextUtils.isEmpty(inputRestSecondsString)) {
-            applyRequiredError(R.id.input_rest_time_seconds_layout);
+        if (totalRestSeconds <= 0) {
+            applyErrorBackground(R.id.input_rest_time_minutes_layout);
+            applyBadNumberError(R.id.input_rest_time_seconds_layout);
             isSaveable = false;
         }
 
