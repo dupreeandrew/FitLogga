@@ -1,0 +1,9 @@
+For now, every time an Exercise is generated, it's completed status is always set to false.
+
+The original plan was to make it so that the completion status would be saved to HDD, and then
+every week, completion status for every exercise would be reset to false...
+
+This was the primary reason I wanted the "complete" constructor parameter to exist.
+
+However, I am now having doubts about this original plan.
+It will be easy to undo this commit if I ever change my mind.

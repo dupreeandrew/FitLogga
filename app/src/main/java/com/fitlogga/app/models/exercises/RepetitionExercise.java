@@ -51,7 +51,7 @@ public class RepetitionExercise extends Exercise {
         public RepetitionExercise build() throws NullPointerException {
             validateProperties();
             return new RepetitionExercise(name, description, numberOfSets,
-                    numberOfRepetitions, restTimeBetweenSets, completed);
+                    numberOfRepetitions, restTimeBetweenSets);
 
         }
 
@@ -90,11 +90,6 @@ public class RepetitionExercise extends Exercise {
         this.numberOfSets = numberOfSets;
         this.numberOfRepetitions = numberOfRepetitions;
         this.restTimeBetweenSets = restTimeBetweenSets;
-    }
-
-    public RepetitionExercise(String name, String description, int numberOfSets, int numberOfRepetitions, int restTimeBetweenSets, boolean completed) {
-        this(name, description, numberOfSets, numberOfRepetitions, restTimeBetweenSets);
-        setCompleted(true);
     }
 
     public String getName() {

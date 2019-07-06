@@ -18,7 +18,7 @@ public class TimedRunExercise extends Exercise {
 
     public TimedRunExercise(String description, int seconds, boolean completed) {
         this(description, seconds);
-        setCompleted(completed);
+        setCompleted(false);
     }
 
 

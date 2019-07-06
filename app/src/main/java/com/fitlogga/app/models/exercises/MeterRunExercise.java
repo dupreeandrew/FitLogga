@@ -15,7 +15,7 @@ public class MeterRunExercise extends Exercise {
 
     public MeterRunExercise(String description, int distance, String units, boolean completed) {
         this(description, distance, units);
-        setCompleted(completed);
+        setCompleted(false);
     }
 
     public int getDistance() {

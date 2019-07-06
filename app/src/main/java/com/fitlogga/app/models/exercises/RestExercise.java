@@ -15,7 +15,7 @@ public class RestExercise extends Exercise {
 
     public RestExercise(int amountOfTimeToRest, boolean completed) {
         this(amountOfTimeToRest);
-        setCompleted(completed);
+        setCompleted(false);
     }
 
     public int getAmountOfTimeToRest() {
