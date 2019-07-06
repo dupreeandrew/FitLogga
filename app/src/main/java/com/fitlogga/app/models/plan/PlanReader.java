@@ -59,6 +59,12 @@ public class PlanReader {
 
     }
 
+
+    /**
+     * Acquire a daily routine.
+     * This will always at the very minimum return an empty list.
+     */
+    @NonNull
     public List<Exercise> getDailyRoutine(String planName, Day day) {
 
         String preferenceName = PlanIOUtils.getIOSafeFileID(planName);

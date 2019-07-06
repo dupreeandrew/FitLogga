@@ -141,13 +141,8 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
         viewHolder.manifest(exercise);
         viewHolder.setOnUpdateListener(() -> {
             notifyItemChanged(position);
-            writeChangesToDisk();
             checkForDailyRoutineFinish();
         });
-    }
-
-    private void writeChangesToDisk() {
-        //
     }
 
     private void checkForDailyRoutineFinish() {

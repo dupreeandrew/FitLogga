@@ -30,6 +30,7 @@
     <string name="powerup_schedule">Schedule</string>
     <string name="powerup_weather">Weather</string>
     <string name="powerup_choose_a_routine">Choose a routine</string>
+    <string name="powerup_you_have_nothing_to_do_today">You have nothing to do today</string>
     <string name="powerup_you_do_not_have_a_routine">You do not have a routine</string>
     <string name="powerup_create_routine">Create routine</string>
     <!-- powerup fragment end -->
@@ -144,11 +145,6 @@
     <string name="delete">Delete</string>
     <string name="profile">Profile</string>
     <string name="please_finish_making_changes_first">Please finish making changes first</string>
-
-
-
-
-
 
 
 

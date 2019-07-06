@@ -1,9 +1,12 @@
 package com.fitlogga.app.models.plan;
 
 import android.content.Context;
+import android.content.Intent;
 
+import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.List;
@@ -78,6 +81,18 @@ public class PlanEditor {
                 planSummary.getDescription(),
                 new Date().getTime() + 2000);
         PlanWritingUtils.writePlanSummary(context, editedPlanSummary);
+    }
+
+    public static void openGUI(Context context, String planName) {
+
+        PlanSummary planSummary = new PlanReader(context).getPlanSummaryFromName(planName);
+
+        Gson gson = new Gson();
+        String planSummaryJson = gson.toJson(planSummary);
+
+        Intent intent = new Intent(context, PlanCreatorActivity.class);
+        intent.putExtra(PlanCreatorActivity.PREFILLED_PLAN_SUMMARY_JSON_KEY, planSummaryJson);
+        context.startActivity(intent);
     }
 
 }

@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.fitlogga.app.R;
@@ -21,6 +21,7 @@ import com.fitlogga.app.activities.TrainingActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.DaySuffix;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.google.android.material.snackbar.Snackbar;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
@@ -109,12 +110,22 @@ public class PowerupFragment extends Fragment {
         }
 
         if (planReader.isDayEmpty(currentPlanName, Day.getToday())) {
-            Toast.makeText(getContext(), "You got nothing to do today.", Toast.LENGTH_SHORT).show();
+            showNoRoutinesSnackbar(view, currentPlanName,
+                    // "You have nothing to do today"
+                    R.string.powerup_you_have_nothing_to_do_today);
             return;
         }
 
         startTrainingActivity(view.getContext(), Day.getToday());
 
+    }
+
+    private void showNoRoutinesSnackbar(View view, String planName, @StringRes int messageStringId) {
+        Snackbar snackbar = Snackbar.make(view, messageStringId, Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.powerup_create_routine, snackBarView -> {
+            PlanEditor.openGUI(view.getContext(), planName);
+        });
+        snackbar.show();
     }
 
     private void showNoPlanSnackbar(View view) {
@@ -150,14 +161,24 @@ public class PowerupFragment extends Fragment {
         EnumMap<Day, List<Exercise>> dailyRoutines
                 = planReader.getDailyRoutines(currentPlanName);
 
-
+        assert dailyRoutines != null; // returns null if current plan name is null.
         DayStringAdapterMapper availableDayStringAdapterMapper =
                 getAvailableDayStringAdapterMapper(dailyRoutines, view);
         List<String> availableDayStrings = availableDayStringAdapterMapper.getDayStrings();
 
+        if (availableDayStrings.size() == 0) {
+            showNoRoutinesSnackbar(view, currentPlanName,
+                    // "You do not have a routine"
+                    R.string.powerup_you_do_not_have_a_routine);
+            return;
+        }
+
+        // "Choose a routine"
+        String chooseARoutineString = view.getResources()
+                .getString(R.string.powerup_choose_a_routine);
         new LovelyChoiceDialog(view.getContext())
                 .setTopColorRes(R.color.colorPrimaryDark)
-                .setTitle("Choose a routine")
+                .setTitle(chooseARoutineString)
                 .setItems(availableDayStrings, (position, item) -> {
                     Day selectedDay = availableDayStringAdapterMapper.getDayFromAdapterPos(position);
                     startTrainingActivity(view.getContext(), selectedDay);
@@ -174,9 +195,7 @@ public class PowerupFragment extends Fragment {
         SparseIntArray dayIntegerMap = new SparseIntArray();
         List<String> availableDailyRoutineStrings = new ArrayList<>();
 
-
         int i = 0;
-
         for (Map.Entry<Day, List<Exercise>> entry : dailyRoutines.entrySet()) {
 
             Day day = entry.getKey();

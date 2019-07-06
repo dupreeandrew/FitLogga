@@ -1,7 +1,6 @@
 package com.fitlogga.app.adapters.plans;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +9,9 @@ import androidx.annotation.NonNull;
 
 import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
-import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.adapters.collapsible.CollapsibleRecyclerAdapter;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanSummary;
-import com.google.gson.Gson;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
@@ -43,7 +40,7 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
         holder.setAsActive(position == 0);
         holder.setActivateButtonClickListener(view -> activatePlan(view, planSummary, holder.getAdapterPosition()));
         holder.setDeleteButtonClickListener(view -> promptDeletePlan(view, planSummary, position));
-        holder.setEditButtonClickListener(view -> editPlan(view, planSummary));
+        holder.setEditButtonClickListener(view -> PlanEditor.openGUI(view.getContext(), planSummary.getName()));
     }
 
     private void activatePlan(View view, PlanSummary planSummary, int position) {
@@ -75,23 +72,12 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     }
 
     private void deletePlan(View view, PlanSummary planSummary, int position) {
-        PlanEditor planEditor= new PlanEditor(view.getContext(), planSummary.getName());
+        PlanEditor planEditor = new PlanEditor(view.getContext(), planSummary.getName());
         planEditor.delete();
 
         planSummaries.remove(planSummary);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, planSummaries.size());
-    }
-
-
-    private void editPlan(View view, PlanSummary planSummary) {
-
-        Gson gson = new Gson();
-        String planSummaryJson = gson.toJson(planSummary);
-
-        Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
-        intent.putExtra(PlanCreatorActivity.PREFILLED_PLAN_SUMMARY_JSON_KEY, planSummaryJson);
-        view.getContext().startActivity(intent);
     }
 
     @Override
