@@ -1,6 +1,7 @@
 package com.fitlogga.app.adapters.training.viewholders;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -13,6 +14,7 @@ import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.RepetitionExercise;
 import com.fitlogga.app.utils.CountDownTimerPlus;
 import com.fitlogga.app.utils.Time;
+import com.fitlogga.app.viewmods.ViewEnabler;
 
 public class RepetitionViewHolder extends ExerciseViewHolder {
 
@@ -34,36 +36,57 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
         RepetitionExercise repetitionExercise = (RepetitionExercise)exercise;
         String name = repetitionExercise.getName();
         String description = repetitionExercise.getDescription();
+        int numSetsCompleted = repetitionExercise.getNumSetsCompleted();
         int numSets = repetitionExercise.getNumberOfSets();
         int numReps = repetitionExercise.getNumberOfRepetitions();
-        int restSeconds = repetitionExercise.getRestTimeBetweenSets();
 
-        String subtitle = numSets + "x" + numReps + " Repetition Exercise";
+        // "Repetition Exercise"
+        String repetitionExerciseString = view.getResources()
+                .getString(R.string.vh_repetition_repetition_exercise);
+        String subtitle = numSets + "x" + numReps + " " + repetitionExerciseString;
 
         setTitle(name);
         setSubtitle(subtitle);
-        setSets(repetitionExercise.getNumSetsCompleted(), numSets);
+        setDescription(description);
+        setSets(numSetsCompleted, numSets);
 
         initTimer(repetitionExercise);
         initEndTimerButton();
         initFinishSetButton(repetitionExercise);
 
+    }
 
+    private void setDescription(String description) {
+
+        if (TextUtils.isEmpty(description)) {
+            description = view.getResources()
+                    .getString(R.string.vh_repetition_default_description);
+        }
+
+        TextView descriptionView = itemView.findViewById(R.id.tv_description);
+        descriptionView.setText(description);
     }
 
     private void setSets(int numSetsFinished, int numSetsTotal) {
         TextView setsRepsView = view.findViewById(R.id.tv_num_sets);
-        String text = numSetsFinished + "/" + numSetsTotal + " sets";
+
+        // "Sets Completed"
+        String setsCompleted = view.getResources().getString(R.string.vh_repetition_sets_completed);
+        String text = numSetsFinished + "/" + numSetsTotal + " " + setsCompleted;
         setsRepsView.setText(text);
     }
 
     private void initTimer(RepetitionExercise repetitionExercise) {
+
+        if (timer != null && !timer.isPaused()) return;
+
         ProgressBar timerProgressBar = view.findViewById(R.id.pb_progress);
         timerProgressBar.setMax(5000);
 
         final int MILLISECONDS_OF_TIMER = repetitionExercise.getRestTimeBetweenSets() * 1000;
         timer = getTimerObject(MILLISECONDS_OF_TIMER);
         timer.onTick(MILLISECONDS_OF_TIMER);
+
     }
 
     private CountDownTimerPlus getTimerObject(int milliseconds) {
@@ -89,9 +112,8 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
             @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
-                finishSetButton.setEnabled(true);
-                endTimerButton.setEnabled(false);
-                timerTextView.setText("0:00");
+                ViewEnabler.setEnabled(finishSetButton, true);
+                ViewEnabler.setEnabled(endTimerButton, false);
             }
         };
 
@@ -99,30 +121,45 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
 
     private void initFinishSetButton(RepetitionExercise repetitionExercise) {
         finishSetButton.setOnClickListener(buttonView -> {
+
             int numSetsCompleted = repetitionExercise.getNumSetsCompleted() + 1;
+            repetitionExercise.setNumSetsCompleted(numSetsCompleted);
 
+            if (numSetsCompleted == repetitionExercise.getNumberOfSets()) {
+                repetitionExercise.setCompleted(true);
+                refreshItemInDataSet();
+            }
 
+            setSets(numSetsCompleted, repetitionExercise.getNumberOfSets());
 
-
+            ViewEnabler.setEnabled(finishSetButton, false);
+            ViewEnabler.setEnabled(endTimerButton, true);
+            timer.reset();
             timer.resume();
-            finishSetButton.setEnabled(false);
-            endTimerButton.setEnabled(true);
+
         });
 
     }
-
 
     private void initEndTimerButton() {
-        endTimerButton.setOnClickListener(buttonView -> {
-            timer.reset();
-            finishSetButton.setEnabled(true);
-            endTimerButton.setEnabled(false);
-        });
+        endTimerButton.setOnClickListener(
+                buttonView -> timer.fadeEnd()
+        );
     }
-
 
     @Override
     protected int[] getCollapsibleViewResourceIds() {
-        return new int[0];
+        return new int[] {
+                R.id.pb_progress,
+                R.id.iv_clock,
+                R.id.tv_timer,
+                R.id.tv_num_sets,
+                R.id.divider_one,
+                R.id.iv_info,
+                R.id.tv_description,
+                R.id.divider_two,
+                R.id.btn_complete_set,
+                R.id.btn_end_timer,
+        };
     }
 }

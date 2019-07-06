@@ -118,6 +118,16 @@
     <string name="vh_new_timed_run_seconds"># seconds</string>
     <!-- vh_new_timed_run end -->
 
+    <!-- vh_repetition begin -->
+    <string name="vh_repetition_repetition_exercise">Repetition Exercise</string>
+    <string name="vh_repetition_default_description">
+        Remember, pace yourself! Over exhaustion slows down personal progress.
+    </string>
+    <string name="vh_repetition_sets_completed">Sets Completed</string>
+    <string name="vh_repetition_finish_set">Finish Set</string>
+    <string name="vh_repetition_end_timer">End Timer</string>
+    <!-- vh_repetition end -->
+
     <!-- vh_timed_run begin -->
     <string name="vh_timed_run_timed_run">Timed Run</string>
     <string name="vh_timed_run_start">Start</string>
@@ -145,7 +155,6 @@
     <string name="delete">Delete</string>
     <string name="profile">Profile</string>
     <string name="please_finish_making_changes_first">Please finish making changes first</string>
-
 
 
 </resources>
