@@ -76,6 +76,15 @@
     <string name="vh_free_weight_end_timer">End Timer</string>
     <!-- vh_free_weight end -->
 
+    <!-- vh_meter_run begin -->
+    <string name="vh_meter_run_meter_run_exercise">Meter Run Exercise</string>
+    <string name="vh_meter_run_run">Run</string>
+    <string name="vh_meter_run_default_description">Make sure to be careful when running!</string>
+    <string name="vh_meter_run_im_finished">I\'m finished</string>
+    <string name="vh_meter_run_enable_gps">Enable GPS</string>
+    <string name="vh_meter_run_enable_gps_for_odometer">Enable GPS for odometer</string>
+    <!-- vh_meter_run end -->
+
     <!-- vh_new_buttons begin -->
     <string name="vh_new_buttons_close">Close</string>
     <string name="vh_new_buttons_delete">Delete</string>

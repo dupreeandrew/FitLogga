@@ -113,7 +113,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
                 viewHolderLayout = inflater.inflate(R.layout.vh_timed_run, parent, false);
                 return new TimedRunViewHolder(viewHolderLayout);
             case METER_RUN:
-                viewHolderLayout = inflater.inflate(R.layout.vh_new_meter_run, parent, false);
+                viewHolderLayout = inflater.inflate(R.layout.vh_meter_run, parent, false);
                 return new MeterRunViewHolder(viewHolderLayout);
             case REPETITION_EXERCISE:
                 viewHolderLayout = inflater.inflate(R.layout.vh_repetition, parent, false);

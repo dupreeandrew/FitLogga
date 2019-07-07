@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <include
+                android:id="@+id/include4"
                 layout="@layout/vh_exercise_collapse_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -31,11 +38,124 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_end="40dp" />
 
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/include4"
+                tools:text="Run 300 Meters" />
 
+            <ProgressBar
+                android:id="@+id/pb_distance"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:progress="3"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+
+            <TextView
+                android:id="@+id/tv_enable_gps_for_odometer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/vh_meter_run_enable_gps_for_odometer"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@id/pb_distance" />
+
+            <View
+                android:id="@+id/divider_one"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/tv_enable_gps_for_odometer" />
+
+            <ImageView
+                android:id="@+id/iv_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_one"
+                app:srcCompat="@drawable/ic_info_outline" />
+
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toEndOf="@+id/iv_info"
+                app:layout_constraintTop_toTopOf="@+id/iv_info"
+                tools:text="@string/vh_meter_run_default_description" />
+
+            <View
+                android:id="@+id/divider_two"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toStartOf="@+id/right_border"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="iv_info, tv_description"
+                tools:layout_editor_absoluteY="291dp" />
+
+            <Button
+                android:id="@+id/btn_im_finished"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/vh_meter_run_im_finished"
+                android:textAllCaps="true"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/left_border"
+                app:layout_constraintTop_toBottomOf="@+id/barrier_description" />
+
+            <Button
+                android:id="@+id/btn_enable_gps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/vh_meter_run_enable_gps"
+                android:textAllCaps="true"
+                android:textColor="@color/colorAccentDark"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_im_finished"
+                app:layout_constraintTop_toTopOf="@+id/btn_im_finished" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>
