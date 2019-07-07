@@ -1,6 +1,5 @@
 package com.fitlogga.app.adapters.plancreator;
 
-import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -8,8 +7,8 @@ import androidx.annotation.NonNull;
 import com.fitlogga.app.R;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.RestExercise;
+import com.fitlogga.app.utils.Time;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 public class NewRestViewHolder extends NewExerciseViewHolder {
 
@@ -72,18 +71,13 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
 
         String inputRestMinutesString = inputRestMinutesView.getText().toString();
         String inputRestSecondsString = inputRestSecondsView.getText().toString();
+        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
 
         boolean isSaveable = true;
 
-        if (TextUtils.isEmpty(inputRestMinutesString)) {
-            TextInputLayout inputMinutesLayout = view.findViewById(R.id.input_rest_time_minutes_layout);
-            inputMinutesLayout.setError("Missing minutes");
-            isSaveable = false;
-        }
-
-        if (TextUtils.isEmpty(inputRestSecondsString)) {
-            TextInputLayout inputMinutesLayout = view.findViewById(R.id.input_rest_time_seconds_layout);
-            inputMinutesLayout.setError("Missing seconds");
+        if (totalRestSeconds <= 0) {
+            applyErrorBackground(R.id.input_rest_time_minutes_layout);
+            applyBadNumberError(R.id.input_rest_time_seconds_layout);
             isSaveable = false;
         }
 
