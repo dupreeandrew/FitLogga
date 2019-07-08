@@ -1,6 +1,7 @@
 package com.fitlogga.app.adapters.training.viewholders;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -32,6 +33,7 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
 
         TimedRunExercise timedRunExercise = (TimedRunExercise)exercise;
         int seconds = timedRunExercise.getSeconds();
+        String description = timedRunExercise.getDescription();
 
         // "Timed Run"
         String timedRunString = view.getResources().getString(R.string.vh_timed_run_timed_run);
@@ -39,10 +41,22 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
 
         setTitle(timedRunString);
         setSubtitle(subtitle);
+        setDescription(description);
         initTimer(timedRunExercise);
         initStartButton();
         initResetButton();
 
+    }
+
+    private void setDescription(String description) {
+
+        if (TextUtils.isEmpty(description)) {
+            description = view.getResources()
+                    .getString(R.string.vh_timed_run_default_description);
+        }
+
+        TextView descriptionView = itemView.findViewById(R.id.tv_description);
+        descriptionView.setText(description);
     }
 
     private void initTimer(TimedRunExercise timedRunExercise) {
@@ -123,6 +137,10 @@ public class TimedRunViewHolder extends ExerciseViewHolder {
                 R.id.pb_progress,
                 R.id.iv_runner,
                 R.id.tv_timer,
+                R.id.divider_one,
+                R.id.iv_info,
+                R.id.tv_description,
+                R.id.divider_two,
                 R.id.btn_start,
                 R.id.btn_reset
         };

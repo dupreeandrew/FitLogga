@@ -137,8 +137,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:constraint_referenced_ids="iv_info, tv_description"
-                tools:layout_editor_absoluteY="291dp" />
+                app:constraint_referenced_ids="iv_info, tv_description" />
 
             <View
                 android:id="@+id/divider_two"
