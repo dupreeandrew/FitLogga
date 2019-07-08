@@ -107,6 +107,13 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_info"
                 tools:text="@string/vh_meter_run_default_description" />
 
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="iv_info, tv_description" />
+
             <View
                 android:id="@+id/divider_two"
                 android:layout_width="0dp"
@@ -116,14 +123,7 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toStartOf="@+id/right_border"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
-                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
-
-            <androidx.constraintlayout.widget.Barrier
-                android:id="@+id/barrier_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="iv_info, tv_description" />
+                app:layout_constraintTop_toBottomOf="@+id/barrier_description" />
 
             <Button
                 android:id="@+id/btn_im_finished"
@@ -137,7 +137,7 @@
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
-                app:layout_constraintTop_toBottomOf="@+id/barrier_description" />
+                app:layout_constraintTop_toBottomOf="@+id/divider_two" />
 
             <Button
                 android:id="@+id/btn_enable_gps"
