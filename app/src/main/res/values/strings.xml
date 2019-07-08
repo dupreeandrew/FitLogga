@@ -137,11 +137,24 @@
     <string name="vh_repetition_end_timer">End Timer</string>
     <!-- vh_repetition end -->
 
+    <!-- vh_rest begin -->
+    <string name="vh_rest_rest_break">Rest Break</string>
+    <string name="vh_rest_start">Start</string>
+    <string name="vh_rest_pause">Pause</string>
+    <string name="vh_rest_end_timer">End Timer</string>
+    <string name="vh_rest_default_description">
+        Now\'s your time to catch up and get a quality rest!
+    </string>
+    <!-- vh_rest end -->
+
     <!-- vh_timed_run begin -->
     <string name="vh_timed_run_timed_run">Timed Run</string>
     <string name="vh_timed_run_start">Start</string>
     <string name="vh_timed_run_pause">Pause</string>
     <string name="vh_timed_run_reset">Reset</string>
+    <string name="vh_timed_run_default_description">
+        Be careful not to trip! Tripping isn\'t good.
+    </string>
     <!-- vh_timed_run end -->
 
     <!-- dialog_complete begin -->

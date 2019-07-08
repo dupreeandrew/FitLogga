@@ -122,7 +122,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
                 viewHolderLayout = inflater.inflate(R.layout.vh_free_weight_new, parent, false);
                 return new FreeWeightViewHolder(viewHolderLayout);
             case REST:
-                viewHolderLayout = inflater.inflate(R.layout.vh_new_rest, parent, false);
+                viewHolderLayout = inflater.inflate(R.layout.vh_rest, parent, false);
                 return new RestViewHolder(viewHolderLayout);
             default:
                 throw new IllegalArgumentException();

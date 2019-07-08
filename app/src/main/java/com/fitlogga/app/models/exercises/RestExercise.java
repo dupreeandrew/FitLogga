@@ -18,7 +18,7 @@ public class RestExercise extends Exercise {
         setCompleted(false);
     }
 
-    public int getAmountOfTimeToRest() {
+    public int getSecondsOfRest() {
         return amountOfTimeToRest;
     }
 
