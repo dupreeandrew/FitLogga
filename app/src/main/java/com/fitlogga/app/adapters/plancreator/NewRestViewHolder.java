@@ -23,7 +23,7 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
     public void manifest(Exercise exercise) {
         RestExercise restExercise = (RestExercise)exercise;
 
-        int numSecsOfRestTotal = restExercise.getAmountOfTimeToRest();
+        int numSecsOfRestTotal = restExercise.getSecondsOfRest();
         int numMinRest = numSecsOfRestTotal / 60;
         int numSecRest = numSecsOfRestTotal % 60;
 
@@ -86,15 +86,12 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
             return;
         }
 
-        Exercise builtExercise = buildExercise(inputRestMinutesString, inputRestSecondsString);
+        Exercise builtExercise = buildExercise(totalRestSeconds);
         listener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputRestMinutesString, String inputRestSecondsString) {
-        int restMinutes = Integer.parseInt(inputRestMinutesString);
-        int restSeconds = Integer.parseInt(inputRestSecondsString);
-        int restTotal = (restMinutes * 60) + restSeconds;
-        return new RestExercise(restTotal);
+    private Exercise buildExercise(int totalRestSeconds) {
+        return new RestExercise(totalRestSeconds);
     }
 }

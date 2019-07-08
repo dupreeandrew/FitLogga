@@ -78,9 +78,9 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
 
         boolean isSaveable = true;
 
-        int totalSeconds = Time.getSeconds(inputMinutesString, inputSecondsString);
+        int totalRunSeconds = Time.getSeconds(inputMinutesString, inputSecondsString);
 
-        if (totalSeconds <= 0) {
+        if (totalRunSeconds <= 0) {
             applyBadNumberError(R.id.input_run_seconds_layout);
             applyErrorBackground(R.id.input_run_minutes_layout);
             isSaveable = false;
@@ -92,17 +92,13 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
         }
 
         Exercise builtExercise
-                = buildExercise(inputMinutesString, inputSecondsString, inputDescriptionString);
+                = buildExercise(totalRunSeconds, inputDescriptionString);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputMinutesString, String inputSecondsString, String inputDescriptionString) {
-        int inputMinutes = Integer.parseInt(inputMinutesString);
-        int inputSeconds = Integer.parseInt(inputSecondsString);
-        int totalSeconds = (inputMinutes * 60) + inputSeconds;
-
-        return new TimedRunExercise(inputDescriptionString, totalSeconds);
+    private Exercise buildExercise(int totalRunSeconds, String inputDescriptionString) {
+        return new TimedRunExercise(inputDescriptionString, totalRunSeconds);
     }
 
 
