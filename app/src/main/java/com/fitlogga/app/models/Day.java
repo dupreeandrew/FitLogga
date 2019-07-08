@@ -27,6 +27,9 @@ public enum Day {
         return value;
     }
 
+    /**
+     * Provides a locale-safe string representation of a day.
+     */
     public static String getStringRepresentation(Context context, Day day) {
         Resources resources = context.getResources();
         switch (day.getValue()) {
