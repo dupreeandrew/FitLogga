@@ -20,7 +20,9 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.activities.TrainingActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.DaySuffix;
+import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.google.android.material.snackbar.Snackbar;
@@ -207,7 +209,17 @@ public class PowerupFragment extends Fragment {
 
             String dayString = Day.getStringRepresentation(view.getContext(), day);
             availableDailyRoutineStrings.add(dayString);
-            dayIntegerMap.put(i, day.getValue());
+
+            int dayValue;
+            Exercise firstExercise = exerciseList.get(0);
+            if (firstExercise.getExerciseType() == ExerciseType.COPIER) {
+                DayCopierExercise dayCopierExercise = (DayCopierExercise) firstExercise;
+                dayValue = dayCopierExercise.getDayBeingCopied().getValue();
+            }
+            else {
+                dayValue = day.getValue();
+            }
+            dayIntegerMap.put(i, dayValue);
             i++;
 
         }

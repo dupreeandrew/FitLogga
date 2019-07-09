@@ -3,9 +3,11 @@ package com.fitlogga.app.models.plan;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.exercises.ExerciseType;
 
 import java.util.Date;
 import java.util.EnumMap;
@@ -96,8 +98,21 @@ public class PlanCreator {
             }
 
             int dayNumber = usedDay.ordinal();
-            String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
-            editor.putString(String.valueOf(dayNumber), exerciseListJson);
+
+            /*
+            if (dayIsCopierExercise(dailyRoutine)) {
+                DayCopierExercise dayCopierExercise = (DayCopierExercise) dailyRoutine.get(0);
+                Day day = dayCopierExercise.getDayBeingCopied();
+                String copierMessage = String.valueOf(day.getValue());
+                editor.putString(String.valueOf(dayNumber), copierMessage);
+            }
+            else {
+            */
+                String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
+                editor.putString(String.valueOf(dayNumber), exerciseListJson);
+                Log.d("boo11", exerciseListJson);
+            //}
+
         }
 
 
@@ -109,6 +124,14 @@ public class PlanCreator {
             planCreationListener.onCreated();
         }
 
+    }
+
+    private boolean dayIsCopierExercise(List<Exercise> dailyRoutine) {
+        return (
+                dailyRoutine.size() == 1
+                        &&
+                dailyRoutine.get(0).getExerciseType() == ExerciseType.COPIER
+        );
     }
 
     private void updateActivePlanLastUsedMillis() {

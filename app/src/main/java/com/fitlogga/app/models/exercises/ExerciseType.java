@@ -13,7 +13,9 @@ public enum ExerciseType {
     @SerializedName("3")
     FREE_WEIGHT_EXERCISE(3),
     @SerializedName("4")
-    REST(4);
+    REST(4),
+    @SerializedName("5")
+    COPIER(5);
 
     final int exerciseTypeValue;
 

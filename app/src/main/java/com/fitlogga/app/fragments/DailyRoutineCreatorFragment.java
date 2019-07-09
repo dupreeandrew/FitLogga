@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.drag.DefaultSimpleCallback;
+import com.fitlogga.app.adapters.plancreator.CopierDays;
 import com.fitlogga.app.adapters.plancreator.NewDailyRoutineAdapter;
+import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.viewmods.FabController;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
@@ -25,6 +29,7 @@ import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.List;
 
+import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getCopyDay;
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getFreeWeight;
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getMeterRun;
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getRepetition;
@@ -35,16 +40,23 @@ public class DailyRoutineCreatorFragment extends Fragment {
 
     private List<Exercise> exerciseList;
     private ViewPagerPlus.Controller viewPagerController;
+    private Day day;
     private ItemTouchHelper itemTouchHelper;
     private NewDailyRoutineAdapter adapter;
+    private CopierDays copierDays;
+    private FabController fabController;
 
     public DailyRoutineCreatorFragment() {
         // Required public empty constructor
     }
 
-    public DailyRoutineCreatorFragment(List<Exercise> exerciseList, ViewPagerPlus.Controller viewPagerController) {
+    public DailyRoutineCreatorFragment(
+            List<Exercise> exerciseList, ViewPagerPlus.Controller viewPagerController,
+            Day day, CopierDays copierDays) {
         this.exerciseList = exerciseList;
         this.viewPagerController = viewPagerController;
+        this.day = day;
+        this.copierDays = copierDays;
     }
 
     @Override
@@ -60,10 +72,14 @@ public class DailyRoutineCreatorFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add_exercise);
         fab.setOnClickListener(fabView -> promptAddExercise(view, this.adapter));
-        FabController fabController = new FabController(fab);
+        fabController = new FabController(fab);
+
+        if (exerciseList.size() > 0 && exerciseList.get(0) instanceof DayCopierExercise) {
+            fabController.setEnabled(false);
+        }
 
         this.adapter = new NewDailyRoutineAdapter(exerciseList,
-                viewHolder -> itemTouchHelper.startDrag(viewHolder), viewPagerController, fabController);
+                viewHolder -> itemTouchHelper.startDrag(viewHolder), viewPagerController, fabController, day, copierDays);
         initRecyclerView(view);
     }
 
@@ -80,9 +96,10 @@ public class DailyRoutineCreatorFragment extends Fragment {
         String[] choices = view.getResources().getStringArray(R.array.daily_routine_creator_creation_options);
         final int TIMED_RUN_INDEX = 0;
         final int METER_RUN_INDEX = 1;
-        final int REPETITION_EXERCISE = 2;
-        final int FREE_WEIGHT_EXERCISE = 3;
-        final int REST_BREAK = 4;
+        final int REPETITION_EXERCISE_INDEX = 2;
+        final int FREE_WEIGHT_EXERCISE_INDEX = 3;
+        final int REST_BREAK_INDEX = 4;
+        final int COPY_A_DAY_INDEX = 5;
 
         new LovelyChoiceDialog(view.getContext())
                 .setTopColorRes(R.color.colorPrimaryDark)
@@ -96,15 +113,18 @@ public class DailyRoutineCreatorFragment extends Fragment {
                         case METER_RUN_INDEX:
                             exerciseList.add(getMeterRun());
                             break;
-                        case REPETITION_EXERCISE:
+                        case REPETITION_EXERCISE_INDEX:
                             exerciseList.add(getRepetition());
                             break;
-                        case FREE_WEIGHT_EXERCISE:
+                        case FREE_WEIGHT_EXERCISE_INDEX:
                             exerciseList.add(getFreeWeight());
                             break;
-                        case REST_BREAK:
+                        case REST_BREAK_INDEX:
                             exerciseList.add(getRest());
                             break;
+                        case COPY_A_DAY_INDEX:
+                            handleCopyDay();
+                            return;
                     }
 
                     adapter.notifyItemInserted(exerciseList.size() - 1);
@@ -112,6 +132,25 @@ public class DailyRoutineCreatorFragment extends Fragment {
 
                 })
                 .show();
+    }
+
+    private void handleCopyDay() {
+
+        if (copierDays.isDayBeingCopied(day)) {
+            String error = getResources().getString(R.string.daily_routine_creator_error_copy_day);
+            Toast.makeText(getContext(), error, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        exerciseList.clear();
+        exerciseList.add(getCopyDay());
+
+        adapter.notifyDataSetChanged();
+        adapter.expandViewHolder(0);
+
+        copierDays.setDayAsCopier(day, null);
+        fabController.setEnabled(false);
+
     }
 
     public void notifyFragmentFocusLost(Event event) {

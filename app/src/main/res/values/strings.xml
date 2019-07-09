@@ -9,6 +9,15 @@
     <string name="global_thursday">Thursday</string>
     <string name="global_friday">Friday</string>
     <string name="global_saturday">Saturday</string>
+    <string-array name="global_days_of_week">
+        <item>@string/global_sunday</item>
+        <item>@string/global_monday</item>
+        <item>@string/global_tuesday</item>
+        <item>@string/global_wednesday</item>
+        <item>@string/global_thursday</item>
+        <item>@string/global_friday</item>
+        <item>@string/global_saturday</item>
+    </string-array>
     <!-- global strings end -->
 
     <!-- tab names start -->
@@ -43,12 +52,16 @@
     <!-- plans fragment end -->
 
     <!-- daily routine creator fragment begin -->
+    <string name="daily_routine_creator_error_copy_day">
+        Another day is already copying this one.
+    </string>
     <string-array name="daily_routine_creator_creation_options">
         <item>Timed Run</item>
         <item>Meter Run</item>
         <item>Repetition Exercise</item>
         <item>Free Weight Exercise</item>
         <item>Time of Resting</item>
+        <item>Copy a day</item>
     </string-array>
     <!-- daily routine creator fragment end -->
 
@@ -59,6 +72,14 @@
     <string name="daily_routine_finisher_set_as_current_plan">Set as current plan</string>
     <string name="daily_routine_finisher_create_plan">Create plan</string>
     <!-- daily routine finisher fragment end -->
+
+    <!-- vh_copy_day begin -->
+    <string name="vh_copy_day_copy_day_exercise">Copy Day Exercise</string>
+    <string name="vh_copy_day_day_to_copy">Day to copy</string>
+    <string name="vh_copy_day_description">
+        This acts as a mirror image for a selected day. All changes are linked.
+    </string>
+    <!-- vh_copy_day end -->
 
     <!-- vh_plan begin -->
     <string name="vh_plan_activated">Activated</string>

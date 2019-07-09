@@ -22,6 +22,10 @@ public class BlankExerciseGenerator {
         return new RestExercise(0);
     }
 
+    public static DayCopierExercise getCopyDay() {
+        return new DayCopierExercise(null);
+    }
+
 
 
 }

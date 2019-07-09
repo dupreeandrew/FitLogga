@@ -79,9 +79,13 @@ public class PlanReader {
         if ("empty".equals(exerciseListJson))
             return new ArrayList<>();
 
+        Day copiedDay = checkForCopierDay(exerciseListJson);
+        if (copiedDay != null) {
+            return getDailyRoutine(planName, copiedDay);
+        }
+
 
         Gson gson = new Gson();
-
 
         Type type = new TypeToken<Map<String, Object>>(){}.getType();
         Map<String, Map<String, Object>> jsonMap = gson.fromJson(exerciseListJson, type);
@@ -97,6 +101,19 @@ public class PlanReader {
 
     }
 
+    private Day checkForCopierDay(String exerciseListJson) {
+        try {
+            int dayValue = Integer.parseInt(exerciseListJson);
+            return Day.fromValue(dayValue);
+        }
+        catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     * Quicker way of calling #getDailyRoutine() 7x.
+     */
     @Nullable
     public EnumMap<Day, List<Exercise>> getDailyRoutines(String planName) {
 

@@ -1,5 +1,7 @@
 package com.fitlogga.app.models.exercises;
 
+import com.fitlogga.app.models.Day;
+
 import java.util.Map;
 
 public class ExerciseTranslator {
@@ -16,6 +18,8 @@ public class ExerciseTranslator {
                 return toFreeWeight(exerciseMap);
             case REST:
                 return toRest(exerciseMap);
+            case COPIER:
+                return toCopier(exerciseMap);
             default:
                 return null;
         }
@@ -85,5 +89,11 @@ public class ExerciseTranslator {
         int amountOfTimeToRest = quickCastToInt(exerciseMap.get("amountOfTimeToRest"));
         boolean completed = (boolean)exerciseMap.get("completed");
         return new RestExercise(amountOfTimeToRest, completed);
+    }
+
+    private static DayCopierExercise toCopier(Map<String, Object> exerciseMap) {
+        String dayString = String.valueOf(exerciseMap.get("dayBeingCopied"));
+        Day day = Day.valueOf(dayString);
+        return new DayCopierExercise(day);
     }
 }

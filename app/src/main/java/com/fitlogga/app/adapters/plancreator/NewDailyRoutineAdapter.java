@@ -16,6 +16,8 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.collapsible.CollapsibleRecyclerAdapter;
 import com.fitlogga.app.adapters.drag.DragListener;
 import com.fitlogga.app.adapters.drag.ItemTouchAdapter;
+import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.viewmods.FabController;
@@ -32,15 +34,19 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     private DragListener dragListener;
     private ViewPagerPlus.Controller viewPagerController;
     private FabController fabController;
+    private Day day;
+    private CopierDays copierDays;
     private Event lastEvent;
 
     public NewDailyRoutineAdapter(List<Exercise> exerciseList, DragListener listener,
                                   ViewPagerPlus.Controller viewPagerController,
-                                  FabController fabController) {
+                                  FabController fabController, Day day, CopierDays copierDays) {
         this.exerciseList = exerciseList;
         this.dragListener = listener;
         this.viewPagerController = viewPagerController;
         this.fabController = fabController;
+        this.day = day;
+        this.copierDays = copierDays;
     }
 
     @Override
@@ -73,6 +79,9 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
             case REST:
                 viewHolderLayout = inflater.inflate(R.layout.vh_new_rest, parent, false);
                 return new NewRestViewHolder(viewHolderLayout);
+            case COPIER:
+                viewHolderLayout = inflater.inflate(R.layout.vh_new_copy_day, parent, false);
+                return new NewCopyDayViewHolder(viewHolderLayout, day, copierDays);
             default:
                 throw new IllegalArgumentException();
         }
@@ -116,6 +125,13 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     }
 
     private void delete(int adapterPosition) {
+
+        Exercise exercise = exerciseList.get(adapterPosition);
+        if (exercise instanceof DayCopierExercise) {
+            fabController.setEnabled(true);
+            copierDays.setDayAsCopier(day, null);
+        }
+
         exerciseList.remove(adapterPosition);
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, exerciseList.size());
@@ -147,14 +163,19 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         });
         this.lastEvent = event;
 
-
-
-
     }
 
     private void lockViewHolderFocus(boolean b) {
         viewPagerController.setPagingEnabled(!b);
-        fabController.setEnabled(!b);
+
+        boolean firstExerciseIsCopier =
+                exerciseList.size() > 0 && exerciseList.get(0) instanceof DayCopierExercise;
+        if (firstExerciseIsCopier) {
+            fabController.setEnabled(false);
+        }
+        else {
+            fabController.setEnabled(!b);
+        }
     }
 
     @Override

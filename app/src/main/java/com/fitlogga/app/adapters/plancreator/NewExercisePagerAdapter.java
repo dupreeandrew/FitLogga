@@ -13,7 +13,9 @@ import com.fitlogga.app.Event;
 import com.fitlogga.app.fragments.DailyRoutineCreatorFragment;
 import com.fitlogga.app.fragments.DailyRoutineFinisherFragment;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
@@ -21,6 +23,7 @@ import com.fitlogga.app.viewmods.ViewPagerPlus;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
@@ -28,6 +31,7 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
     private ViewPagerPlus.Controller viewPagerController;
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private Fragment currentFragment;
+    private CopierDays copierDays = new CopierDays();
 
     public NewExercisePagerAdapter(FragmentManager fm, Context context, @Nullable PlanSummary planSummary,
                                    ViewPagerPlus.Controller viewPagerController) {
@@ -40,9 +44,25 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
         if (planSummary != null) {
             dailyRoutineMap = planReader.getDailyRoutines(planSummary.getName());
+            fillCopierDays();
         }
         else {
             fillDailyRoutineMap();
+        }
+    }
+
+    private void fillCopierDays() {
+        for (Map.Entry<Day, List<Exercise>> entry : dailyRoutineMap.entrySet()) {
+            Day day = entry.getKey();
+            List<Exercise> exerciseList = entry.getValue();
+
+            for (Exercise exercise : exerciseList) {
+                if (exercise.getExerciseType() == ExerciseType.COPIER) {
+                    DayCopierExercise dayCopierExercise = (DayCopierExercise) exercise;
+                    Day dayBeingCopied = dayCopierExercise.getDayBeingCopied();
+                    copierDays.setDayAsCopier(day, dayBeingCopied);
+                }
+            }
         }
     }
 
@@ -61,7 +81,8 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
         }
 
         Day dayOfFragment = Day.fromValue(position);
-        return new DailyRoutineCreatorFragment(dailyRoutineMap.get(dayOfFragment), viewPagerController);
+        return new DailyRoutineCreatorFragment(dailyRoutineMap.get(dayOfFragment),
+                viewPagerController, dayOfFragment, copierDays);
     }
 
     @Override
