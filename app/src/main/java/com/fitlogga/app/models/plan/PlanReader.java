@@ -79,12 +79,6 @@ public class PlanReader {
         if ("empty".equals(exerciseListJson))
             return new ArrayList<>();
 
-        Day copiedDay = checkForCopierDay(exerciseListJson);
-        if (copiedDay != null) {
-            return getDailyRoutine(planName, copiedDay);
-        }
-
-
         Gson gson = new Gson();
 
         Type type = new TypeToken<Map<String, Object>>(){}.getType();
@@ -99,16 +93,6 @@ public class PlanReader {
         return exerciseList;
 
 
-    }
-
-    private Day checkForCopierDay(String exerciseListJson) {
-        try {
-            int dayValue = Integer.parseInt(exerciseListJson);
-            return Day.fromValue(dayValue);
-        }
-        catch (Exception ex) {
-            return null;
-        }
     }
 
     /**
