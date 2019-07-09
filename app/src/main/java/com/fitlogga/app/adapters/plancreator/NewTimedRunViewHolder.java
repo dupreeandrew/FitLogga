@@ -59,6 +59,7 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
                 R.id.input_run_minutes_layout,
                 R.id.input_run_seconds_layout,
                 R.id.input_exercise_description_layout,
+                R.id.vh_separator,
                 R.id.btn_delete,
                 R.id.btn_close
         };

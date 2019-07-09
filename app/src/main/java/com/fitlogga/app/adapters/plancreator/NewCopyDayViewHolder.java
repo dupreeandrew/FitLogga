@@ -115,6 +115,7 @@ public class NewCopyDayViewHolder extends NewExerciseViewHolder {
                 R.id.iv_info,
                 R.id.tv_description,
                 R.id.divider_two,
+                R.id.vh_separator,
                 R.id.btn_close,
                 R.id.btn_delete
         };

@@ -57,6 +57,7 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
         return new int[] {
                 R.id.input_rest_time_minutes_layout,
                 R.id.input_rest_time_seconds_layout,
+                R.id.vh_separator,
                 R.id.btn_delete,
                 R.id.btn_close
         };

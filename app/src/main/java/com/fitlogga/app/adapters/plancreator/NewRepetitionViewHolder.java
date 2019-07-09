@@ -82,6 +82,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
                 R.id.input_num_reps_layout,
                 R.id.input_rest_time_minutes_layout,
                 R.id.input_rest_time_seconds_layout,
+                R.id.vh_separator,
                 R.id.btn_delete,
                 R.id.btn_close
         };
