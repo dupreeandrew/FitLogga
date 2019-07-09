@@ -1,0 +1,7 @@
+Clicking "edit" on a plan will call the major following functions:
+- PlanEditor#openGUI()
+  - gets a plan summary based on an O(n) method, forwards it to PlanCreatorActivity thru JSON exchange
+- PagerAdapter is created
+  - PlanReader#getDailyRoutines() is called
+  - Every exercise is checked for being a copy day, through an O(n) method
+  -

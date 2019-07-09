@@ -146,6 +146,7 @@ public class PlanReader {
 
     @Nullable
     PlanSummary getPlanSummaryFromName(String planName) {
+        // todo: check for O(1) performance.
         for (PlanSummary planSummary : getPlanSummaries()) {
             if (planSummary.getName().equals(planName)) {
                 return planSummary;
