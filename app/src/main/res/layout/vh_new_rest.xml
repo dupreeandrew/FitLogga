@@ -43,6 +43,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
+                android:hint="@string/vh_new_rest_number_minutes"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/include"
                 app:layout_constraintWidth_percent="0.3">
@@ -51,7 +52,6 @@
                     android:id="@+id/input_rest_time_minutes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_rest_number_minutes"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -64,6 +64,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
+                android:hint="@string/vh_new_rest_number_seconds"
                 app:layout_constraintStart_toEndOf="@+id/input_rest_time_minutes_layout"
                 app:layout_constraintTop_toBottomOf="@+id/include"
                 app:layout_constraintWidth_percent="0.3">
@@ -72,7 +73,6 @@
                     android:id="@+id/input_rest_time_seconds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_rest_number_seconds"
                     android:inputType="number"
                     android:textSize="12sp" />
 

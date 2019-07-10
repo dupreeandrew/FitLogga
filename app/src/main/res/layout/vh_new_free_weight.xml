@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.PlanCreatorActivity">
 
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.MaterialComponents.CardView"
@@ -45,17 +47,25 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="0dp"
+                android:hint="@string/vh_new_free_weight_name_of_exercise"
                 app:layout_constraintEnd_toStartOf="@+id/right_border"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/include">
+
+                <!--
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                    -->
+
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/input_exercise_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_name_of_exercise"
                     android:inputType="text"
                     android:textSize="12sp" />
+
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,6 +78,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginBottom="8dp"
+                android:hint="@string/vh_new_description"
                 app:layout_constraintEnd_toStartOf="@+id/right_border"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/input_exercise_name_layout">
@@ -76,7 +87,6 @@
                     android:id="@+id/input_exercise_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_description"
                     android:inputType="textMultiLine"
                     android:textSize="12sp" />
 
@@ -88,6 +98,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
+                android:hint="@string/vh_new_free_weight_number_of_sets"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/input_exercise_description_layout"
                 app:layout_constraintWidth_percent="0.3">
@@ -96,7 +107,6 @@
                     android:id="@+id/input_num_sets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_number_of_sets"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -109,6 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:hint="@string/vh_new_free_weight_number_of_reps"
                 app:layout_constraintStart_toEndOf="@+id/input_num_sets_layout"
                 app:layout_constraintTop_toBottomOf="@+id/input_exercise_description_layout"
                 app:layout_constraintWidth_percent="0.3">
@@ -117,7 +128,6 @@
                     android:id="@+id/input_num_reps"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_number_of_reps"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -136,6 +146,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:hint="@string/vh_new_free_weight_number_weight"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_sets_reps"
                 app:layout_constraintWidth_percent="0.3">
@@ -144,7 +155,6 @@
                     android:id="@+id/input_num_weight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_number_weight"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -157,6 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
+                android:hint="@string/vh_new_free_weight_possible_units"
                 app:layout_constraintStart_toEndOf="@+id/input_num_weight_layout"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_sets_reps"
                 app:layout_constraintWidth_percent="0.3">
@@ -165,7 +176,6 @@
                     android:id="@+id/input_num_weight_units"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_possible_units"
                     android:inputType="text"
                     android:textSize="12sp" />
 
@@ -184,6 +194,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
+                android:hint="@string/vh_new_free_weight_min_to_rest"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_weight_units"
                 app:layout_constraintWidth_percent="0.3">
@@ -192,7 +203,6 @@
                     android:id="@+id/input_rest_time_minutes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_min_to_rest"
                     android:inputType="number"
                     android:textSize="12sp" />
 
@@ -205,6 +215,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="8dp"
+                android:hint="@string/vh_new_free_weight_number_seconds_to_rest"
                 app:layout_constraintStart_toEndOf="@+id/input_rest_time_minutes_layout"
                 app:layout_constraintTop_toBottomOf="@+id/barrier_weight_units"
                 app:layout_constraintWidth_percent="0.3">
@@ -213,7 +224,6 @@
                     android:id="@+id/input_rest_time_seconds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/vh_new_free_weight_number_seconds_to_rest"
                     android:inputType="number"
                     android:textSize="12sp" />
 
