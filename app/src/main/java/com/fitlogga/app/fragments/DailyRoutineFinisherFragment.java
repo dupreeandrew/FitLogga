@@ -73,7 +73,7 @@ public class DailyRoutineFinisherFragment extends Fragment {
         inputNameView.setText(planSummary.getName());
         inputDescView.setText(planSummary.getDescription());
 
-        String currentPlanName = new PlanReader(view.getContext()).getCurrentPlanName();
+        String currentPlanName = PlanReader.getCurrentPlanName();
         if (planSummary.getName().equals(currentPlanName)) {
             disableSetAsActiveCheckbox(view);
         }

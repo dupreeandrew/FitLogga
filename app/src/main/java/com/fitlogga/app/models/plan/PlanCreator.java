@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
-import com.fitlogga.app.models.exercises.ExerciseType;
 
 import java.util.Date;
 import java.util.EnumMap;
@@ -99,19 +98,9 @@ public class PlanCreator {
 
             int dayNumber = usedDay.ordinal();
 
-            /*
-            if (dayIsCopierExercise(dailyRoutine)) {
-                DayCopierExercise dayCopierExercise = (DayCopierExercise) dailyRoutine.get(0);
-                Day day = dayCopierExercise.getDayBeingCopied();
-                String copierMessage = String.valueOf(day.getValue());
-                editor.putString(String.valueOf(dayNumber), copierMessage);
-            }
-            else {
-            */
-                String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
-                editor.putString(String.valueOf(dayNumber), exerciseListJson);
-                Log.d("boo11", exerciseListJson);
-            //}
+            String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
+            editor.putString(String.valueOf(dayNumber), exerciseListJson);
+            Log.d("boo11", exerciseListJson);
 
         }
 
@@ -126,24 +115,15 @@ public class PlanCreator {
 
     }
 
-    private boolean dayIsCopierExercise(List<Exercise> dailyRoutine) {
-        return (
-                dailyRoutine.size() == 1
-                        &&
-                dailyRoutine.get(0).getExerciseType() == ExerciseType.COPIER
-        );
-    }
-
     private void updateActivePlanLastUsedMillis() {
-        PlanReader planReader = new PlanReader(context);
 
-        List<PlanSummary> planSummaryList = planReader.getPlanSummaries();
+        List<PlanSummary> planSummaryList = PlanReader.getPlanSummaries();
 
         if (planSummaryList.size() == 0) {
             return;
         }
 
-        PlanSummary activePlanSummary = planReader.getPlanSummaries().get(0);
+        PlanSummary activePlanSummary = planSummaryList.get(0);
 
         PlanSummary editedActivePlanSummary = new PlanSummary(
                 activePlanSummary.getName(),

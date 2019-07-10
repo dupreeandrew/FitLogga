@@ -48,7 +48,7 @@ public class PlansFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        List<PlanSummary> planSummaries = new PlanReader(view.getContext()).getPlanSummaries();
+        List<PlanSummary> planSummaries = PlanReader.getPlanSummaries();
         recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries));
 
     }

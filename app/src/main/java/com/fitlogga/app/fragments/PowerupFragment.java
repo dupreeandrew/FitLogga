@@ -20,9 +20,9 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.activities.TrainingActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.DaySuffix;
+import com.fitlogga.app.models.exercises.DayCopierDetector;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
-import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.google.android.material.snackbar.Snackbar;
@@ -38,6 +38,9 @@ import java.util.Map;
 
 public class PowerupFragment extends Fragment {
 
+    /**
+     * Correlates day strings & their adapter position with their actual numeric day value.
+     */
     private static class DayStringAdapterMapper {
         private final List<String> dayStrings;
         private final SparseIntArray dayAdapterMapper;
@@ -61,7 +64,6 @@ public class PowerupFragment extends Fragment {
 
     }
 
-    private PlanReader planReader;
 
     @Nullable
     @Override
@@ -75,7 +77,6 @@ public class PowerupFragment extends Fragment {
         initCalendarView(view);
         initPowerupButton(view);
         initSelectDailyRoutineButton(view);
-        planReader = new PlanReader(view.getContext());
     }
 
     private void initCalendarView(View view) {
@@ -104,14 +105,16 @@ public class PowerupFragment extends Fragment {
 
     private void tryOpeningTrainingActivity(View view) {
 
-        String currentPlanName = planReader.getCurrentPlanName();
+
+        String currentPlanName = PlanReader.getCurrentPlanName();
 
         if (currentPlanName == null) {
             showNoPlanSnackbar(view);
             return;
         }
 
-        if (planReader.isDayEmpty(currentPlanName, Day.getToday())) {
+        PlanReader planReader = PlanReader.attachTo(currentPlanName);
+        if (planReader != null && planReader.isDayEmpty(Day.getToday())) {
             showNoRoutinesSnackbar(view, currentPlanName,
                     // "You have nothing to do today"
                     R.string.powerup_you_have_nothing_to_do_today);
@@ -124,9 +127,8 @@ public class PowerupFragment extends Fragment {
 
     private void showNoRoutinesSnackbar(View view, String planName, @StringRes int messageStringId) {
         Snackbar snackbar = Snackbar.make(view, messageStringId, Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.powerup_create_routine, snackBarView -> {
-            PlanEditor.openGUI(view.getContext(), planName);
-        });
+        snackbar.setAction(R.string.powerup_create_routine,
+                snackBarView -> PlanEditor.openGUI(view.getContext(), planName));
         snackbar.show();
     }
 
@@ -140,7 +142,7 @@ public class PowerupFragment extends Fragment {
     private void startTrainingActivity(Context context, Day day) {
         Intent intent = new Intent(context, TrainingActivity.class);
         intent.putExtra(TrainingActivity.DAY_NUM_KEY, day.getValue());
-        intent.putExtra(TrainingActivity.PLAN_NAME_KEY, planReader.getCurrentPlanName());
+        intent.putExtra(TrainingActivity.PLAN_NAME_KEY, PlanReader.getCurrentPlanName());
         startActivity(intent);
     }
 
@@ -152,24 +154,20 @@ public class PowerupFragment extends Fragment {
 
     private void openAvailableDailyRoutinesDialog(View view) {
 
-        String currentPlanName = planReader.getCurrentPlanName();
 
-        if (currentPlanName == null) {
+        PlanReader planReader = PlanReader.attachToCurrentPlan();
+        if (planReader == null) {
             showNoPlanSnackbar(view);
             return;
         }
 
-        PlanReader planReader = new PlanReader(view.getContext());
-        EnumMap<Day, List<Exercise>> dailyRoutines
-                = planReader.getDailyRoutines(currentPlanName);
-
-        assert dailyRoutines != null; // returns null if current plan name is null.
+        EnumMap<Day, List<Exercise>> dailyRoutines = planReader.getDailyRoutines();
         DayStringAdapterMapper availableDayStringAdapterMapper =
                 getAvailableDayStringAdapterMapper(dailyRoutines, view);
         List<String> availableDayStrings = availableDayStringAdapterMapper.getDayStrings();
 
         if (availableDayStrings.size() == 0) {
-            showNoRoutinesSnackbar(view, currentPlanName,
+            showNoRoutinesSnackbar(view, planReader.getPlanName(),
                     // "You do not have a routine"
                     R.string.powerup_you_do_not_have_a_routine);
             return;
@@ -207,19 +205,30 @@ public class PowerupFragment extends Fragment {
                 continue;
             }
 
-            String dayString = Day.getStringRepresentation(view.getContext(), day);
-            availableDailyRoutineStrings.add(dayString);
 
             int dayValue;
-            Exercise firstExercise = exerciseList.get(0);
-            if (firstExercise.getExerciseType() == ExerciseType.COPIER) {
+            if (DayCopierDetector.isDayCopier(exerciseList)) {
+                Exercise firstExercise = exerciseList.get(0);
                 DayCopierExercise dayCopierExercise = (DayCopierExercise) firstExercise;
-                dayValue = dayCopierExercise.getDayBeingCopied().getValue();
+                Day dayBeingCopied = dayCopierExercise.getDayBeingCopied();
+
+                List<Exercise> copiedDailyRoutine = dailyRoutines.get(dayBeingCopied);
+                if (copiedDailyRoutine.size() == 0) {
+                    continue;
+                }
+
+                dayValue = dayBeingCopied.getValue();
+
+
             }
             else {
                 dayValue = day.getValue();
             }
+
             dayIntegerMap.put(i, dayValue);
+            String dayString = Day.getStringRepresentation(view.getContext(), day);
+            availableDailyRoutineStrings.add(dayString);
+
             i++;
 
         }

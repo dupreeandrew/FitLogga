@@ -14,6 +14,7 @@ import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanReader;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TrainingActivity extends AppCompatActivity {
 
@@ -56,8 +57,8 @@ public class TrainingActivity extends AppCompatActivity {
     }
 
     private TrainingRecyclerAdapter getAdapter() {
-        PlanReader planReader = new PlanReader(this);
-        List<Exercise> exerciseList = planReader.getDailyRoutine(planNameValue, day);
+        PlanReader planReader = PlanReader.attachTo(planNameValue);
+        List<Exercise> exerciseList = Objects.requireNonNull(planReader).getDailyRoutine(day);
 
         ViewGroup viewGroup = findViewById(android.R.id.content);
         return new TrainingRecyclerAdapter.Builder()

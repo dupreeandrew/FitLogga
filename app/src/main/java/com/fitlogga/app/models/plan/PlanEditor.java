@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
-import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.List;
@@ -24,12 +23,12 @@ public class PlanEditor {
         this.context = context;
         this.planName = planName;
 
-        PlanReader planReader = new PlanReader(context);
-        planSummary = planReader.getPlanSummaryFromName(planName);
-
-        if (planSummary == null) {
+        PlanReader planReader = PlanReader.attachTo(planName);
+        if (planReader == null) {
             throw new NullPointerException("Plan could not be found.");
         }
+
+        this.planSummary = planReader.getPlanSummary();
     }
 
     public void delete() {
@@ -84,14 +83,8 @@ public class PlanEditor {
     }
 
     public static void openGUI(Context context, String planName) {
-
-        PlanSummary planSummary = new PlanReader(context).getPlanSummaryFromName(planName);
-
-        Gson gson = new Gson();
-        String planSummaryJson = gson.toJson(planSummary);
-
         Intent intent = new Intent(context, PlanCreatorActivity.class);
-        intent.putExtra(PlanCreatorActivity.PREFILLED_PLAN_SUMMARY_JSON_KEY, planSummaryJson);
+        intent.putExtra(PlanCreatorActivity.PREFILLED_PLAN_NAME_JSON_KEY, planName);
         context.startActivity(intent);
     }
 

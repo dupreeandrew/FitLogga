@@ -6,7 +6,11 @@ import java.util.Map;
 
 public class ExerciseTranslator {
 
-    public static Exercise toExercise(ExerciseType exerciseType, Map<String, Object> exerciseMap) {
+    public static Exercise toExercise(Map<String, Object> exerciseMap) {
+
+        int exerciseTypeInteger = Integer.parseInt((String)exerciseMap.get("exerciseType"));
+        ExerciseType exerciseType = ExerciseType.fromInteger(exerciseTypeInteger);
+
         switch (exerciseType) {
             case METER_RUN:
                 return toMeterRun(exerciseMap);

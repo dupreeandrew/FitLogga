@@ -1,6 +1,5 @@
 package com.fitlogga.app.adapters.plancreator;
 
-import android.content.Context;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.fitlogga.app.Event;
 import com.fitlogga.app.fragments.DailyRoutineCreatorFragment;
 import com.fitlogga.app.fragments.DailyRoutineFinisherFragment;
 import com.fitlogga.app.models.Day;
@@ -27,23 +25,22 @@ import java.util.Map;
 
 public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
-    private @Nullable PlanSummary planSummary;
+    @Nullable
+    private PlanSummary planSummary;
     private ViewPagerPlus.Controller viewPagerController;
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private Fragment currentFragment;
     private CopierDays copierDays = new CopierDays();
 
-    public NewExercisePagerAdapter(FragmentManager fm, Context context, @Nullable PlanSummary planSummary,
+    public NewExercisePagerAdapter(FragmentManager fm, @Nullable PlanReader planReader,
                                    ViewPagerPlus.Controller viewPagerController) {
         super(fm);
 
-        this.planSummary = planSummary;
         this.viewPagerController = viewPagerController;
 
-        PlanReader planReader = new PlanReader(context);
-
-        if (planSummary != null) {
-            dailyRoutineMap = planReader.getDailyRoutines(planSummary.getName());
+        if (planReader != null) {
+            this.planSummary = planReader.getPlanSummary();
+            this.dailyRoutineMap = planReader.getDailyRoutines();
             fillCopierDays();
         }
         else {
@@ -104,17 +101,4 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
         super.setPrimaryItem(container, position, object);
     }
 
-    private boolean permitFragmentChange() {
-        if (!(currentFragment instanceof DailyRoutineCreatorFragment)) {
-            return true;
-        }
-
-        Event event = new Event(false);
-        DailyRoutineCreatorFragment fragmentToNotify = (DailyRoutineCreatorFragment)currentFragment;
-        fragmentToNotify.notifyFragmentFocusLost(event);
-
-        return !event.isCancelled();
-
-
-    }
 }
