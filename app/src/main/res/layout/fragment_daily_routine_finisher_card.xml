@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/daily_routine_finisher_description"
-                android:inputType="text"
+                android:inputType="textMultiLine"
                 android:textSize="14sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
