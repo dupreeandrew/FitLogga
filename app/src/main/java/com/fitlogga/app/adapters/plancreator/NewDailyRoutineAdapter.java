@@ -36,7 +36,6 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     private FabController fabController;
     private Day day;
     private CopierDays copierDays;
-    private Event lastEvent;
 
     public NewDailyRoutineAdapter(List<Exercise> exerciseList, DragListener listener,
                                   ViewPagerPlus.Controller viewPagerController,
@@ -151,6 +150,10 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
                 int adapterPosition = viewHolder.getAdapterPosition();
                 exerciseList.set(adapterPosition, savedExercise);
                 lockViewHolderFocus(false);
+
+                // Removes any focus/keyboards
+                viewHolder.removeAnyFocuses();
+
             }
 
             @Override
@@ -161,7 +164,6 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-        this.lastEvent = event;
 
     }
 
@@ -183,6 +185,7 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         fabController.setEnabled(false);
         viewPagerController.setPagingEnabled(false);
         lockViewHolderFocus(true);
+        expandedViewHolder.removeAnyFocuses();
     }
 
     public void notifyFragmentFocusLost(Event event, Context context) {

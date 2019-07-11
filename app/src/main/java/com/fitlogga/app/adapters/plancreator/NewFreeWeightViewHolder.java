@@ -96,10 +96,10 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         String[] possibleAutoCompletes = view.getResources()
                 .getStringArray(R.array.free_weight_exercises);
         AutoCompleteTextView inputExerciseName = view.findViewById(R.id.input_exercise_name);
-
         ArrayAdapter<String> adapter = new LimitedArrayAdapter<>(view.getContext(), R.layout.vh_new_popup_item,
                 possibleAutoCompletes, GlobalSettings.MAX_AUTO_COMPLETION_COUNT);
         inputExerciseName.setAdapter(adapter);
+        inputExerciseName.dismissDropDown();
     }
 
     @Override
