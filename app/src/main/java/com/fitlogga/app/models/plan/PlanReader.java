@@ -162,7 +162,7 @@ public class PlanReader {
 
     public boolean isDayEmpty(Day day) {
         String dayValueString = String.valueOf(day.getValue());
-        return planNamePref.contains(dayValueString);
+        return !planNamePref.contains(dayValueString);
     }
 
     @Nullable

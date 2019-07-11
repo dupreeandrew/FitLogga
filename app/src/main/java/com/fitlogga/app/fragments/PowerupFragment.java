@@ -100,11 +100,10 @@ public class PowerupFragment extends Fragment {
 
     private void initPowerupButton(View view) {
         Button powerupButton = view.findViewById(R.id.btn_powerup);
-        powerupButton.setOnClickListener(buttonView -> tryOpeningTrainingActivity(view));
+        powerupButton.setOnClickListener(buttonView -> tryOpeningTodaysTrainingActivity(view));
     }
 
-    private void tryOpeningTrainingActivity(View view) {
-
+    private void tryOpeningTodaysTrainingActivity(View view) {
 
         String currentPlanName = PlanReader.getCurrentPlanName();
 
