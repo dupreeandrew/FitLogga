@@ -42,16 +42,15 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="0dp"
-                android:hint="@string/vh_new_repetition_name_of_exercise"
+                android:hint="@string/vh_new_free_weight_name_of_exercise"
                 app:layout_constraintEnd_toStartOf="@+id/right_border"
                 app:layout_constraintStart_toStartOf="@+id/left_border"
                 app:layout_constraintTop_toBottomOf="@+id/include">
 
-                <com.google.android.material.textfield.TextInputEditText
+
+                <AutoCompleteTextView
                     android:id="@+id/input_exercise_name"
+                    style="@style/AppTheme.TextInputLayoutAutoCompleteTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"

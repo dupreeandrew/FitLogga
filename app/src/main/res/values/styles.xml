@@ -33,4 +33,12 @@
         <item name="backgroundTint">@color/colorWarning</item>
     </style>
 
+    <style name="AppTheme.TextInputLayoutAutoCompleteTextView">
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
+    </style>
+
 </resources>

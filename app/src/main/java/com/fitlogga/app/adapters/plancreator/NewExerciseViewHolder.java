@@ -70,6 +70,12 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         applyError(textInputLayoutResId, "Impossible");
     }
 
+    final void applyNameTooLongError(int textInputLayoutResId) {
+        String errorMessage = "Must be less than " + GlobalSettings.MAX_EXERCISE_NAME_LENGTH
+                + " characters";
+        applyError(textInputLayoutResId, errorMessage);
+    }
+
     final void applyErrorBackground(int textInputLayoutResId) {
         applyError(textInputLayoutResId, " ");
     }
@@ -97,6 +103,10 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         catch (NumberFormatException ex) {
             return true;
         }
+    }
+
+    final boolean isNameTooLong(String exerciseName) {
+        return exerciseName.length() > GlobalSettings.MAX_EXERCISE_NAME_LENGTH;
     }
 
 

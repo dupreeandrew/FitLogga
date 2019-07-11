@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="free_weight_exercises">
+
+        <!-- upper begin -->
+        <item>Overhead Press</item>
+        <item>Lat Pulldowns</item>
+        <item>Face Pulls</item>
+        <item>Barbell Bench Press</item>
+        <item>Dumbbell Bench Press</item>
+        <item>Bench Press</item>
+        <item>Inclined Bench Press</item>
+        <item>Declined Bench Press</item>
+        <!-- upper end -->
+
+        <!-- rows begin -->
+        <item>Pendlay Row</item>
+        <item>One-Arm Rows</item>
+        <!-- rows end -->
+
+        <!-- deadlift begin -->
+        <item>Romanian Deadlift</item>
+        <item>Deadlift</item>
+        <item>Stiff-Legged Deadlifts</item>
+        <!-- deadlift end -->
+
+        <!-- biceps begin -->
+        <item>Barbell Curl</item>
+        <item>Preacher Curl</item>
+        <item>Hammer Curl</item>
+        <item>Dumbbell Curl</item>
+        <item>Bent-Over Rows</item>
+        <!-- biceps end -->
+
+        <!-- triceps begin -->
+        <item>Tricep Pressdowns</item>
+        <item>Skull Crushers</item>
+        <!-- triceps end -->
+
+        <!-- quadriceps begin -->
+        <item>Back Barbell Squat</item>
+        <item>Front Barbell Squat</item>
+        <item>Squat</item>
+
+        <!-- quadriceps end -->
+
+        <!-- calf begin -->
+        <item>Calf Raises</item>
+        <!-- calf end -->
+
+        <!-- other begin -->
+        <!-- other end -->
+
+    </string-array>
+
+    <string-array name="repetition_execises">
+        <!-- chest begin -->
+        <item>Push Ups</item>
+
+
+        <!-- chest end -->
+
+        <!-- shoulders & arms begin -->
+        <item>Diamond Pushup</item>
+        <item>Arm Circles</item>
+        <!-- shoulders & arms end -->
+
+        <!-- abs begin -->
+        <item>Ab Crunches</item>
+        <item>Sit-ups</item>
+        <item>Mountain Climber</item>
+        <item>Plank</item>
+        <item>Side Plank</item>
+        <!-- mid end -->
+
+        <!-- compound begin -->
+        <item>Pull Ups</item>
+        <item>Chin Ups</item>
+        <!-- compound end -->
+
+        <!-- low begin -->
+        <item>Burpee</item>
+        <item>Wall Sit</item>
+        <item>Lunges</item>
+        <item>Squat</item>
+        <item>Calf raise</item>
+        <!-- low end -->
+    </string-array>
+
+</resources>

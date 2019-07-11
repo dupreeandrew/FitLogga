@@ -85,7 +85,7 @@ public class NewCopyDayViewHolder extends NewExerciseViewHolder {
 
     private void initDropdownBox(Day day) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                view.getContext(), R.layout.vh_new_copy_day_item, availableDays);
+                view.getContext(), R.layout.vh_new_popup_item, availableDays);
 
         Spinner spinner = view.findViewById(R.id.spinner_day);
         spinner.setAdapter(adapter);

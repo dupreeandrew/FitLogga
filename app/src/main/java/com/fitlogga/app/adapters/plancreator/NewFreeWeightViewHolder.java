@@ -2,10 +2,13 @@ package com.fitlogga.app.adapters.plancreator;
 
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 
 import com.fitlogga.app.R;
+import com.fitlogga.app.models.LimitedArrayAdapter;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.FreeWeightExercise;
 import com.fitlogga.app.utils.Time;
@@ -44,11 +47,13 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         setNumWeightUnits(numWeightUnits);
         setNumMinRest(numMinRest);
         setNumSecsRest(numSecsRest);
+
+        initExerciseNameAutoComplete();
         
     }
 
     private void setExerciseName(String name) {
-        TextInputEditText inputExerciseName = view.findViewById(R.id.input_exercise_name);
+        AutoCompleteTextView inputExerciseName = view.findViewById(R.id.input_exercise_name);
         inputExerciseName.setText(name);
     }
 
@@ -87,6 +92,16 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         inputNumSecsRest.setText(String.valueOf(numSecsRest));
     }
 
+    private void initExerciseNameAutoComplete() {
+        String[] possibleAutoCompletes = view.getResources()
+                .getStringArray(R.array.free_weight_exercises);
+        AutoCompleteTextView inputExerciseName = view.findViewById(R.id.input_exercise_name);
+
+        ArrayAdapter<String> adapter = new LimitedArrayAdapter<>(view.getContext(), R.layout.vh_new_popup_item,
+                possibleAutoCompletes, GlobalSettings.MAX_AUTO_COMPLETION_COUNT);
+        inputExerciseName.setAdapter(adapter);
+    }
+
     @Override
     protected int[] getCollapsibleViewResourceIds() {
         return new int[] {
@@ -107,7 +122,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     @SuppressWarnings("ConstantConditions")
     @Override
     protected void tryToSave(SaveListener saveListener) {
-        TextInputEditText inputNameView = view.findViewById(R.id.input_exercise_name);
+        AutoCompleteTextView inputNameView = view.findViewById(R.id.input_exercise_name);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
         TextInputEditText inputNumSetsView = view.findViewById(R.id.input_num_sets);
         TextInputEditText inputNumRepsView = view.findViewById(R.id.input_num_reps);
@@ -133,6 +148,10 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
 
         if (TextUtils.isEmpty(inputNameString)) {
             applyRequiredError(R.id.input_exercise_name_layout);
+            isSaveable = false;
+        }
+        else if (isNameTooLong(inputNameString)) {
+            applyNameTooLongError(R.id.input_exercise_name_layout);
             isSaveable = false;
         }
 
