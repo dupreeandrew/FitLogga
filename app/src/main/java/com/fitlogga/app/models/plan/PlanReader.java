@@ -37,8 +37,11 @@ public class PlanReader {
     @Nullable
     public static PlanReader attachTo(String planName) {
 
-        Context context = ApplicationContext.getInstance();
+        if (planName == null) {
+            return null;
+        }
 
+        Context context = ApplicationContext.getInstance();
         SharedPreferences planSummaryPref = getPlanSummaryPref();
         String planNamePrefString = PlanIOUtils.getIOSafeFileID(planName);
 
