@@ -73,6 +73,11 @@
     <string name="daily_routine_finisher_create_plan">Create plan</string>
     <!-- daily routine finisher fragment end -->
 
+    <!-- fragment_daily_routine_finisher begin -->
+    <string name="fragment_daily_routine_finisher_plan_was_created">Plan was created.></string>
+    <string name="fragment_daily_routine_finisher_plan_was_updated">Plan was updated.</string>
+    <!-- fragment_daily_routine_finisher end -->
+
     <!-- vh_copy_day begin -->
     <string name="vh_copy_day_copy_day_exercise">Copy Day Exercise</string>
     <string name="vh_copy_day_day_to_copy">Day to copy</string>

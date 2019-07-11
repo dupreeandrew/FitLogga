@@ -133,8 +133,16 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
     private void createPlan(Context context, String inputNameString, String inputDescString, boolean setAsActivePlan) {
 
+        String successMessage;
+
         if (planSummary != null) {
             deleteExistingPlan();
+            // "Plan was updated"
+            successMessage = getString(R.string.fragment_daily_routine_finisher_plan_was_updated);
+        }
+        else {
+            // "Plan was created"
+            successMessage = getString(R.string.fragment_daily_routine_finisher_plan_was_created);
         }
 
         long currentTime = new Date().getTime();
@@ -154,7 +162,7 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
         //noinspection ConstantConditions
         getActivity().finish();
-        Toast.makeText(context, "Plan was created", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
 
 
     }
