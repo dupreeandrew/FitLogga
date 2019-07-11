@@ -42,19 +42,22 @@ public class PlanReader {
         }
 
         Context context = ApplicationContext.getInstance();
-        SharedPreferences planSummaryPref = getPlanSummaryPref();
-        String planNamePrefString = PlanIOUtils.getIOSafeFileID(planName);
-
-        // check if plan exists
-        if (!planSummaryPref.contains(planNamePrefString)) {
+        if (!planExists(planName)) {
             return null;
         }
 
+        String planNamePrefString = PlanIOUtils.getIOSafeFileID(planName);
         SharedPreferences planNamePref
                 = context.getSharedPreferences(planNamePrefString, Context.MODE_PRIVATE);
 
         return new PlanReader(planNamePref, planName);
 
+    }
+
+    public static boolean planExists(String planName) {
+        String planNamePrefString = PlanIOUtils.getIOSafeFileID(planName);
+        SharedPreferences planSummaryPref = getPlanSummaryPref();
+        return planSummaryPref.contains(planNamePrefString);
     }
 
     @Nullable

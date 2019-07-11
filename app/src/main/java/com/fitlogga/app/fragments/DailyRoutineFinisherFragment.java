@@ -115,6 +115,13 @@ public class DailyRoutineFinisherFragment extends Fragment {
             inputNameLayout.setError("* Required");
             canCreate = false;
         }
+        else if (PlanReader.planExists(inputNameString) && planSummary == null) {
+            Toast.makeText(getContext(),
+                    getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists),
+                    Toast.LENGTH_LONG)
+                    .show();
+            canCreate = false;
+        }
 
         if (TextUtils.isEmpty(inputDescString)) {
             TextInputLayout inputDescLayout = view.findViewById(R.id.input_plan_description_layout);

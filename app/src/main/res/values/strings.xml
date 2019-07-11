@@ -76,6 +76,9 @@
     <!-- fragment_daily_routine_finisher begin -->
     <string name="fragment_daily_routine_finisher_plan_was_created">Plan was created.</string>
     <string name="fragment_daily_routine_finisher_plan_was_updated">Plan was updated.</string>
+    <string name="fragment_daily_routine_finisher_plan_error_plan_already_exists">
+        This plan name already exists. Please choose another.
+    </string>
     <!-- fragment_daily_routine_finisher end -->
 
     <!-- vh_copy_day begin -->
