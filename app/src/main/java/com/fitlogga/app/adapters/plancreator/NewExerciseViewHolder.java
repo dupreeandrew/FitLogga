@@ -112,7 +112,9 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
     }
 
     final void removeAnyFocuses() {
-        view.getRootView().clearFocus();
+
+        view.getRootView().requestFocus();
+
         InputMethodManager imm = (InputMethodManager) view.getContext()
                 .getSystemService(Activity.INPUT_METHOD_SERVICE);
 
