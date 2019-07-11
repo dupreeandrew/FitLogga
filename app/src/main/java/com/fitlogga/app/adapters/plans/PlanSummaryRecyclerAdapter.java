@@ -91,7 +91,7 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     }
 
     @Override
-    protected void onViewHolderExpanded(PlanSummaryViewHolder expandedViewHolder) {
+    protected void onViewHolderExpanded(int adapterPos) {
 
     }
 

@@ -189,12 +189,10 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     }
 
     @Override
-    protected void onViewHolderExpanded(NewExerciseViewHolder expandedViewHolder) {
+    protected void onViewHolderExpanded(int adapterPos) {
         fabController.setEnabled(false);
         viewPagerController.setPagingEnabled(false);
         lockViewHolderFocus(true);
-
-        int adapterPos = expandedViewHolder.getAdapterPosition();
         recyclerView.scrollToPosition(adapterPos);
     }
 

@@ -192,7 +192,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     }
 
     @Override
-    protected void onViewHolderExpanded(ExerciseViewHolder expandedViewHolder) {
+    protected void onViewHolderExpanded(int adapterPos) {
 
     }
 

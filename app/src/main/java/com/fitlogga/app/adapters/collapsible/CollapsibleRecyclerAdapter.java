@@ -15,12 +15,17 @@ import com.fitlogga.app.Event;
  */
 public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolder> extends RecyclerView.Adapter<VH> {
 
-
-
     private int previousExpandedPosition = -1;
     private int expandedPosition = -1;
     private VH lastCollapsedViewHolder;
     private VH expandedViewHolder;
+    private RecyclerView recyclerView;
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
+    }
 
     @Override
     public final void onBindViewHolder(@NonNull VH holder, int position) {
@@ -67,7 +72,7 @@ public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolde
 
                 Log.d("#12!", "Expanded @" + viewHolder.getAdapterPosition());
                 expandedViewHolder = viewHolder;
-                onViewHolderExpanded(viewHolder);
+                onViewHolderExpanded(viewHolder.getAdapterPosition());
 
 
 
@@ -88,7 +93,7 @@ public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolde
 
     protected abstract void onViewHolderCollapsed(Event event, VH viewHolder, Context context);
 
-    protected abstract void onViewHolderExpanded(VH expandedViewHolder);
+    protected abstract void onViewHolderExpanded(int expandedViewHolderPos);
 
     protected final void considerDataSetMoved(int newPos, int adapterSize) {
         notifyItemRangeChanged(newPos + 1, adapterSize - 1);
@@ -113,9 +118,7 @@ public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolde
         expandedPosition = position;
         notifyItemChanged(expandedPosition);
         notifyItemChanged(previousExpandedPosition);
-
-        // todo:: make sure that it is returning the correct expanded view holder.
-        onViewHolderExpanded(expandedViewHolder);
+        onViewHolderExpanded(position);
     }
 
     protected final void collapsePresentExpandedViewHolder() {
