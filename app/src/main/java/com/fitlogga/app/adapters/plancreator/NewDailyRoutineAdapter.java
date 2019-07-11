@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
@@ -36,6 +37,7 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     private FabController fabController;
     private Day day;
     private CopierDays copierDays;
+    private RecyclerView recyclerView;
 
     public NewDailyRoutineAdapter(List<Exercise> exerciseList, DragListener listener,
                                   ViewPagerPlus.Controller viewPagerController,
@@ -46,6 +48,12 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         this.fabController = fabController;
         this.day = day;
         this.copierDays = copierDays;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -185,7 +193,9 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         fabController.setEnabled(false);
         viewPagerController.setPagingEnabled(false);
         lockViewHolderFocus(true);
-        expandedViewHolder.removeAnyFocuses();
+
+        int adapterPos = expandedViewHolder.getAdapterPosition();
+        recyclerView.scrollToPosition(adapterPos);
     }
 
     public void notifyFragmentFocusLost(Event event, Context context) {
