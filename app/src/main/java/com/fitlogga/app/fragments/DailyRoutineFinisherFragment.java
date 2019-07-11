@@ -19,6 +19,7 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanCreator;
+import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.google.android.material.textfield.TextInputEditText;
@@ -132,6 +133,10 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
     private void createPlan(Context context, String inputNameString, String inputDescString, boolean setAsActivePlan) {
 
+        if (planSummary != null) {
+            deleteExistingPlan();
+        }
+
         long currentTime = new Date().getTime();
         if (setAsActivePlan) {
             currentTime += 1000;
@@ -151,6 +156,13 @@ public class DailyRoutineFinisherFragment extends Fragment {
         getActivity().finish();
         Toast.makeText(context, "Plan was created", Toast.LENGTH_SHORT).show();
 
+
+    }
+
+    private void deleteExistingPlan() {
+        String currentPlanName = planSummary.getName();
+        PlanEditor planEditor = new PlanEditor(getContext(), currentPlanName);
+        planEditor.delete();
 
     }
 
