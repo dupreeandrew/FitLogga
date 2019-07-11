@@ -7,6 +7,7 @@ import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +48,15 @@ public class PlanEditor {
                 .clear()
                 .apply();
 
+        deleteFileFromStorage(preferenceName);
         deleted = true;
+    }
 
+    private void deleteFileFromStorage(String preferenceName) {
+        String prefFilePath = "/data/data/" + context.getPackageName() + "/shared_prefs/"
+                + preferenceName + ".xml";
+        File prefFile = new File(prefFilePath);
+        prefFile.delete();
     }
 
     public void updateDailyRoutine(Day day, List<Exercise> dailyRoutine) {
