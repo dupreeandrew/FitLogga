@@ -8,7 +8,7 @@
         android:id="@+id/rv_daily_routine_creator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="32dp"
+        android:paddingBottom="160dp"
         android:clipToPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
