@@ -140,7 +140,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
         Exercise exercise = exerciseList.get(position);
         viewHolder.manifest(exercise);
         viewHolder.setOnUpdateListener(() -> {
-            notifyItemChanged(position);
+            viewHolder.setCheckmarkVisible(true);
             checkForDailyRoutineFinish();
         });
     }

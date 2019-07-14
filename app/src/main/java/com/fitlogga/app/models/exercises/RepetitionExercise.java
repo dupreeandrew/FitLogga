@@ -1,6 +1,6 @@
 package com.fitlogga.app.models.exercises;
 
-public class RepetitionExercise extends Exercise {
+public class RepetitionExercise extends TimerExercise {
 
     /**
      * Builder class for instantiating RepetitionExercise objects.
@@ -84,7 +84,7 @@ public class RepetitionExercise extends Exercise {
 
     RepetitionExercise(String name, String description, int numberOfSets,
                                int numberOfRepetitions, int restTimeBetweenSets) {
-        super(ExerciseType.REPETITION_EXERCISE);
+        super(ExerciseType.REPETITION_EXERCISE, restTimeBetweenSets * 1000);
         this.name = name;
         this.description = description;
         this.numberOfSets = numberOfSets;

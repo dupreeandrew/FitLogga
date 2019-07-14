@@ -1,6 +1,6 @@
 package com.fitlogga.app.models.exercises;
 
-public class FreeWeightExercise extends Exercise {
+public class FreeWeightExercise extends TimerExercise {
 
 
     /**
@@ -106,7 +106,7 @@ public class FreeWeightExercise extends Exercise {
     FreeWeightExercise(String name, String description, int numberOfSets,
                                int numberOfRepetitions, int amountOfWeight,
                                String amountOfWeightUnits, int restTimeInBetweenSets) {
-        super(ExerciseType.FREE_WEIGHT_EXERCISE);
+        super(ExerciseType.FREE_WEIGHT_EXERCISE, restTimeInBetweenSets * 1000);
         this.name = name;
         this.description = description;
         this.numberOfSets = numberOfSets;

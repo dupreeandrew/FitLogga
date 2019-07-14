@@ -1,6 +1,6 @@
 package com.fitlogga.app.models.exercises;
 
-public class RestExercise extends Exercise {
+public class RestExercise extends TimerExercise {
 
     private int amountOfTimeToRest;
 
@@ -9,7 +9,7 @@ public class RestExercise extends Exercise {
      * @param amountOfTimeToRest Duration of rest in seconds.
      */
     public RestExercise(int amountOfTimeToRest) {
-        super(ExerciseType.REST);
+        super(ExerciseType.REST, amountOfTimeToRest * 1000);
         this.amountOfTimeToRest = amountOfTimeToRest;
     }
 

@@ -1,40 +1,45 @@
 package com.fitlogga.app.adapters.training.viewholders;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.fitlogga.app.R;
-import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.FreeWeightExercise;
-import com.fitlogga.app.utils.CountDownTimerPlus;
-import com.fitlogga.app.utils.Time;
+import com.fitlogga.app.models.exercises.TimerExercise;
 import com.fitlogga.app.viewmods.ViewEnabler;
 
-public class FreeWeightViewHolder extends ExerciseViewHolder {
+public class FreeWeightViewHolder extends TimerViewHolder {
 
     private View view;
-    private CountDownTimerPlus timer;
     private Button finishSetButton;
     private Button endTimerButton;
 
     public FreeWeightViewHolder(@NonNull View itemView) {
-        super(itemView);
-        this.view = itemView;
+        super(itemView, () -> {
 
+            // This is called when timer ends.
+            Button finishSetButton = itemView.findViewById(R.id.btn_complete_set);
+            Button endTimerButton = itemView.findViewById(R.id.btn_end_timer);
+            ViewEnabler.setEnabled(finishSetButton, true);
+            ViewEnabler.setEnabled(endTimerButton, false);
+
+        }, R.id.tv_timer, R.id.pb_progress);
+
+
+
+        this.view = itemView;
         finishSetButton = view.findViewById(R.id.btn_complete_set);
         endTimerButton = view.findViewById(R.id.btn_end_timer);
     }
 
     @Override
-    public void onManifest(Exercise exercise) {
-        FreeWeightExercise freeWeightExercise = (FreeWeightExercise)exercise;
+    void onPostManifest(TimerExercise timerExercise) {
+        FreeWeightExercise freeWeightExercise = (FreeWeightExercise)timerExercise;
         String name = freeWeightExercise.getName();
         String description = freeWeightExercise.getDescription();
         int numSetsCompleted = freeWeightExercise.getNumSetsCompleted();
@@ -55,12 +60,10 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
         setWeightNumberView(numWeight);
         setWeightUnitView(weightUnit);
 
-        initTimer(freeWeightExercise);
-        initEndTimerButton();
+        initEndTimerButton(freeWeightExercise);
         initFinishSetButton(freeWeightExercise);
         initIncrementWeightButton(freeWeightExercise);
         initDecrementWeightButton(freeWeightExercise);
-
     }
 
     private void setDescription(String description) {
@@ -83,50 +86,16 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
         setsRepsView.setText(text);
     }
 
-    private void initTimer(FreeWeightExercise freeWeightExercise) {
 
-        if (timer != null && !timer.isPaused()) return;
-
-        ProgressBar timerProgressBar = view.findViewById(R.id.pb_progress);
-        timerProgressBar.setMax(5000);
-
-        final int MILLISECONDS_OF_TIMER = freeWeightExercise.getRestTimeBetweenSets() * 1000;
-        timer = getTimerObject(MILLISECONDS_OF_TIMER);
-        timer.onTick(MILLISECONDS_OF_TIMER);
-
-    }
-
-    private CountDownTimerPlus getTimerObject(int milliseconds) {
-        return new CountDownTimerPlus(milliseconds) {
-
-            private TextView timerTextView = view.findViewById(R.id.tv_timer);
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-
-                ProgressBar timerProgressBar = view.findViewById(R.id.pb_progress);
-
-                int secondsUntilFinished = (int)(millisUntilFinished / 1000);
-                double millisecondsElapsed = milliseconds - millisUntilFinished;
-                double progress = millisecondsElapsed / (milliseconds) * 5000.00 ;
-
-                timerTextView.setText(Time.toHHMMFormat(secondsUntilFinished));
-                timerProgressBar.setProgress((int)progress);
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onFinish() {
-                ViewEnabler.setEnabled(finishSetButton, true);
-                ViewEnabler.setEnabled(endTimerButton, false);
-            }
-        };
-
-    }
 
     private void initFinishSetButton(FreeWeightExercise freeWeightExercise) {
+        if (freeWeightExercise.isTimerActive()) {
+            ViewEnabler.setEnabled(finishSetButton, false);
+        }
+        else {
+            ViewEnabler.setEnabled(finishSetButton, true);
+        }
+
         finishSetButton.setOnClickListener(buttonView -> {
 
             int numSetsCompleted = freeWeightExercise.getNumSetsCompleted() + 1;
@@ -141,16 +110,24 @@ public class FreeWeightViewHolder extends ExerciseViewHolder {
 
             ViewEnabler.setEnabled(finishSetButton, false);
             ViewEnabler.setEnabled(endTimerButton, true);
-            timer.reset();
-            timer.resume();
+
+            super.startTimer();
             
         });
 
     }
 
-    private void initEndTimerButton() {
+    private void initEndTimerButton(FreeWeightExercise freeWeightExercise) {
+
+        if (freeWeightExercise.isTimerActive()) {
+            ViewEnabler.setEnabled(endTimerButton, true);
+        }
+        else {
+            ViewEnabler.setEnabled(endTimerButton, false);
+        }
+
         endTimerButton.setOnClickListener(
-                buttonView -> timer.fadeEnd()
+                buttonView -> super.endTimer()
         );
     }
 

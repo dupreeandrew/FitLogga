@@ -49,7 +49,7 @@ public abstract class ExerciseViewHolder extends CollapsibleViewHolder {
         listener.onUpdate();
     }
 
-    private void setCheckmarkVisible(boolean b) {
+    public void setCheckmarkVisible(boolean b) {
         ImageView checkmarkImage = view.findViewById(R.id.iv_finish);
         checkmarkImage.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
     }
