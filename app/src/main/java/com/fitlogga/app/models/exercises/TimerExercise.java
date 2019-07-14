@@ -1,7 +1,5 @@
 package com.fitlogga.app.models.exercises;
 
-import android.util.Log;
-
 public abstract class TimerExercise extends Exercise {
 
     private transient long millisLastTicked = -1;
@@ -59,8 +57,8 @@ public abstract class TimerExercise extends Exercise {
         }
         else if (millisLastTicked != -1) {
             long outdatedMillisDifference = System.currentTimeMillis() - millisLastTicked;
-            this.millisRemaining -= outdatedMillisDifference;
-            Log.d("harhar", String.valueOf(outdatedMillisDifference));
+            long newMillisRemaining = this.millisRemaining - outdatedMillisDifference;
+            updateMillisRemaining(newMillisRemaining);
         }
 
         return this.millisRemaining;
