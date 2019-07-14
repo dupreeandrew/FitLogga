@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.fitlogga.app.models.ApplicationContext;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseTranslator;
 import com.google.gson.Gson;
@@ -103,18 +104,12 @@ public class PlanReader {
             return new ArrayList<>();
         }
 
+        return getExerciseList(exerciseListJson);
+
+    }
+
+    private List<Exercise> getExerciseList(String exerciseListJson) {
         Map<String, Map<String, Object>> jsonMap = getNestedMapFromJsonString(exerciseListJson);
-        return getExerciseList(jsonMap);
-
-    }
-
-    private Map<String, Map<String, Object>> getNestedMapFromJsonString(String jsonString) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, Object>>(){}.getType();
-        return gson.fromJson(jsonString, type);
-    }
-
-    private List<Exercise> getExerciseList(Map<String, Map<String, Object>> jsonMap) {
         List<Exercise> exerciseList = new ArrayList<>();
         for (Map<String, Object> exerciseMap : jsonMap.values()) {
             Exercise exercise = ExerciseTranslator.toExercise(exerciseMap);
@@ -123,6 +118,14 @@ public class PlanReader {
 
         return exerciseList;
     }
+
+    private Map<String, Map<String, Object>> getNestedMapFromJsonString(String jsonString) {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, Object>>(){}.getType();
+        return gson.fromJson(jsonString, type);
+    }
+
+
 
 
     @Nullable
@@ -163,6 +166,17 @@ public class PlanReader {
     public boolean isDayEmpty(Day day) {
         String dayValueString = String.valueOf(day.getValue());
         return !planNamePref.contains(dayValueString);
+    }
+
+    @Nullable
+    public DayCopierExercise getDayCopier(Day day) {
+        Exercise exercise = getDailyRoutine(day).get(0);
+        if (exercise instanceof DayCopierExercise) {
+            return (DayCopierExercise)exercise;
+        }
+        else {
+            return null;
+        }
     }
 
     @Nullable

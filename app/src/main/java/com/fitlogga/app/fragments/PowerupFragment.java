@@ -105,22 +105,28 @@ public class PowerupFragment extends Fragment {
 
     private void tryOpeningTodaysTrainingActivity(View view) {
 
-        String currentPlanName = PlanReader.getCurrentPlanName();
+        Day todaysExerciseDay = Day.getToday();
 
-        if (currentPlanName == null) {
+        PlanReader planReader = PlanReader.attachToCurrentPlan();
+
+        if (planReader == null) {
             showNoPlanSnackbar(view);
             return;
         }
 
-        PlanReader planReader = PlanReader.attachTo(currentPlanName);
-        if (planReader != null && planReader.isDayEmpty(Day.getToday())) {
-            showNoRoutinesSnackbar(view, currentPlanName,
+        if (planReader.isDayEmpty(todaysExerciseDay)) {
+            showNoRoutinesSnackbar(view, planReader.getPlanName(),
                     // "You have nothing to do today"
                     R.string.powerup_you_have_nothing_to_do_today);
             return;
         }
 
-        startTrainingActivity(view.getContext(), Day.getToday());
+        DayCopierExercise dayCopierExercise = planReader.getDayCopier(todaysExerciseDay);
+        if (dayCopierExercise != null) {
+            todaysExerciseDay = dayCopierExercise.getDayBeingCopied();
+        }
+
+        startTrainingActivity(view.getContext(), todaysExerciseDay);
 
     }
 
