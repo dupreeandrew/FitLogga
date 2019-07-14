@@ -1,38 +1,39 @@
 package com.fitlogga.app.adapters.training.viewholders;
 
-import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.fitlogga.app.R;
-import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.RepetitionExercise;
-import com.fitlogga.app.utils.CountDownTimerPlus;
-import com.fitlogga.app.utils.Time;
+import com.fitlogga.app.models.exercises.TimerExercise;
 import com.fitlogga.app.viewmods.ViewEnabler;
 
-public class RepetitionViewHolder extends ExerciseViewHolder {
+public class RepetitionViewHolder extends TimerViewHolder {
 
     private View view;
-    private CountDownTimerPlus timer;
     private Button finishSetButton;
     private Button endTimerButton;
 
-    public RepetitionViewHolder(@NonNull View itemView) {
-        super(itemView);
-        this.view = itemView;
 
-        finishSetButton = view.findViewById(R.id.btn_complete_set);
-        endTimerButton = view.findViewById(R.id.btn_end_timer);
+    public RepetitionViewHolder(@NonNull View itemView) {
+        super(itemView, () -> {
+            Button finishSetButton = itemView.findViewById(R.id.btn_complete_set);
+            Button endTimerButton = itemView.findViewById(R.id.btn_end_timer);
+            ViewEnabler.setEnabled(finishSetButton, true);
+            ViewEnabler.setEnabled(endTimerButton, false);
+        }, R.id.tv_timer, R.id.pb_progress);
+
+        this.view = itemView;
+        this.finishSetButton = view.findViewById(R.id.btn_complete_set);
+        this.endTimerButton = view.findViewById(R.id.btn_end_timer);
     }
 
     @Override
-    public void onManifest(Exercise exercise) {
+    void onPostManifest(TimerExercise exercise) {
         RepetitionExercise repetitionExercise = (RepetitionExercise)exercise;
         String name = repetitionExercise.getName();
         String description = repetitionExercise.getDescription();
@@ -50,7 +51,6 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
         setDescription(description);
         setSets(numSetsCompleted, numSets);
 
-        initTimer(repetitionExercise);
         initEndTimerButton();
         initFinishSetButton(repetitionExercise);
 
@@ -76,49 +76,6 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
         setsRepsView.setText(text);
     }
 
-    private void initTimer(RepetitionExercise repetitionExercise) {
-
-        if (timer != null && !timer.isPaused()) return;
-
-        ProgressBar timerProgressBar = view.findViewById(R.id.pb_progress);
-        timerProgressBar.setMax(5000);
-
-        final int MILLISECONDS_OF_TIMER = repetitionExercise.getRestTimeBetweenSets() * 1000;
-        timer = getTimerObject(MILLISECONDS_OF_TIMER);
-        timer.onTick(MILLISECONDS_OF_TIMER);
-
-    }
-
-    private CountDownTimerPlus getTimerObject(int milliseconds) {
-        return new CountDownTimerPlus(milliseconds) {
-
-            private TextView timerTextView = view.findViewById(R.id.tv_timer);
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-
-                ProgressBar timerProgressBar = view.findViewById(R.id.pb_progress);
-
-                int secondsUntilFinished = (int)(millisUntilFinished / 1000);
-                double millisecondsElapsed = milliseconds - millisUntilFinished;
-                double progress = millisecondsElapsed / (milliseconds) * 5000.00 ;
-
-                timerTextView.setText(Time.toHHMMFormat(secondsUntilFinished));
-                timerProgressBar.setProgress((int)progress);
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onFinish() {
-                ViewEnabler.setEnabled(finishSetButton, true);
-                ViewEnabler.setEnabled(endTimerButton, false);
-            }
-        };
-
-    }
-
     private void initFinishSetButton(RepetitionExercise repetitionExercise) {
         finishSetButton.setOnClickListener(buttonView -> {
 
@@ -134,8 +91,7 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
 
             ViewEnabler.setEnabled(finishSetButton, false);
             ViewEnabler.setEnabled(endTimerButton, true);
-            timer.reset();
-            timer.resume();
+            super.startTimer();
 
         });
 
@@ -143,7 +99,7 @@ public class RepetitionViewHolder extends ExerciseViewHolder {
 
     private void initEndTimerButton() {
         endTimerButton.setOnClickListener(
-                buttonView -> timer.fadeEnd()
+                buttonView -> super.endTimer()
         );
     }
 
