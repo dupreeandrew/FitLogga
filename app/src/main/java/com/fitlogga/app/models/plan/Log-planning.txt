@@ -1,0 +1,68 @@
+// Proposals:
+ALL exercises have UUIDs
+
+
+// ================= //
+//
+// PlanLogWriter Class
+//
+// ================= //
+
+#attachTo(String planName) {
+    // ......
+    return new PlanLogger(planName);
+}
+
+#append(Day day, FreeWeightExercise exercise) {
+- attach to day.getValue() key
+- attach to exercise.getUUID() key
+- overwrite "type"
+- overwrite "name"
+- attach to "data" key
+- attach to System.currentTimeMillis() key
+- write necessary loggable data
+}
+
+#delete(Day day, String uuid) {
+- attach to day.getValue() key;
+- delete uuid key.
+}
+
+my_new_plan_logga.xml
+{
+"0": { // day of week
+// here begins the actual json VALUE.
+    "AWLQ-LEQ2E-PADW-93PA": {
+        "type": 3,
+        "name": "Front Squat",
+        "data": {
+            "1563250923205": {
+                "value":30, // "value" is a shared key for all exercises. In this case, it's weight.
+                "sets":3,
+                "reps":5
+            },
+            "1563250988914": {
+                "value":35,
+                "sets":3,
+                "reps":6
+            },
+            "1563250995263": {
+                "value":40,
+                "sets":3,
+                "reps":5
+            }
+
+        }
+    }
+}
+}
+
+
+
+// ================= //
+//
+// PlanLogReader Class
+//
+// ================= //
+
+// implemented on the way
