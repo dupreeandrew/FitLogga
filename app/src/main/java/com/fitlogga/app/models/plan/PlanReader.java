@@ -11,6 +11,7 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseTranslator;
+import com.fitlogga.app.utils.CollectionSortHelper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -149,15 +150,8 @@ public class PlanReader {
             planSummaries.add(planSummary);
         }
 
-        // Sort by last used.
-        Collections.sort(planSummaries, (t1, t2) -> {
-            if (t1.getLastUsed() == t2.getLastUsed()) {
-                return 0;
-            }
-
-            return (t1.getLastUsed() > t2.getLastUsed()) ? -1 : 1;
-
-        });
+        Collections.sort(planSummaries, (p1, p2)
+                -> CollectionSortHelper.byDescending(p1.getLastUsed(), p2.getLastUsed()));
 
         return planSummaries;
 
