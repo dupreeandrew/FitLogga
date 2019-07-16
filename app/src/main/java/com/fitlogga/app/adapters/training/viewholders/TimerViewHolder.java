@@ -16,26 +16,21 @@ import com.fitlogga.app.utils.Time;
 
 abstract class TimerViewHolder extends ExerciseViewHolder {
 
-    public interface TimerStatus {
-        void onFinish();
-    }
-
     private View view;
-    private TimerStatus timerStatus;
     private int timerTextResId;
     private int progressBarResId;
     private CountDownTimerPlus timer;
     private TimerExercise timerExercise;
     private static final String TAG = "laa92!";
 
-    TimerViewHolder(@NonNull View itemView, TimerStatus timerStatus,
-                    @IdRes int timerTextResId, @IdRes int progressBarResId) {
+    TimerViewHolder(@NonNull View itemView, @IdRes int timerTextResId, @IdRes int progressBarResId) {
         super(itemView);
         this.view = itemView;
-        this.timerStatus = timerStatus;
         this.timerTextResId = timerTextResId;
         this.progressBarResId = progressBarResId;
     }
+
+    abstract void onTimerEnd(TimerExercise timerExercise);
 
     @Override
     final void onManifest(Exercise exercise) {
@@ -54,8 +49,6 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
 
         ProgressBar timerProgressBar = view.findViewById(progressBarResId);
         timerProgressBar.setMax(5000);
-        timerProgressBar.setProgress(0);
-
 
 
         final long MILLISECONDS_OF_TIMER = timerExercise.getMillisRemaining();
@@ -64,7 +57,7 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
 
         Log.d("testt1", String.valueOf(MILLISECONDS_OF_TIMER));
 
-        if (timerExercise.isTimerActive()) {
+        if (timerExercise.isTimerResumed()) {
             timer.resume();
         }
 
@@ -79,8 +72,6 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
     /**
      * Simply generates a timer object that has a specified duration.
      * Nothing less, nothing more.
-     * @param timerDurationMillis
-     * @return
      */
     private CountDownTimerPlus getTimerObject(long timerDurationMillis) {
         return new CountDownTimerPlus(timerDurationMillis) {
@@ -116,18 +107,15 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
                     */
                 }
 
-
-
-
             }
 
             @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
                 Log.d("xDD123", "timer is disabled");
-                timerExercise.startPreparingTimer(false);
+                timerExercise.resetTimerMode();
                 initTimer(timerExercise);
-                timerStatus.onFinish();
+                onTimerEnd(timerExercise);
             }
         };
 
@@ -135,9 +123,9 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
 
     abstract void onPostManifest(TimerExercise timerExercise);
 
-    void startTimer() {
+    void resumeTimer() {
         Log.d(TAG, "timer started");
-        timerExercise.startPreparingTimer(true);
+        timerExercise.resumeTimerMode(true);
         initTimer(timerExercise);
     }
 
@@ -146,6 +134,20 @@ abstract class TimerViewHolder extends ExerciseViewHolder {
         timer.pause();
         timer = getTimerObject(3000);
         timer.resume();
+    }
+
+    void pauseTimer() {
+        timerExercise.resumeTimerMode(false);
+        initTimer(timerExercise);
+    }
+
+    void resetTimer() {
+        timerExercise.resetTimerMode();
+        initTimer(timerExercise);
+    }
+
+    final boolean isTimerActive() {
+        return timerExercise.isTimerResumed();
     }
 
 }

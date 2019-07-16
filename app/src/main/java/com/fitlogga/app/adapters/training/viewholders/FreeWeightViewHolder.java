@@ -20,21 +20,16 @@ public class FreeWeightViewHolder extends TimerViewHolder {
     private Button endTimerButton;
 
     public FreeWeightViewHolder(@NonNull View itemView) {
-        super(itemView, () -> {
-
-            // This is called when timer ends.
-            Button finishSetButton = itemView.findViewById(R.id.btn_complete_set);
-            Button endTimerButton = itemView.findViewById(R.id.btn_end_timer);
-            ViewEnabler.setEnabled(finishSetButton, true);
-            ViewEnabler.setEnabled(endTimerButton, false);
-
-        }, R.id.tv_timer, R.id.pb_progress);
-
-
-
+        super(itemView, R.id.tv_timer, R.id.pb_progress);
         this.view = itemView;
         finishSetButton = view.findViewById(R.id.btn_complete_set);
         endTimerButton = view.findViewById(R.id.btn_end_timer);
+    }
+
+    @Override
+    void onTimerEnd(TimerExercise timerExercise) {
+        ViewEnabler.setEnabled(finishSetButton, true);
+        ViewEnabler.setEnabled(endTimerButton, false);
     }
 
     @Override
@@ -89,7 +84,7 @@ public class FreeWeightViewHolder extends TimerViewHolder {
 
 
     private void initFinishSetButton(FreeWeightExercise freeWeightExercise) {
-        if (freeWeightExercise.isTimerActive()) {
+        if (freeWeightExercise.isTimerResumed()) {
             ViewEnabler.setEnabled(finishSetButton, false);
         }
         else {
@@ -111,7 +106,7 @@ public class FreeWeightViewHolder extends TimerViewHolder {
             ViewEnabler.setEnabled(finishSetButton, false);
             ViewEnabler.setEnabled(endTimerButton, true);
 
-            super.startTimer();
+            super.resumeTimer();
             
         });
 
@@ -119,7 +114,7 @@ public class FreeWeightViewHolder extends TimerViewHolder {
 
     private void initEndTimerButton(FreeWeightExercise freeWeightExercise) {
 
-        if (freeWeightExercise.isTimerActive()) {
+        if (freeWeightExercise.isTimerResumed()) {
             ViewEnabler.setEnabled(endTimerButton, true);
         }
         else {

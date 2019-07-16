@@ -3,7 +3,7 @@ package com.fitlogga.app.models.exercises;
 public abstract class TimerExercise extends Exercise {
 
     private transient long millisLastTicked = -1;
-    private transient boolean isTimerActive = false;
+    private transient boolean isTimerResumed = false;
     private transient final long millisTotal;
     private transient long millisRemaining;
 
@@ -19,64 +19,51 @@ public abstract class TimerExercise extends Exercise {
 
     public void updateMillisRemaining(long millisRemaining) {
         // millisRemaining is getting reset expand/close
-        if (isTimerActive) {
-            this.millisLastTicked = System.currentTimeMillis();
-            this.millisRemaining = millisRemaining;
-        }
+        this.millisLastTicked = System.currentTimeMillis();
+        this.millisRemaining = millisRemaining;
     }
 
     public long getMillisRemaining() {
 
-        // 10 seconds total.
-        // 2 seconds passed.
-        // 4 seconds out of date
-        // 6 is the remainder.
-
-        /*
-        // basically, how many ms is it outdated. 0 is up to date. 1000 = 1 second late.
-        long millisPassed; // should be 0.
-        long outdatedMillisDifference;
-        if (isTimerActive && millisLastTicked != -1) {
-            millisPassed = millisTotal - millisRemaining;
-            outdatedMillisDifference = System.currentTimeMillis() - millisLastTicked;
-        }
-        else {
-            millisPassed = 0;
-            outdatedMillisDifference = 0;
+        if (!isTimerResumed) {
+            return millisRemaining;
         }
 
-        Log.d("xDD123", "1) " + outdatedMillisDifference);
+        considerOutdatedMillisDifference();
+        return this.millisRemaining;
+    }
 
-        Log.d("xDD123", "2) " + (this.millisTotal - outdatedMillisDifference - millisPassed));
-
-        return this.millisTotal - outdatedMillisDifference - millisPassed;
-        */
-
-        if (!isTimerActive) {
-            return millisTotal;
-        }
-        else if (millisLastTicked != -1) {
+    /*
+    Keep in mind that RecyclerView has a reason behind its name -- it's recycling viewholders.
+    Because of this, assigned timers for viewholders could constantly be changing, and
+    #updateMillisRemaining() won't be called. This function takes consideration into this.
+     */
+    private void considerOutdatedMillisDifference() {
+        if (millisLastTicked != -1) {
             long outdatedMillisDifference = System.currentTimeMillis() - millisLastTicked;
             long newMillisRemaining = this.millisRemaining - outdatedMillisDifference;
             updateMillisRemaining(newMillisRemaining);
         }
-
-        return this.millisRemaining;
     }
 
-    public boolean isTimerActive() {
-        return isTimerActive;
+    public boolean isTimerResumed() {
+        return isTimerResumed;
     }
 
-    public void startPreparingTimer(boolean timerActive) {
-        isTimerActive = timerActive;
-        if (timerActive) {
+    public void resumeTimerMode(boolean resume) {
+        this.isTimerResumed = resume;
+        if (resume) {
             millisLastTicked = System.currentTimeMillis();
         }
         else {
-            millisLastTicked = -1;
-            millisRemaining = millisTotal;
+            considerOutdatedMillisDifference();
         }
+    }
+
+    public void resetTimerMode() {
+        millisLastTicked = -1;
+        millisRemaining = millisTotal;
+        isTimerResumed = false;
     }
 
 }

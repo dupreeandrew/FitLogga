@@ -20,16 +20,17 @@ public class RepetitionViewHolder extends TimerViewHolder {
 
 
     public RepetitionViewHolder(@NonNull View itemView) {
-        super(itemView, () -> {
-            Button finishSetButton = itemView.findViewById(R.id.btn_complete_set);
-            Button endTimerButton = itemView.findViewById(R.id.btn_end_timer);
-            ViewEnabler.setEnabled(finishSetButton, true);
-            ViewEnabler.setEnabled(endTimerButton, false);
-        }, R.id.tv_timer, R.id.pb_progress);
+        super(itemView, R.id.tv_timer, R.id.pb_progress);
 
         this.view = itemView;
         this.finishSetButton = view.findViewById(R.id.btn_complete_set);
         this.endTimerButton = view.findViewById(R.id.btn_end_timer);
+    }
+
+    @Override
+    void onTimerEnd(TimerExercise timerExercise) {
+        ViewEnabler.setEnabled(finishSetButton, true);
+        ViewEnabler.setEnabled(endTimerButton, false);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class RepetitionViewHolder extends TimerViewHolder {
 
             ViewEnabler.setEnabled(finishSetButton, false);
             ViewEnabler.setEnabled(endTimerButton, true);
-            super.startTimer();
+            super.resumeTimer();
 
         });
 
