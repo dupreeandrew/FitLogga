@@ -64,7 +64,7 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener) {
+    protected void tryToSave(SaveListener saveListener, String uuid) {
         TextInputEditText inputDistanceView = view.findViewById(R.id.input_run_distance);
         TextInputEditText inputUnitsView = view.findViewById(R.id.input_run_units);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
@@ -93,14 +93,14 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
         }
 
         Exercise builtExercise
-                = buildExercise(inputDistanceString, inputUnitsString, inputDescriptionString);
+                = buildExercise(inputDistanceString, inputUnitsString, inputDescriptionString, uuid);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputDistanceString, String inputUnitsString, String inputDescriptionString) {
+    private Exercise buildExercise(String inputDistanceString, String inputUnitsString, String inputDescriptionString, String uuid) {
         int inputDistance = Integer.parseInt(inputDistanceString);
-        return new MeterRunExercise(inputDescriptionString, inputDistance, inputUnitsString);
+        return new MeterRunExercise(inputDescriptionString, inputDistance, inputUnitsString, false, uuid);
     }
 
 }

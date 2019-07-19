@@ -6,13 +6,13 @@ public class TimedRunExercise extends TimerExercise {
     private String description;
 
     public TimedRunExercise(String description, int seconds) {
-        super(ExerciseType.TIMED_RUN, seconds * 1000);
-        this.description = description;
-        this.seconds = seconds;
+        this(description, seconds, false, null);
     }
 
-    public TimedRunExercise(String description, int seconds, boolean completed) {
-        this(description, seconds);
+    public TimedRunExercise(String description, int seconds, boolean completed, String uuid) {
+        super(ExerciseType.TIMED_RUN, seconds * 1000, uuid);
+        this.description = description;
+        this.seconds = seconds;
         setCompleted(false);
     }
 

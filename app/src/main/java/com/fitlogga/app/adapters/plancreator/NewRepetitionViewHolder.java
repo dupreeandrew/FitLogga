@@ -106,7 +106,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener) {
+    protected void tryToSave(SaveListener saveListener, String uuid) {
         AutoCompleteTextView inputNameView = view.findViewById(R.id.input_exercise_name);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
         TextInputEditText inputNumSetsView = view.findViewById(R.id.input_num_sets);
@@ -166,14 +166,14 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
         Exercise builtExercise
                 = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
-                inputNumRepsString, inputRestMinutesString, inputRestSecondsString);
+                inputNumRepsString, inputRestMinutesString, inputRestSecondsString, uuid);
         saveListener.onSave(builtExercise);
 
     }
 
     private Exercise buildExercise(String inputNameString, String inputDescriptionString, String inputNumSetsString,
                                    String inputNumRepsString, String inputRestMinutesString,
-                                   String inputRestSecondsString) {
+                                   String inputRestSecondsString, String uuid) {
 
         int numSets = Integer.parseInt(inputNumSetsString);
         int numReps = Integer.parseInt(inputNumRepsString);
@@ -187,6 +187,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
                 .setNumberOfSets(numSets)
                 .setNumberOfReps(numReps)
                 .setRestTimeBetweenSets(numRestTotal)
+                .setUuid(uuid)
                 .build();
 
     }

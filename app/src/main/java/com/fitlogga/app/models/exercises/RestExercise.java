@@ -9,12 +9,12 @@ public class RestExercise extends TimerExercise {
      * @param amountOfTimeToRest Duration of rest in seconds.
      */
     public RestExercise(int amountOfTimeToRest) {
-        super(ExerciseType.REST, amountOfTimeToRest * 1000);
-        this.amountOfTimeToRest = amountOfTimeToRest;
+        this(amountOfTimeToRest, false, null);
     }
 
-    public RestExercise(int amountOfTimeToRest, boolean completed) {
-        this(amountOfTimeToRest);
+    public RestExercise(int amountOfTimeToRest, boolean completed, String uuid) {
+        super(ExerciseType.REST, amountOfTimeToRest * 1000, uuid);
+        this.amountOfTimeToRest = amountOfTimeToRest;
         setCompleted(false);
     }
 

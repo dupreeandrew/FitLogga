@@ -11,11 +11,11 @@ public class BlankExerciseGenerator {
     }
 
     public static RepetitionExercise getRepetition() {
-        return new RepetitionExercise("Repetition Exercise", "", 0, 0, 0);
+        return new RepetitionExercise("Repetition Exercise", "", 0, 0, 0, null);
     }
 
     public static FreeWeightExercise getFreeWeight() {
-        return new FreeWeightExercise("Free Weight Exercise", "", 0, 0, 0, "", 0);
+        return new FreeWeightExercise("Free Weight Exercise", "", 0, 0, 0, "", 0, null);
     }
 
     public static RestExercise getRest() {

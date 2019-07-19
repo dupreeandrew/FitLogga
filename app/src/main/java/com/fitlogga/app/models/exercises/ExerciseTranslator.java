@@ -38,14 +38,20 @@ public class ExerciseTranslator {
         int distance = quickCastToInt(exerciseMap.get("distance"));
         String units = (String)exerciseMap.get("distanceUnits");
         boolean completed = (boolean)exerciseMap.get("completed");
-        return new MeterRunExercise(description, distance, units, completed);
+        String uuid = getUuid(exerciseMap);
+        return new MeterRunExercise(description, distance, units, completed, uuid);
+    }
+
+    private static String getUuid(Map<String, Object> exerciseMap) {
+        return (String)exerciseMap.get("uuid");
     }
 
     private static TimedRunExercise toTimedRun(Map<String, Object> exerciseMap) {
         String description = (String)exerciseMap.get("description");
         int seconds = quickCastToInt(exerciseMap.get("seconds"));
         boolean completed = (boolean)exerciseMap.get("completed");
-        return new TimedRunExercise(description, seconds, completed);
+        String uuid = (String)exerciseMap.get("uuid");
+        return new TimedRunExercise(description, seconds, completed, uuid);
     }
 
     private static RepetitionExercise toRepetition(Map<String, Object> exerciseMap) {
@@ -55,6 +61,7 @@ public class ExerciseTranslator {
         int numberOfRepetitions = quickCastToInt(exerciseMap.get("numberOfRepetitions"));
         int restTimeInBetweenSets = quickCastToInt(exerciseMap.get("restTimeBetweenSets"));
         boolean completed = (boolean)exerciseMap.get("completed");
+        String uuid = getUuid(exerciseMap);
 
         return new RepetitionExercise.Builder()
                 .setName(name)
@@ -63,6 +70,7 @@ public class ExerciseTranslator {
                 .setNumberOfReps(numberOfRepetitions)
                 .setRestTimeBetweenSets(restTimeInBetweenSets)
                 .setCompleted(completed)
+                .setUuid(uuid)
                 .build();
     }
 
@@ -75,6 +83,7 @@ public class ExerciseTranslator {
         int numberOfRepetitions = quickCastToInt(exerciseMap.get("numberOfRepetitions"));
         int restTimeInBetweenSets = quickCastToInt(exerciseMap.get("restTimeBetweenSets"));
         boolean completed = (boolean)exerciseMap.get("completed");
+        String uuid = getUuid(exerciseMap);
 
         return new FreeWeightExercise.Builder()
                 .setName(name)
@@ -85,6 +94,7 @@ public class ExerciseTranslator {
                 .setNumberOfReps(numberOfRepetitions)
                 .setRestTimeBetweenSets(restTimeInBetweenSets)
                 .setCompleted(completed)
+                .setUuid(uuid)
                 .build();
 
     }
@@ -92,7 +102,8 @@ public class ExerciseTranslator {
     private static RestExercise toRest(Map<String, Object> exerciseMap) {
         int amountOfTimeToRest = quickCastToInt(exerciseMap.get("amountOfTimeToRest"));
         boolean completed = (boolean)exerciseMap.get("completed");
-        return new RestExercise(amountOfTimeToRest, completed);
+        String uuid = getUuid(exerciseMap);
+        return new RestExercise(amountOfTimeToRest, completed, uuid);
     }
 
     private static DayCopierExercise toCopier(Map<String, Object> exerciseMap) {

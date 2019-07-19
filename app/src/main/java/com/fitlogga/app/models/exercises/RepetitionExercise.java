@@ -1,5 +1,7 @@
 package com.fitlogga.app.models.exercises;
 
+import androidx.annotation.Nullable;
+
 public class RepetitionExercise extends TimerExercise {
 
     /**
@@ -14,6 +16,7 @@ public class RepetitionExercise extends TimerExercise {
         private int numberOfRepetitions;
         private int restTimeBetweenSets;
         private boolean completed;
+        private String uuid;
 
         public Builder setName(String name) {
             this.name = name;
@@ -48,10 +51,15 @@ public class RepetitionExercise extends TimerExercise {
             return this;
         }
 
+        public Builder setUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
+
         public RepetitionExercise build() throws NullPointerException {
             validateProperties();
             return new RepetitionExercise(name, description, numberOfSets,
-                    numberOfRepetitions, restTimeBetweenSets);
+                    numberOfRepetitions, restTimeBetweenSets, uuid);
 
         }
 
@@ -83,8 +91,9 @@ public class RepetitionExercise extends TimerExercise {
     private transient int numSetsCompleted = 0;
 
     RepetitionExercise(String name, String description, int numberOfSets,
-                               int numberOfRepetitions, int restTimeBetweenSets) {
-        super(ExerciseType.REPETITION_EXERCISE, restTimeBetweenSets * 1000);
+                               int numberOfRepetitions, int restTimeBetweenSets,
+                       @Nullable String uuid) {
+        super(ExerciseType.REPETITION_EXERCISE, restTimeBetweenSets * 1000, uuid);
         this.name = name;
         this.description = description;
         this.numberOfSets = numberOfSets;

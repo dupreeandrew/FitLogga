@@ -68,7 +68,7 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener) {
+    protected void tryToSave(SaveListener saveListener, String uuid) {
         TextInputEditText inputMinutesView = view.findViewById(R.id.input_run_minutes);
         TextInputEditText inputSecondsView = view.findViewById(R.id.input_run_seconds);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
@@ -93,13 +93,13 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
         }
 
         Exercise builtExercise
-                = buildExercise(totalRunSeconds, inputDescriptionString);
+                = buildExercise(totalRunSeconds, inputDescriptionString, uuid);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(int totalRunSeconds, String inputDescriptionString) {
-        return new TimedRunExercise(inputDescriptionString, totalRunSeconds);
+    private Exercise buildExercise(int totalRunSeconds, String inputDescriptionString, String uuid) {
+        return new TimedRunExercise(inputDescriptionString, totalRunSeconds, false,  uuid);
     }
 
 

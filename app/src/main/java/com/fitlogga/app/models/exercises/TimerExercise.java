@@ -7,8 +7,8 @@ public abstract class TimerExercise extends Exercise {
     private transient final long millisTotal;
     private transient long millisRemaining;
 
-    TimerExercise(ExerciseType exerciseType, long millisTotal) {
-        super(exerciseType);
+    TimerExercise(ExerciseType exerciseType, long millisTotal, String uuid) {
+        super(exerciseType, uuid);
         this.millisTotal = millisTotal;
         this.millisRemaining = millisTotal;
     }

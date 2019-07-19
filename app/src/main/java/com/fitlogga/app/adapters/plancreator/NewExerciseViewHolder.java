@@ -45,7 +45,7 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         subtitleView.setText(subtitle);
     }
 
-    protected abstract void tryToSave(SaveListener listener);
+    protected abstract void tryToSave(SaveListener listener, String uuid);
 
     final void setDeleteButtonClickListener(View.OnClickListener listener) {
         Button deleteButton = view.findViewById(R.id.btn_delete);

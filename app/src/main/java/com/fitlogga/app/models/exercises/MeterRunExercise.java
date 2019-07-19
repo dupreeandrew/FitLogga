@@ -1,5 +1,7 @@
 package com.fitlogga.app.models.exercises;
 
+import androidx.annotation.Nullable;
+
 public class MeterRunExercise extends Exercise {
 
     private int distance;
@@ -7,14 +9,15 @@ public class MeterRunExercise extends Exercise {
     private String description;
 
     public MeterRunExercise(String description, int distance, String distanceUnits) {
-        super(ExerciseType.METER_RUN);
-        this.description = description;
-        this.distance = distance;
-        this.distanceUnits = distanceUnits;
+        this(description, distance, distanceUnits, false, null);
     }
 
-    public MeterRunExercise(String description, int distance, String units, boolean completed) {
-        this(description, distance, units);
+    public MeterRunExercise(String description, int distance, String units, boolean completed,
+                            @Nullable String uuid) {
+        super(ExerciseType.METER_RUN, uuid);
+        this.description = description;
+        this.distance = distance;
+        this.distanceUnits = units;
         setCompleted(false);
     }
 

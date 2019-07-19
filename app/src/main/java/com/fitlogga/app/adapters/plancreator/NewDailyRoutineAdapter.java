@@ -101,6 +101,8 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         Exercise exercise = exerciseList.get(position);
         viewHolder.manifest(exercise);
 
+        Log.d("testtting", exercise.getUuid());
+
         viewHolder.resetRequiredErrors();
 
         viewHolder.setDragHandleTouchListener((view, motionEvent) -> {
@@ -152,10 +154,11 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
 
     @Override
     protected void onViewHolderCollapsed(Event event, NewExerciseViewHolder viewHolder, Context context) {
+        int adapterPosition = viewHolder.getAdapterPosition();
+        String uuid = exerciseList.get(adapterPosition).getUuid();
         viewHolder.tryToSave(new NewExerciseViewHolder.SaveListener() {
             @Override
             public void onSave(Exercise savedExercise) {
-                int adapterPosition = viewHolder.getAdapterPosition();
                 exerciseList.set(adapterPosition, savedExercise);
                 lockViewHolderFocus(false);
 
@@ -171,7 +174,7 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
                 String errorMessage =  context.getString(R.string.please_finish_making_changes_first);
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
             }
-        });
+        }, uuid);
 
     }
 

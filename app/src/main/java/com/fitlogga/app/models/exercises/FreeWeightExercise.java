@@ -22,6 +22,7 @@ public class FreeWeightExercise extends TimerExercise {
         private String amountOfWeightUnits;
         private int restTimeBetweenSets;
         private boolean completed;
+        private String uuid;
 
         public Builder setName(String name) {
             this.name = name;
@@ -63,10 +64,16 @@ public class FreeWeightExercise extends TimerExercise {
             return this;
         }
 
+        public Builder setUuid(String uuid) {
+            this.uuid = uuid;
+            return this;
+        }
+
         public FreeWeightExercise build() throws NullPointerException {
             validateProperties();
             return new FreeWeightExercise(name, description, amountOfSets,
-                    amountOfRepetitions, amountOfWeight, amountOfWeightUnits, restTimeBetweenSets);
+                    amountOfRepetitions, amountOfWeight, amountOfWeightUnits, restTimeBetweenSets,
+                    uuid);
 
         }
 
@@ -105,8 +112,8 @@ public class FreeWeightExercise extends TimerExercise {
 
     FreeWeightExercise(String name, String description, int numberOfSets,
                                int numberOfRepetitions, int amountOfWeight,
-                               String amountOfWeightUnits, int restTimeInBetweenSets) {
-        super(ExerciseType.FREE_WEIGHT_EXERCISE, restTimeInBetweenSets * 1000);
+                               String amountOfWeightUnits, int restTimeInBetweenSets, String uuid) {
+        super(ExerciseType.FREE_WEIGHT_EXERCISE, restTimeInBetweenSets * 1000, uuid);
         this.name = name;
         this.description = description;
         this.numberOfSets = numberOfSets;

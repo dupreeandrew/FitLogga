@@ -65,7 +65,7 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener listener) {
+    protected void tryToSave(SaveListener listener, String uuid) {
 
         TextInputEditText inputRestMinutesView = view.findViewById(R.id.input_rest_time_minutes);
         TextInputEditText inputRestSecondsView = view.findViewById(R.id.input_rest_time_seconds);
@@ -87,12 +87,12 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
             return;
         }
 
-        Exercise builtExercise = buildExercise(totalRestSeconds);
+        Exercise builtExercise = buildExercise(totalRestSeconds, uuid);
         listener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(int totalRestSeconds) {
-        return new RestExercise(totalRestSeconds);
+    private Exercise buildExercise(int totalRestSeconds, String uuid) {
+        return new RestExercise(totalRestSeconds, false, uuid);
     }
 }

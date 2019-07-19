@@ -121,7 +121,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener) {
+    protected void tryToSave(SaveListener saveListener, String uuid) {
         AutoCompleteTextView inputNameView = view.findViewById(R.id.input_exercise_name);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
         TextInputEditText inputNumSetsView = view.findViewById(R.id.input_num_sets);
@@ -204,7 +204,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         Exercise builtExercise
                 = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
                 inputNumRepsString, inputNumWeightString, inputUnitsString,
-                inputRestMinutesString, inputRestSecondsString);
+                inputRestMinutesString, inputRestSecondsString, uuid);
         saveListener.onSave(builtExercise);
 
     }
@@ -212,7 +212,8 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     private Exercise buildExercise(String inputNameString, String inputDescriptionString,
                                    String inputNumSetsString, String inputNumRepsString,
                                    String inputNumWeightString, String inputUnitsString,
-                                   String inputRestMinutesString, String inputRestSecondsString) {
+                                   String inputRestMinutesString, String inputRestSecondsString,
+                                   String uuid) {
 
         int numSets = Integer.parseInt(inputNumSetsString);
         int numReps = Integer.parseInt(inputNumRepsString);
@@ -229,6 +230,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
                 .setAmountOfWeight(numWeight)
                 .setAmountOfWeightUnits(inputUnitsString)
                 .setRestTimeBetweenSets(numRestTotal)
+                .setUuid(uuid)
                 .build();
 
     }
