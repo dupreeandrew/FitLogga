@@ -22,6 +22,7 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.PlanEditor;
+import com.fitlogga.app.models.plan.log.PlanLogWriter;
 
 import java.util.List;
 
@@ -165,6 +166,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
         alreadyCompleted = true;
         sendDailyRoutineFinishAlert();
         updateDailyRoutineToStorage();
+        logAllExercises();
     }
 
     private void sendDailyRoutineFinishAlert() {
@@ -184,6 +186,13 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     private void updateDailyRoutineToStorage() {
         PlanEditor planEditor = new PlanEditor(context, planName);
         planEditor.updateDailyRoutine(day, exerciseList);
+    }
+
+    private void logAllExercises() {
+        PlanLogWriter planLogWriter = PlanLogWriter.attachTo(planName);
+        for (Exercise exercise : exerciseList) {
+            planLogWriter.append(day, exercise);
+        }
     }
 
     @Override

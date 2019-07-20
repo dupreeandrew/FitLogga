@@ -126,9 +126,6 @@ public class PlanReader {
         return gson.fromJson(jsonString, type);
     }
 
-
-
-
     @Nullable
     public static String getCurrentPlanName() {
         try {

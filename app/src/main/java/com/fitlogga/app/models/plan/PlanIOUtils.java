@@ -1,8 +1,8 @@
 package com.fitlogga.app.models.plan;
 
-class PlanIOUtils {
+public class PlanIOUtils {
 
-    static String getIOSafeFileID(String planName) {
+    public static String getIOSafeFileID(String planName) {
         return planName.replace(' ', '_');
     }
 
