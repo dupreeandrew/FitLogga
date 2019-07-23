@@ -22,7 +22,7 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.PlanEditor;
-import com.fitlogga.app.models.plan.log.PlanLogWriter;
+import com.fitlogga.app.models.plan.log.SQLLogWriter;
 
 import java.util.List;
 
@@ -189,10 +189,9 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     }
 
     private void logAllExercises() {
-        PlanLogWriter planLogWriter = PlanLogWriter.attachTo(planName);
-        for (Exercise exercise : exerciseList) {
-            planLogWriter.append(day, exercise);
-        }
+        SQLLogWriter writer = new SQLLogWriter(planName);
+        writer.append(exerciseList, day);
+        writer.selfDestruct();
     }
 
     @Override
@@ -204,8 +203,6 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     protected void onViewHolderExpanded(int adapterPos) {
 
     }
-
-
 
     @Override
     public int getItemCount() {

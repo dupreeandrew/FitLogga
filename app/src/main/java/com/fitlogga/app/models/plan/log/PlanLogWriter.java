@@ -93,7 +93,6 @@ public class PlanLogWriter {
         String historyJson = new Gson().toJson(history);
         editor.putString(historicalKey, historyJson);
 
-
     }
 
     private History generateNewHistory(Exercise exercise, List snapshots) {
