@@ -52,6 +52,6 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     @Override
     public int getItemCount() {
-        return 1;
+        return historyList.size();
     }
 }

@@ -59,13 +59,13 @@ public class GraphFragment extends Fragment {
         recyclerView.setAdapter(new GraphLogAdapter(historyList));
 
         SnapHelper snapHelper = new PagerSnapHelper();
-        //snapHelper.attachToRecyclerView(recyclerView);
+        snapHelper.attachToRecyclerView(recyclerView);
     }
 
     private List<History> getHistoryList() {
         String planName = PlanReader.getCurrentPlanName();
         SQLLogReader reader = new SQLLogReader(planName);
-        List<History> historyList = reader.getHistoryList(Day.MONDAY, 75);
+        List<History> historyList = reader.getHistoryList(Day.WEDNESDAY, 75);
         reader.selfDestruct();
         return historyList;
     }
