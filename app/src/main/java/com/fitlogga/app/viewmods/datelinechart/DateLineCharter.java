@@ -2,6 +2,7 @@ package com.fitlogga.app.viewmods.datelinechart;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.SparseLongArray;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.models.ApplicationContext;
@@ -12,6 +13,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DateLineCharter {
@@ -20,12 +22,29 @@ public class DateLineCharter {
 
         private final List<Long> timestamps;
         private final Data[] dataObjects;
+        private final SparseLongArray entryNumToTimestampMap;
 
+        /**
+         * @param timestamps Timestamps representing the data objects
+         */
         public Unit(List<Long> timestamps, Data... dataObjects) {
             this.timestamps = timestamps;
             this.dataObjects = dataObjects;
 
             verifyCorrectSize(dataObjects);
+
+            Collections.reverse(this.timestamps);
+            this.entryNumToTimestampMap = getEntryNumToTimestampMap(timestamps);
+
+        }
+
+        private static SparseLongArray getEntryNumToTimestampMap(List<Long> timestamps) {
+            SparseLongArray sparseLongArray = new SparseLongArray();
+            for (int i = 0; i < timestamps.size(); i++) {
+                long timestamp = timestamps.get(i);
+                sparseLongArray.append(i, timestamp);
+            }
+            return sparseLongArray;
         }
 
         private void verifyCorrectSize(Data[] dataObjects) {
@@ -56,6 +75,9 @@ public class DateLineCharter {
             return dataObjects;
         }
 
+        public SparseLongArray getEntryNumToTimestampMap() {
+            return entryNumToTimestampMap;
+        }
     }
 
     public static class Data {
@@ -83,35 +105,36 @@ public class DateLineCharter {
      */
     public static void set(LineChart lineChart, Unit unit, DateMarkerView markerView) {
 
+
+
         List<Long> timestamps = unit.getTimestamps();
         Data[] dataPieces = unit.getDataObjects();
 
-        long referenceTimestamp = optimizeTimestamps(timestamps);
+        final int MAX_VISIBLE_POINTS = Math.min(timestamps.size(), 7);
 
-        for (long timestamp : timestamps) {
-            Log.d("testtaa", String.valueOf(timestamp));
-        }
-
-        configureXAxis(referenceTimestamp, lineChart);
+        SparseLongArray entryNumToTimestampMap = unit.getEntryNumToTimestampMap();
+        configureXAxis(MAX_VISIBLE_POINTS, lineChart, entryNumToTimestampMap);
 
         LineData lineData = new LineData();
         for (Data data : dataPieces) {
             List<Entry> entryList = new ArrayList<>();
 
             List<Integer> valueList = data.getValueList();
+            Collections.reverse(valueList);
+
             for (int i = 0; i < valueList.size(); i++) {
-                long timestamp = timestamps.get(i);
                 int value = valueList.get(i);
-                Entry entry = new Entry(timestamp, value);
+                Entry entry = new Entry(i, value);
                 entryList.add(entry);
             }
 
             String label = data.getLabel();
 
+
             LineDataSet lineDataSet = new LineDataSet(entryList, label);
             customizeLineDataSet(lineDataSet);
-
             lineData.addDataSet(lineDataSet);
+
 
         }
 
@@ -119,24 +142,20 @@ public class DateLineCharter {
         lineChart.setMarker(markerView);
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.setVisibleXRangeMaximum(MAX_VISIBLE_POINTS);
+
+        lineChart.moveViewToX(MAX_VISIBLE_POINTS);
 
 
     }
 
-    private static long optimizeTimestamps(List<Long> timestamps) {
-        long referenceTimestamp = timestamps.get(0);
-        for (int i = 0; i < timestamps.size(); i++) {
-            long timestamp = timestamps.get(i);
-            timestamps.set(i, referenceTimestamp - timestamp);
-        }
-        return referenceTimestamp;
-    }
-
-    private static void configureXAxis(long referenceTimestamp, LineChart lineChart) {
+    private static void configureXAxis(int numVisiblePoints, LineChart lineChart,
+                                       SparseLongArray entryNumToTimestampMap) {
         XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new HourAxisValueFormatter(referenceTimestamp));
+        xAxis.setValueFormatter(new HourAxisValueFormatter(entryNumToTimestampMap));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(.2f);
+        xAxis.setLabelCount(numVisiblePoints);
+
     }
 
     private static void customizeLineDataSet(LineDataSet lineDataSet) {

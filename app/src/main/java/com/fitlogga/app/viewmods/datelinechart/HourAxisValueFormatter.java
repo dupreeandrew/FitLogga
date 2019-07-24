@@ -1,5 +1,7 @@
 package com.fitlogga.app.viewmods.datelinechart;
 
+import android.util.SparseLongArray;
+
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.text.DateFormat;
@@ -10,12 +12,12 @@ import java.util.Locale;
 class HourAxisValueFormatter extends ValueFormatter
 {
 
-    private long referenceTimestamp; // minimum timestamp in your data set
     private DateFormat mDataFormat;
     private Date mDate;
+    private SparseLongArray entryNumToTimestampMap;
 
-    HourAxisValueFormatter(long referenceTimestamp) {
-        this.referenceTimestamp = referenceTimestamp;
+    HourAxisValueFormatter(SparseLongArray entryNumToTimestampMap) {
+        this.entryNumToTimestampMap = entryNumToTimestampMap;
         this.mDataFormat = new SimpleDateFormat("MM/dd", Locale.ENGLISH);
         this.mDate = new Date();
     }
@@ -27,19 +29,16 @@ class HourAxisValueFormatter extends ValueFormatter
      */
     @Override
     public String getFormattedValue(float value) {
-        // convertedTimestamp = originalTimestamp - referenceTimestamp
-        long convertedTimestamp = (long) value;
-
         // Retrieve original timestamp
-        long originalTimestamp = referenceTimestamp - convertedTimestamp;
+        long originalTimestamp = entryNumToTimestampMap.get((int) value);
 
-        // Convert timestamp to hour:minute
-        return getHour(originalTimestamp);
+        // Convert timestamp to MM/DD
+        return getTime(originalTimestamp);
     }
 
 
 
-    private String getHour(long timestamp){
+    private String getTime(long timestamp){
         try{
             mDate.setTime(timestamp);
             return mDataFormat.format(mDate);

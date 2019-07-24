@@ -20,7 +20,7 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
     private List<History> historyList;
 
     public GraphLogAdapter(List<History> historyList) {
-        this.historyList = historyList.subList(0, 5);
+        this.historyList = historyList;
     }
 
     @NonNull
@@ -35,6 +35,11 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
+
+        if (historyList.size() == 0) {
+            return;
+        }
+
         History history = historyList.get(position);
         DateLineCharter.Unit unit = LineChartUnitGen.get(history);
         String title = history.getName();
@@ -47,6 +52,6 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     @Override
     public int getItemCount() {
-        return historyList.size();
+        return 1;
     }
 }

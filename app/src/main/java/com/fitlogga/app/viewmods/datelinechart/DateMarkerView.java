@@ -2,6 +2,7 @@
 package com.fitlogga.app.viewmods.datelinechart;
 
 import android.content.Context;
+import android.util.SparseLongArray;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -19,15 +20,15 @@ import java.util.Locale;
 public abstract class DateMarkerView extends MarkerView {
 
     private TextView tvContent;
-    private long referenceTimestamp;  // minimum timestamp in your data set
+    private SparseLongArray entryNumToTimestampMap;
     private DateFormat mDataFormat;
     private Date mDate;
 
     public DateMarkerView(Context context, int layoutResource,
-                          @IdRes int dateTextViewId, long referenceTimestamp) {
+                          @IdRes int dateTextViewId, SparseLongArray entryNumToTimestampMap) {
         super(context, layoutResource);
         tvContent = findViewById(dateTextViewId);
-        this.referenceTimestamp = referenceTimestamp;
+        this.entryNumToTimestampMap = entryNumToTimestampMap;
         this.mDataFormat = new SimpleDateFormat("MM/dd/yy @ hh:mm a", Locale.ENGLISH);
         this.mDate = new Date();
     }
@@ -40,7 +41,8 @@ public abstract class DateMarkerView extends MarkerView {
     }
 
     private final void updateDateTextView(Entry e){
-        long timestamp = referenceTimestamp - (int)e.getX();
+        int entryNum = (int) e.getX();
+        long timestamp = entryNumToTimestampMap.get(entryNum);
 
         mDate.setTime(timestamp);
         String date = mDataFormat.format(mDate);

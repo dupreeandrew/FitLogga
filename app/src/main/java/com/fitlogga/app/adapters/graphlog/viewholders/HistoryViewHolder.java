@@ -27,9 +27,9 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder  {
     }
 
     public void setGraphUnit(DateLineCharter.Unit unit) {
-        long referenceTimestamp = unit.getTimestamps().get(0);
         LineChart lineChart = itemView.findViewById(R.id.chart_standard);
-        StandardMarker marker = new StandardMarker(itemView.getContext(), referenceTimestamp);
+        StandardMarker marker = new StandardMarker(itemView.getContext(),
+                unit.getEntryNumToTimestampMap());
         marker.setChartView(lineChart);
         DateLineCharter.set(lineChart, unit, marker);
     }
