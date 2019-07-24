@@ -36,7 +36,11 @@ public class SQLLogReader extends SQLLog {
         super(planName);
     }
 
-    public List<? extends History> getHistoryList(Day day) {
+    /**
+     * Returns the history of all exercises under a specified day.
+     * All history objects return snapshots sorted by their timestamp, in ascended order.
+     */
+    public List<History> getHistoryList(Day day) {
 
         List<History> historyList = new ArrayList<>();
         Set<String> exerciseUuids = getExerciseUuids(day.getValue());
@@ -151,7 +155,8 @@ public class SQLLogReader extends SQLLog {
                 + "FROM " + TABLE_EXERCISES + " "
                 + "INNER JOIN " + TABLE_LOG + " AS '" + TABLE_LOG + "'"
                 + "ON " + TABLE_EXERCISES + "." + COLUMN_EXERCISE_ID + " = " + TABLE_LOG + "." + COLUMN_EXERCISE_ID + " "
-                + "WHERE " + COLUMN_UUID + "=?";
+                + "WHERE " + COLUMN_UUID + "=? "
+                + "ORDER BY " + COLUMN_TIMESTAMP + " ASC";
 
         Cursor cursor = database.rawQuery(query, new String[]{uuid});
         List<Map<String, Object>> rowsOfExercise = new ArrayList<>();

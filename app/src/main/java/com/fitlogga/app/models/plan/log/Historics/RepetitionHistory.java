@@ -39,6 +39,7 @@ public class RepetitionHistory extends History {
         this.snapshots = snapshots;
     }
 
+    @Override
     public String getName() {
         return name;
     }

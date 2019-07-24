@@ -39,4 +39,8 @@ public class StandardExerciseHistory extends History {
         return snapshots;
     }
 
+    @Override
+    public String getName() {
+        return getExerciseType().name();
+    }
 }

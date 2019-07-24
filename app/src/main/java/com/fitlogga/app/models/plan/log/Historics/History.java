@@ -26,7 +26,6 @@ public abstract class History {
 
     @SerializedName("exerciseType")
     private ExerciseType exerciseType;
-    private transient boolean exerciseTypeWasSet = false;
 
     public History(ExerciseType exerciseType) {
         this.exerciseType = exerciseType;
@@ -37,4 +36,6 @@ public abstract class History {
     }
 
     public abstract List<? extends Snapshot> getSnapshots();
+
+    public abstract String getName();
 }

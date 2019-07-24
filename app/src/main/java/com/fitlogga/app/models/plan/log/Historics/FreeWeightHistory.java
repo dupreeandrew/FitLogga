@@ -33,6 +33,7 @@ public class FreeWeightHistory extends History {
         this.snapshots = snapshots;
     }
 
+    @Override
     public String getName() {
         return name;
     }
