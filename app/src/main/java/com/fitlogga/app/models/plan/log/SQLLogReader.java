@@ -2,6 +2,8 @@ package com.fitlogga.app.models.plan.log;
 
 import android.database.Cursor;
 
+import androidx.annotation.IntRange;
+
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.log.Historics.FreeWeightHistory;
@@ -38,14 +40,14 @@ public class SQLLogReader extends SQLLog {
 
     /**
      * Returns the history of all exercises under a specified day.
-     * All history objects return snapshots sorted by their timestamp, in ascended order.
+     * All history objects return snapshots sorted by their timestamp, in descended order.
      */
-    public List<History> getHistoryList(Day day) {
+    public List<History> getHistoryList(Day day, @IntRange(from = 0, to = 500) int maxSize) {
 
         List<History> historyList = new ArrayList<>();
         Set<String> exerciseUuids = getExerciseUuids(day.getValue());
         for (String uuid : exerciseUuids) {
-            History history = getHistory(uuid);
+            History history = getHistory(uuid, maxSize);
             historyList.add(history);
         }
 
@@ -76,9 +78,9 @@ public class SQLLogReader extends SQLLog {
         return exerciseUuids;
     }
 
-    private <T extends History> T getHistory(String uuid) {
+    private <T extends History> T getHistory(String uuid, int limit) {
         Map<String, Object> exerciseInfo = getExerciseInfo(uuid);
-        List<Map<String, Object>> rowsOfExercise = getLogRowsOfExercise(uuid);
+        List<Map<String, Object>> rowsOfExercise = getLogRowsOfExercise(uuid, limit);
         return generateHistoryObject(exerciseInfo, rowsOfExercise);
     }
 
@@ -145,7 +147,7 @@ public class SQLLogReader extends SQLLog {
         }
     }
 
-    private List<Map<String, Object>> getLogRowsOfExercise(String uuid) {
+    private List<Map<String, Object>> getLogRowsOfExercise(String uuid, int limit) {
         String query = "SELECT "
                 + COLUMN_COMMON_VALUE + ", "
                 + COLUMN_NUM_SETS + ", "
@@ -156,7 +158,8 @@ public class SQLLogReader extends SQLLog {
                 + "INNER JOIN " + TABLE_LOG + " AS '" + TABLE_LOG + "'"
                 + "ON " + TABLE_EXERCISES + "." + COLUMN_EXERCISE_ID + " = " + TABLE_LOG + "." + COLUMN_EXERCISE_ID + " "
                 + "WHERE " + COLUMN_UUID + "=? "
-                + "ORDER BY " + COLUMN_TIMESTAMP + " ASC";
+                + "ORDER BY " + COLUMN_TIMESTAMP + " DESC "
+                + "LIMIT " + limit;
 
         Cursor cursor = database.rawQuery(query, new String[]{uuid});
         List<Map<String, Object>> rowsOfExercise = new ArrayList<>();

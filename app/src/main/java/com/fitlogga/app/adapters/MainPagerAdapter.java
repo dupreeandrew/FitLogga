@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.fitlogga.app.fragments.GraphFragment;
 import com.fitlogga.app.fragments.PlansFragment;
 import com.fitlogga.app.fragments.PowerupFragment;
 
@@ -22,7 +21,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new PlansFragment();
             case 2:
-                return new GraphFragment();
+                return new PlansFragment();
             default:
                 return null;
         }

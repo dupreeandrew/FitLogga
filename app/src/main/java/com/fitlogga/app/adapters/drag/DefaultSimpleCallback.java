@@ -14,12 +14,13 @@ public class DefaultSimpleCallback extends ItemTouchHelper.SimpleCallback {
 
     public DefaultSimpleCallback(ItemTouchAdapter adapter) {
         super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0);
+        new Exception().printStackTrace();
         this.adapter = adapter;
     }
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder source, @NonNull RecyclerView.ViewHolder target) {
-
+        new Exception().printStackTrace();
 
 
         if (sourcePos == -1) {
@@ -49,6 +50,8 @@ public class DefaultSimpleCallback extends ItemTouchHelper.SimpleCallback {
         if (sourcePos != -1 && targetPos != -1) {
             adapter.onDragFinished(sourcePos, targetPos);
         }
+
+
 
         Log.d("testt#", sourcePos + " -> " + targetPos);
     }
