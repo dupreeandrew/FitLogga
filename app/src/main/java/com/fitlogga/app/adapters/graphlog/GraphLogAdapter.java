@@ -18,9 +18,16 @@ import java.util.List;
 public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     private List<History> historyList;
+    private RecyclerView recyclerView;
 
     public GraphLogAdapter(List<History> historyList) {
         this.historyList = historyList;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -29,7 +36,7 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View standardLayout = inflater.inflate(R.layout.vh_graph_log, parent, false);
-        return new HistoryViewHolder(standardLayout);
+        return new HistoryViewHolder(standardLayout, recyclerView);
 
     }
 
@@ -46,6 +53,7 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
         holder.setGraphUnit(unit);
         holder.setTitle(title);
+        holder.setSubtitle("A Standard Exercise");
 
 
     }

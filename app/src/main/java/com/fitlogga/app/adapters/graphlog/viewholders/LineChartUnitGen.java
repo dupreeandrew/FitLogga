@@ -1,7 +1,5 @@
 package com.fitlogga.app.adapters.graphlog.viewholders;
 
-import android.util.Log;
-
 import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.models.plan.log.Historics.FreeWeightHistory;
 import com.fitlogga.app.models.plan.log.Historics.History;
@@ -15,7 +13,6 @@ import java.util.List;
 public class LineChartUnitGen {
 
     public static DateLineCharter.Unit get(History history) {
-        Log.d("we are", "returning a unit");
         ExerciseType exerciseType = history.getExerciseType();
         switch (exerciseType) {
             case TIMED_RUN:

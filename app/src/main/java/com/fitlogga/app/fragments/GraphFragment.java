@@ -51,8 +51,7 @@ public class GraphFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rv_log_graphs);
         recyclerView.setHasFixedSize(true);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         List<History> historyList = getHistoryList();
