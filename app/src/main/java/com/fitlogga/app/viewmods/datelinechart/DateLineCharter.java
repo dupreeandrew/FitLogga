@@ -119,8 +119,6 @@ public class DateLineCharter {
      */
     public static void set(LineChart lineChart, Unit unit, DateMarkerView markerView) {
 
-
-
         List<Long> timestamps = unit.getTimestamps();
         Data[] dataPieces = unit.getDataObjects();
 
@@ -128,7 +126,27 @@ public class DateLineCharter {
 
         SparseLongArray entryNumToTimestampMap = unit.getEntryNumToTimestampMap();
         configureXAxis(MAX_VISIBLE_POINTS, lineChart, entryNumToTimestampMap);
+        customizeLineChart(lineChart, markerView, MAX_VISIBLE_POINTS);
 
+
+        LineData lineData = getLineData(dataPieces);
+        lineChart.setData(lineData);
+        lineChart.moveViewToX(MAX_VISIBLE_POINTS);
+
+    }
+
+
+
+    private static void configureXAxis(int numVisiblePoints, LineChart lineChart,
+                                       SparseLongArray entryNumToTimestampMap) {
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter(new HourAxisValueFormatter(entryNumToTimestampMap));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelCount(numVisiblePoints);
+
+    }
+
+    private static LineData getLineData(Data[] dataPieces) {
         LineData lineData = new LineData();
         for (Data data : dataPieces) {
 
@@ -142,40 +160,24 @@ public class DateLineCharter {
                 entryList.add(entry);
             }
 
-            List<Map<String, Integer>> extraValueDataList = data.getExtraValueDataList();
-            if (extraValueDataList != null) {
-                addExtraData(entryList, extraValueDataList);
-            }
-
-
+            injectAnyExtraNonNullData(entryList, data);
 
             String label = data.getLabel();
 
 
             LineDataSet lineDataSet = new LineDataSet(entryList, label);
             customizeLineDataSet(lineDataSet);
+
             lineData.addDataSet(lineDataSet);
-
-
         }
-
-        lineChart.setData(lineData);
-        lineChart.setMarker(markerView);
-        lineChart.getXAxis().setDrawGridLines(false);
-        lineChart.getAxisLeft().setDrawGridLines(false);
-        lineChart.setVisibleXRangeMaximum(MAX_VISIBLE_POINTS);
-
-        lineChart.moveViewToX(MAX_VISIBLE_POINTS);
-
-
+        return lineData;
     }
 
-    private static void configureXAxis(int numVisiblePoints, LineChart lineChart,
-                                       SparseLongArray entryNumToTimestampMap) {
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setValueFormatter(new HourAxisValueFormatter(entryNumToTimestampMap));
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(numVisiblePoints);
+    private static void injectAnyExtraNonNullData(List<Entry> entryList, Data data) {
+        List<Map<String, Integer>> extraValueDataList = data.getExtraValueDataList();
+        if (extraValueDataList != null) {
+            addExtraData(entryList, extraValueDataList);
+        }
 
     }
 
@@ -200,6 +202,14 @@ public class DateLineCharter {
         lineDataSet.setCircleRadius(5.0f);
         lineDataSet.setCircleColors(new int[] {R.color.colorAccentDark}, context);
 
+    }
+
+    private static void customizeLineChart(LineChart lineChart, DateMarkerView markerView,
+                                           int maxVisiblePoints) {
+        lineChart.setMarker(markerView);
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        lineChart.setVisibleXRangeMaximum(maxVisiblePoints);
     }
 
 
