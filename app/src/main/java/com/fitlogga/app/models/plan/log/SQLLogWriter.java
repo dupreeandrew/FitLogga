@@ -108,4 +108,14 @@ public class SQLLogWriter extends SQLLog {
         database.insert(TABLE_LOG, null, logContentValues);
     }
 
+    public static void delete(String uuid) {
+        String whereClause = COLUMN_UUID + " = ?";
+        new SQLLog(){}.database
+                .delete(
+                        TABLE_EXERCISES,
+                        whereClause,
+                        new String[]{uuid}
+                        );
+    }
+
 }

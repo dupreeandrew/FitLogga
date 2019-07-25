@@ -39,19 +39,33 @@ primary key | (exercises-table)1 | num_sets | num_reps | | value | | timestamp |
 */
 public abstract class SQLLog {
 
+    private static final String databaseName = "exercise-log";
+
     SQLiteDatabase database;
 
     private long planPrimaryKey;
 
+    /**
+     * Do not use unless you absolutely do not need a plan name
+     */
+    SQLLog() {
+        Context context = ApplicationContext.getInstance();
+        this.database = context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
+        createTables();
+    }
+
+    private void createTables() {
+        createPlanTable();
+        createExercisesTable();
+        createLoggingTable();
+    }
+
     SQLLog(String planName) {
-        String databaseName = "exercise-log";
 
         Context context = ApplicationContext.getInstance();
         this.database = context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
 
-        createPlanTable();
-        createExercisesTable();
-        createLoggingTable();
+        createTables();
 
         insertPlanIntoPlanTable(planName);
         initPlanPrimaryKey(planName);

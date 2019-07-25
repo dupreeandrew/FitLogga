@@ -21,6 +21,7 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
+import com.fitlogga.app.models.plan.log.SQLLogWriter;
 import com.fitlogga.app.viewmods.FabController;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
@@ -127,7 +128,7 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         new LovelyStandardDialog(view.getContext())
                 .setTopColorRes(R.color.colorWarning)
                 .setTitle("Are you sure?")
-                .setMessage("Are you sure you want to delete this exercise?")
+                .setMessage("Are you sure you want to delete this exercise? This will delete its logs")
                 .setPositiveButton("Delete", posView -> delete(adapterPosition))
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -141,7 +142,9 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
             copierDays.setDayAsCopier(day, null);
         }
 
+        SQLLogWriter.delete(exercise.getUuid());
         exerciseList.remove(adapterPosition);
+
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, exerciseList.size());
         lockViewHolderFocus(false);
