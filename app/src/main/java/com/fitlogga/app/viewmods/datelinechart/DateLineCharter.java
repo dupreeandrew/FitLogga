@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.util.SparseLongArray;
 
+import androidx.annotation.IntRange;
 import androidx.annotation.Nullable;
 
 import com.fitlogga.app.R;
@@ -148,6 +149,7 @@ public class DateLineCharter {
 
     private static LineData getLineData(Data[] dataPieces) {
         LineData lineData = new LineData();
+        int dataIterationCount = 0;
         for (Data data : dataPieces) {
 
             List<Integer> valueList = data.getValueList();
@@ -166,9 +168,12 @@ public class DateLineCharter {
 
 
             LineDataSet lineDataSet = new LineDataSet(entryList, label);
-            customizeLineDataSet(lineDataSet);
+            customizeLineDataSet(lineDataSet, dataIterationCount);
 
             lineData.addDataSet(lineDataSet);
+
+            dataIterationCount++;
+
         }
         return lineData;
     }
@@ -194,13 +199,22 @@ public class DateLineCharter {
 
     }
 
-    private static void customizeLineDataSet(LineDataSet lineDataSet) {
+    private static void customizeLineDataSet(LineDataSet lineDataSet,
+                                             @IntRange(from = 0, to = 1) int colorSeed) {
         lineDataSet.setLineWidth(3.0f);
 
         Context context = ApplicationContext.getInstance();
-        lineDataSet.setColors(new int[]{R.color.colorPrimaryLight}, context);
         lineDataSet.setCircleRadius(5.0f);
-        lineDataSet.setCircleColors(new int[] {R.color.colorAccentDark}, context);
+
+
+        if (colorSeed == 0) {
+            lineDataSet.setColors(new int[]{R.color.colorPrimaryLight}, context);
+            lineDataSet.setCircleColors(new int[] {R.color.colorAccentDark}, context);
+        }
+        else {
+            lineDataSet.setColors(new int[]{R.color.colorAccent}, context);
+            lineDataSet.setCircleColors(new int[] {R.color.colorPrimary}, context);
+        }
 
     }
 
