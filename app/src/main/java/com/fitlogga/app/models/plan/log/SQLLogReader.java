@@ -42,12 +42,12 @@ public class SQLLogReader extends SQLLog {
      * Returns the history of all exercises under a specified day.
      * All history objects return snapshots sorted by their timestamp, in descended order.
      */
-    public List<History> getHistoryList(Day day, @IntRange(from = 0, to = 500) int maxSize) {
+    public List<History> getHistoryList(Day day, @IntRange(from = 0, to = 500) int maxSnapshotsSize) {
 
         List<History> historyList = new ArrayList<>();
         Set<String> exerciseUuids = getExerciseUuids(day.getValue());
         for (String uuid : exerciseUuids) {
-            History history = getHistory(uuid, maxSize);
+            History history = getHistory(uuid, maxSnapshotsSize);
             historyList.add(history);
         }
 
