@@ -17,7 +17,7 @@ public class StandardMarker extends DateMarkerView {
 
     @Override
     public void onRefreshContent(Entry e, Highlight highlight) {
-        float value = e.getY();
+        int value = (int) e.getY();
         TextView valueView = findViewById(R.id.tv_value);
         valueView.setText("Value: " + value);
     }

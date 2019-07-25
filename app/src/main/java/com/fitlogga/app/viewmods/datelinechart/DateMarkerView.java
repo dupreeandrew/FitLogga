@@ -2,6 +2,7 @@
 package com.fitlogga.app.viewmods.datelinechart;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.SparseLongArray;
 import android.widget.TextView;
 
@@ -35,13 +36,16 @@ public abstract class DateMarkerView extends MarkerView {
 
     @Override
     public final void refreshContent(Entry e, Highlight highlight) {
-        updateDateTextView(e);
         onRefreshContent(e, highlight);
+        updateDateTextView(e);
         super.refreshContent(e, highlight);
     }
 
     private final void updateDateTextView(Entry e){
         int entryNum = (int) e.getX();
+        if (e.getData() != null) {
+            Log.d("dateX", String.valueOf(entryNum));
+        }
         long timestamp = entryNumToTimestampMap.get(entryNum);
 
         mDate.setTime(timestamp);

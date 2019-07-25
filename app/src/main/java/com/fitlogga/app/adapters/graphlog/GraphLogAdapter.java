@@ -51,7 +51,7 @@ public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
         DateLineCharter.Unit unit = LineChartUnitGen.get(history);
         String title = history.getName();
 
-        holder.setGraphUnit(unit);
+        holder.setGraphUnit(unit, history.getExerciseType());
         holder.setTitle(title);
         holder.setSubtitle("A Standard Exercise");
 

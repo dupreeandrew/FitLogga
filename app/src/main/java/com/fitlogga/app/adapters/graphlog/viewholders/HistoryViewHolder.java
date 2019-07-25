@@ -2,6 +2,7 @@ package com.fitlogga.app.adapters.graphlog.viewholders;
 
 
 import android.annotation.SuppressLint;
+import android.util.SparseLongArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -11,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.graphlog.viewholders.markers.StandardMarker;
+import com.fitlogga.app.adapters.graphlog.viewholders.markers.WeightMarker;
+import com.fitlogga.app.models.exercises.ExerciseType;
 import com.fitlogga.app.viewmods.datelinechart.DateLineCharter;
+import com.fitlogga.app.viewmods.datelinechart.DateMarkerView;
 import com.github.mikephil.charting.charts.LineChart;
 
 public class HistoryViewHolder extends RecyclerView.ViewHolder  {
@@ -57,12 +61,22 @@ public class HistoryViewHolder extends RecyclerView.ViewHolder  {
         subtitleView.setText(subtitle);
     }
 
-    public void setGraphUnit(DateLineCharter.Unit unit) {
+    public void setGraphUnit(DateLineCharter.Unit unit, ExerciseType exerciseType) {
         LineChart lineChart = itemView.findViewById(R.id.chart_standard);
-        StandardMarker marker = new StandardMarker(itemView.getContext(),
-                unit.getEntryNumToTimestampMap());
+
+        DateMarkerView marker = getMarker(unit, exerciseType);
         marker.setChartView(lineChart);
         DateLineCharter.set(lineChart, unit, marker);
+    }
+
+    private DateMarkerView getMarker(DateLineCharter.Unit unit, ExerciseType exerciseType) {
+        SparseLongArray entryNumToTimestampMap = unit.getEntryNumToTimestampMap();
+        if (exerciseType == ExerciseType.FREE_WEIGHT_EXERCISE) {
+            return new WeightMarker(itemView.getContext(), entryNumToTimestampMap);
+        }
+        else {
+            return new StandardMarker(itemView.getContext(), entryNumToTimestampMap);
+        }
     }
 
 }

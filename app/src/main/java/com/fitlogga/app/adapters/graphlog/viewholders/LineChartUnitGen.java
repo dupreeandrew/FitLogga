@@ -8,9 +8,14 @@ import com.fitlogga.app.models.plan.log.Historics.StandardExerciseHistory;
 import com.fitlogga.app.viewmods.datelinechart.DateLineCharter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LineChartUnitGen {
+
+    public static final String SETS_KEY = "setsKey";
+    public static final String REPS_KEY = "repsKey";
 
     public static DateLineCharter.Unit get(History history) {
         ExerciseType exerciseType = history.getExerciseType();
@@ -73,17 +78,32 @@ public class LineChartUnitGen {
 
     private static DateLineCharter.Unit get(FreeWeightHistory history) {
         List<Long> timestamps = new ArrayList<>();
-        List<Integer> valueList = new ArrayList<>();
-        for (FreeWeightHistory.Snapshot snapshot : history.getSnapshots()) {
-            int value = snapshot.getWeight();
-            valueList.add(value);
+        List<Integer> weightList = new ArrayList<>();
 
+        List<Map<String, Integer>> setsAndRepsMapList = new ArrayList<>();
+
+
+        for (FreeWeightHistory.Snapshot snapshot : history.getSnapshots()) {
+            int weight = snapshot.getWeight();
+            int sets = snapshot.getSets();
+            int reps = snapshot.getReps();
             long timestamp = snapshot.getTimestamp();
+
+            weightList.add(weight);
             timestamps.add(timestamp);
+
+            // Extra Data
+            Map<String, Integer> setsAndRepsMap = new HashMap<>();
+            setsAndRepsMap.put(SETS_KEY, sets);
+            setsAndRepsMap.put(REPS_KEY, reps);
+            setsAndRepsMapList.add(setsAndRepsMap);
+
+
         }
 
         String label = "units";
-        DateLineCharter.Data data = new DateLineCharter.Data(label, valueList);
+        DateLineCharter.Data data = new DateLineCharter.Data(label, weightList);
+        data.setExtraValueData(setsAndRepsMapList);
 
         return new DateLineCharter.Unit(timestamps, data);
     }
