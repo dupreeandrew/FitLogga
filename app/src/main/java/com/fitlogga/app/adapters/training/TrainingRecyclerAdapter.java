@@ -191,7 +191,6 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     private void logAllExercises() {
         SQLLogWriter writer = new SQLLogWriter(planName);
         writer.append(exerciseList, day);
-        writer.selfDestruct();
     }
 
     @Override

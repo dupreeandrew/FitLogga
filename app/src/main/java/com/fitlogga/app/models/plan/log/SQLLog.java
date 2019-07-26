@@ -41,7 +41,7 @@ public abstract class SQLLog {
 
     private static final String databaseName = "exercise-log";
 
-    SQLiteDatabase database;
+    static SQLiteDatabase database;
 
     private long planPrimaryKey;
 
@@ -49,8 +49,14 @@ public abstract class SQLLog {
      * Do not use unless you absolutely do not need a plan name
      */
     SQLLog() {
-        Context context = ApplicationContext.getInstance();
-        this.database = context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
+        ensureDatabaseIsInitialized();
+    }
+
+    private void ensureDatabaseIsInitialized() {
+        if (SQLLog.database == null) {
+            Context context = ApplicationContext.getInstance();
+            SQLLog.database = context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
+        }
         createTables();
     }
 
@@ -58,17 +64,6 @@ public abstract class SQLLog {
         createPlanTable();
         createExercisesTable();
         createLoggingTable();
-    }
-
-    SQLLog(String planName) {
-
-        Context context = ApplicationContext.getInstance();
-        this.database = context.openOrCreateDatabase(databaseName, Context.MODE_PRIVATE, null);
-
-        createTables();
-
-        insertPlanIntoPlanTable(planName);
-        initPlanPrimaryKey(planName);
     }
 
     private void createPlanTable() {
@@ -111,6 +106,12 @@ public abstract class SQLLog {
                         + COLUMN_TIMESTAMP + " TEXT);");
     }
 
+    SQLLog(String planName) {
+        ensureDatabaseIsInitialized();
+        insertPlanIntoPlanTable(planName);
+        initPlanPrimaryKey(planName);
+    }
+
     private void insertPlanIntoPlanTable(String planName) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_PLAN_NAME, planName);
@@ -138,10 +139,6 @@ public abstract class SQLLog {
 
     public final long getPlanPrimaryKey() {
         return this.planPrimaryKey;
-    }
-
-    public final void selfDestruct() {
-        this.database.close();
     }
 
 }

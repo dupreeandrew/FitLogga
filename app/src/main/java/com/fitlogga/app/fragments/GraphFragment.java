@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.fitlogga.app.R;
-import com.fitlogga.app.adapters.graphlog.GraphLogAdapter;
+import com.fitlogga.app.adapters.graphlog.GraphLogRecyclerAdapter;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.log.Historics.History;
@@ -55,7 +55,7 @@ public class GraphFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         List<History> historyList = getHistoryList();
-        recyclerView.setAdapter(new GraphLogAdapter(historyList));
+        recyclerView.setAdapter(new GraphLogRecyclerAdapter(historyList));
 
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
@@ -64,8 +64,6 @@ public class GraphFragment extends Fragment {
     private List<History> getHistoryList() {
         String planName = PlanReader.getCurrentPlanName();
         SQLLogReader reader = new SQLLogReader(planName);
-        List<History> historyList = reader.getHistoryList(Day.WEDNESDAY, 75);
-        reader.selfDestruct();
-        return historyList;
+        return reader.getHistoryList(Day.WEDNESDAY, 75);
     }
 }
