@@ -161,7 +161,7 @@ public class PlanReader {
         return !planNamePref.contains(dayValueString);
     }
 
-    private Set<Day> getNonEmptyDays() {
+    public Set<Day> getNonEmptyDays() {
         Set<Day> daySet = new HashSet<>();
         for (Day day: Day.values()) {
             if (!isDayEmpty(day)) {
