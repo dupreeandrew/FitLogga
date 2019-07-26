@@ -19,10 +19,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class PlanReader {
 
@@ -161,14 +159,14 @@ public class PlanReader {
         return !planNamePref.contains(dayValueString);
     }
 
-    public Set<Day> getNonEmptyDays() {
-        Set<Day> daySet = new HashSet<>();
+    public List<Day> getNonEmptyDays() {
+        List<Day> dayList = new ArrayList<>();
         for (Day day: Day.values()) {
             if (!isDayEmpty(day)) {
-                daySet.add(day);
+                dayList.add(day);
             }
         }
-        return daySet;
+        return dayList;
     }
 
     @Nullable

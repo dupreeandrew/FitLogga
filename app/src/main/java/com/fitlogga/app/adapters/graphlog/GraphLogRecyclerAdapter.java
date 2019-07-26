@@ -15,12 +15,12 @@ import com.fitlogga.app.viewmods.datelinechart.DateLineCharter;
 
 import java.util.List;
 
-public class GraphLogAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
+public class GraphLogRecyclerAdapter extends RecyclerView.Adapter<HistoryViewHolder> {
 
     private List<History> historyList;
     private RecyclerView recyclerView;
 
-    public GraphLogAdapter(List<History> historyList) {
+    public GraphLogRecyclerAdapter(List<History> historyList) {
         this.historyList = historyList;
     }
 

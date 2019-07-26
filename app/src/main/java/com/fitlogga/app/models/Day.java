@@ -52,6 +52,28 @@ public enum Day {
         }
     }
 
+    public String getDayAbbrev() {
+        Resources resources = ApplicationContext.getInstance().getResources();
+        switch (value) {
+            case 0:
+                return resources.getString(R.string.tab_sunday_abbreviation);
+            case 1:
+                return resources.getString(R.string.tab_monday_abbreviation);
+            case 2:
+                return resources.getString(R.string.tab_tuesday_abbreviation);
+            case 3:
+                return resources.getString(R.string.tab_wednesday_abbreviation);
+            case 4:
+                return resources.getString(R.string.tab_thursday_abbreviation);
+            case 5:
+                return resources.getString(R.string.tab_friday_abbreviation);
+            case 6:
+                return resources.getString(R.string.tab_saturday_abbreviation);
+        }
+
+        throw new NullPointerException();
+    }
+
     public static Day fromValue(int value) {
 
         for (Day day : Day.values()) {
@@ -68,5 +90,6 @@ public enum Day {
         int dayNum = calendar.get(Calendar.DAY_OF_WEEK);
         return Day.values()[dayNum - 1];
     }
+
 
 }
