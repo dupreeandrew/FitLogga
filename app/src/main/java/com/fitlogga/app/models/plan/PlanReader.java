@@ -19,8 +19,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class PlanReader {
 
@@ -157,6 +159,16 @@ public class PlanReader {
     public boolean isDayEmpty(Day day) {
         String dayValueString = String.valueOf(day.getValue());
         return !planNamePref.contains(dayValueString);
+    }
+
+    private Set<Day> getNonEmptyDays() {
+        Set<Day> daySet = new HashSet<>();
+        for (Day day: Day.values()) {
+            if (!isDayEmpty(day)) {
+                daySet.add(day);
+            }
+        }
+        return daySet;
     }
 
     @Nullable
