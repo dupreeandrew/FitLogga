@@ -17,16 +17,20 @@ import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_DAY_NUM;
 import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_EXERCISE_ID;
 import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_NAME;
 import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_PLAN_ID;
+import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_PLAN_NAME;
 import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_TYPE_NUM;
 import static com.fitlogga.app.models.plan.log.SQLSchema.COLUMN_UUID;
 import static com.fitlogga.app.models.plan.log.SQLSchema.TABLE_EXERCISES;
 import static com.fitlogga.app.models.plan.log.SQLSchema.TABLE_LOG;
+import static com.fitlogga.app.models.plan.log.SQLSchema.TABLE_PLANS;
 
 public class SQLLogWriter extends SQLLog {
 
+    private String planName;
+
     public SQLLogWriter(String planName) {
         super(planName);
-
+        this.planName = planName;
     }
 
     /**
@@ -118,4 +122,10 @@ public class SQLLogWriter extends SQLLog {
                         );
     }
 
+    public void updatePlanName(String newPlanName) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_PLAN_NAME, newPlanName);
+        String selection = COLUMN_PLAN_NAME + " = ?";
+        database.update(TABLE_PLANS, contentValues, selection, new String[]{planName});
+    }
 }

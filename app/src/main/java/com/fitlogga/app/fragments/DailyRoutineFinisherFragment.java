@@ -22,6 +22,7 @@ import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
+import com.fitlogga.app.models.plan.log.SQLLogWriter;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -146,6 +147,10 @@ public class DailyRoutineFinisherFragment extends Fragment {
             deleteExistingPlan();
             // "Plan was updated"
             successMessage = getString(R.string.fragment_daily_routine_finisher_plan_was_updated);
+
+            String originalPlanName = planSummary.getName();
+            SQLLogWriter writer = new SQLLogWriter(originalPlanName);
+            writer.updatePlanName(inputNameString);
         }
         else {
             // "Plan was created"
