@@ -41,11 +41,6 @@ public class PlanSummaryViewHolder extends RecyclerView.ViewHolder {
     void setPlanName(String name) {
         TextView planNameView = view.findViewById(R.id.tv_plan_name);
         planNameView.setText(name);
-
-        TextView planNameFirstCharView = view.findViewById(R.id.tv_plan_name_first_letter);
-        String firstChar = String.valueOf(name.charAt(0));
-        planNameFirstCharView.setText(firstChar);
-
         initGraphLogButton(name);
     }
 
