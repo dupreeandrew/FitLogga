@@ -5,30 +5,27 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.fitlogga.app.fragments.GraphFragment;
-import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.plan.log.SQLLogReader;
+import com.fitlogga.app.models.plan.log.Historics.History;
 
 import java.util.List;
 
 public class GraphLogDayAdapter extends FragmentPagerAdapter {
 
-    private SQLLogReader reader;
-    private List<Day> dayList;
+    private List<List<History>> historyLists;
 
-    public GraphLogDayAdapter(FragmentManager fm, SQLLogReader reader, List<Day> dayList) {
+    public GraphLogDayAdapter(FragmentManager fm, List<List<History>> historyLists) {
         super(fm);
-        this.reader = reader;
-        this.dayList = dayList;
+        this.historyLists = historyLists;
     }
 
     @Override
     public Fragment getItem(int position) {
-        Day day = dayList.get(position);
-        return new GraphFragment(reader, day);
+        List<History> historyList = historyLists.get(position);
+        return new GraphFragment(historyList);
     }
 
     @Override
     public int getCount() {
-        return dayList.size();
+        return historyLists.size();
     }
 }

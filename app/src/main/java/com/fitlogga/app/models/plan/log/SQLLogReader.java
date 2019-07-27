@@ -1,6 +1,7 @@
 package com.fitlogga.app.models.plan.log;
 
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import androidx.annotation.IntRange;
 
@@ -237,6 +238,12 @@ public class SQLLogReader extends SQLLog {
 
         return snapshotList;
 
+    }
+
+    public long getTotalExercisesLogged() {
+        String selection = COLUMN_PLAN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(getPlanPrimaryKey())};
+        return DatabaseUtils.queryNumEntries(database, TABLE_EXERCISES, selection, selectionArgs);
     }
 
 }

@@ -20,8 +20,6 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return new PowerupFragment();
             case 1:
                 return new PlansFragment();
-            case 2:
-                return new PlansFragment();
             default:
                 return null;
         }
@@ -29,7 +27,7 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
 

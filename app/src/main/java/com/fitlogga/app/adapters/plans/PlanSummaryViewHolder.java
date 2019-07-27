@@ -1,19 +1,22 @@
 package com.fitlogga.app.adapters.plans;
 
+import android.content.Intent;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
-import com.fitlogga.app.adapters.collapsible.CollapsibleViewHolder;
+import com.fitlogga.app.activities.PlanLogActivity;
+import com.fitlogga.app.models.plan.log.SQLLogReader;
 import com.fitlogga.app.viewmods.ViewEnabler;
 
-public class PlanSummaryViewHolder extends CollapsibleViewHolder {
+public class PlanSummaryViewHolder extends RecyclerView.ViewHolder {
 
     private View view;
 
@@ -38,28 +41,49 @@ public class PlanSummaryViewHolder extends CollapsibleViewHolder {
     void setPlanName(String name) {
         TextView planNameView = view.findViewById(R.id.tv_plan_name);
         planNameView.setText(name);
+
+        TextView planNameFirstCharView = view.findViewById(R.id.tv_plan_name_first_letter);
+        String firstChar = String.valueOf(name.charAt(0));
+        planNameFirstCharView.setText(firstChar);
+
+        initGraphLogButton(name);
     }
 
-    void setCollapseContent(long lastUsedTimestamp, String description) {
+    private void initGraphLogButton(String name) {
+        ImageView graphLogView = view.findViewById(R.id.iv_log);
+        graphLogView.setOnClickListener(view -> {
+            if (atLeastOneExerciseWasLogged(name)) {
+                Intent intent = new Intent(view.getContext(), PlanLogActivity.class);
+                intent.putExtra(PlanLogActivity.PLAN_NAME_KEY, name);
+                view.getContext().startActivity(intent);
+            }
+            else {
+                String msg = "No exercises were logged for this plan";
+                Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-        Log.d("blaaa1", description + " : " + lastUsedTimestamp);
+    private boolean atLeastOneExerciseWasLogged(String name) {
+        SQLLogReader reader = new SQLLogReader(name);
+        return reader.getTotalExercisesLogged() != 0;
+    }
 
-        CharSequence lastUsedText = "Last used " +
+
+    void setDescription(String description) {
+        ImageView infoImageView = view.findViewById(R.id.iv_info);
+        infoImageView.setOnClickListener(infoView -> {
+            Toast.makeText(view.getContext(), description, Toast.LENGTH_LONG).show();
+        });
+    }
+
+    void setLastUsed(long lastUsedTimestamp) {
+
+        String lastUsedText = "Last used\n" +
                 DateUtils.getRelativeTimeSpanString(lastUsedTimestamp);
-        String collapseContent = lastUsedText + "\n" + description;
 
-        TextView collapseContentView = view.findViewById(R.id.tv_collapse_content);
-        collapseContentView.setText(collapseContent);
-    }
-
-    @Override
-    protected int[] getCollapsibleViewResourceIds() {
-        return new int[]{
-                R.id.btn_activate,
-                R.id.btn_delete,
-                R.id.divider,
-                R.id.tv_collapse_content
-        };
+        TextView collapseContentView = view.findViewById(R.id.tv_last_used);
+        collapseContentView.setText(lastUsedText);
     }
 
     void setActivateButtonClickListener(View.OnClickListener listener) {
@@ -68,7 +92,7 @@ public class PlanSummaryViewHolder extends CollapsibleViewHolder {
     }
 
     void setDeleteButtonClickListener(View.OnClickListener listener) {
-        Button deleteButton = view.findViewById(R.id.btn_delete);
+        ImageView deleteButton = view.findViewById(R.id.iv_trash);
         deleteButton.setOnClickListener(listener);
     }
 

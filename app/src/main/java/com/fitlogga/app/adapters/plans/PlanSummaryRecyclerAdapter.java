@@ -1,22 +1,20 @@
 package com.fitlogga.app.adapters.plans;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
-import com.fitlogga.app.adapters.collapsible.CollapsibleRecyclerAdapter;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
 
-public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanSummaryViewHolder> {
+public class PlanSummaryRecyclerAdapter extends RecyclerView.Adapter<PlanSummaryViewHolder> {
 
     private List<PlanSummary> planSummaries;
 
@@ -28,15 +26,16 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     @Override
     public PlanSummaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vh_plan, parent, false);
+                .inflate(R.layout.vh_plan_revised, parent, false);
         return new PlanSummaryViewHolder(view);
     }
 
     @Override
-    protected void onPostConfigBindViewHolder(@NonNull PlanSummaryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PlanSummaryViewHolder holder, int position) {
         PlanSummary planSummary = planSummaries.get(position);
         holder.setPlanName(planSummary.getName());
-        holder.setCollapseContent(planSummary.getLastUsed(), planSummary.getDescription());
+        holder.setLastUsed(planSummary.getLastUsed());
+        holder.setDescription(planSummary.getDescription());
         holder.setAsActive(position == 0);
         holder.setActivateButtonClickListener(view -> activatePlan(view, planSummary, holder.getAdapterPosition()));
         holder.setDeleteButtonClickListener(view -> promptDeletePlan(view, planSummary, position));
@@ -54,9 +53,11 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
         planSummaries.add(0, planSummary);
         notifyItemInserted(0);
 
+        notifyItemChanged(1);
 
-        considerDataSetMoved(0, planSummaries.size());
-        expandViewHolder(0);
+
+        //considerDataSetMoved(0, planSummaries.size());
+        //xpandViewHolder(0);
 
     }
 
@@ -83,16 +84,6 @@ public class PlanSummaryRecyclerAdapter extends CollapsibleRecyclerAdapter<PlanS
     @Override
     public int getItemCount() {
         return planSummaries.size();
-    }
-
-    @Override
-    protected void onViewHolderCollapsed(Event event, PlanSummaryViewHolder viewHolder, Context context) {
-
-    }
-
-    @Override
-    protected void onViewHolderExpanded(int adapterPos) {
-
     }
 
 }

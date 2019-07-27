@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.activities.PlanCreatorActivity;
+import com.fitlogga.app.adapters.plans.ItemOffsetDecoration;
 import com.fitlogga.app.adapters.plans.PlanSummaryRecyclerAdapter;
 import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanReader;
@@ -46,7 +47,8 @@ public class PlansFragment extends Fragment {
     private void initRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.rv_plans);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
+        recyclerView.addItemDecoration(new ItemOffsetDecoration(8));
 
         List<PlanSummary> planSummaries = PlanReader.getPlanSummaries();
         recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries));

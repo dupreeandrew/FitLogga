@@ -11,11 +11,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.graphlog.GraphLogDayAdapter;
 import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.plan.PlanReader;
+import com.fitlogga.app.models.plan.log.Historics.History;
 import com.fitlogga.app.models.plan.log.SQLLogReader;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Set;
 
 public class PlanLogActivity extends AppCompatActivity {
 
@@ -27,14 +30,15 @@ public class PlanLogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plan_log);
         enableBackButton();
 
-        String planName = "hiiii";
+        String planName = getIntent().getStringExtra(PLAN_NAME_KEY);
 
-        List<Day> nonEmptyDays = PlanReader.attachTo(planName).getNonEmptyDays();
-
-        initViewPager(planName, nonEmptyDays);
+        EnumMap<Day, List<History>> dayListEnumMap = getMapOfLoggedDays(planName);
+        Set<Day> nonEmptyDays = dayListEnumMap.keySet();
+        initViewPager(dayListEnumMap);
         initTabs(nonEmptyDays);
 
     }
+
 
     private void enableBackButton() {
         ActionBar actionBar = getSupportActionBar();
@@ -51,13 +55,25 @@ public class PlanLogActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initViewPager(String planName, List<Day> dayList) {
+    private EnumMap<Day, List<History>> getMapOfLoggedDays(String planName) {
+        EnumMap<Day, List<History>> dayListEnumMap = new EnumMap<>(Day.class);
         SQLLogReader reader = new SQLLogReader(planName);
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new GraphLogDayAdapter(getSupportFragmentManager(), reader, dayList));
+        for (Day day : Day.values()) {
+            List<History> historyList = reader.getHistoryList(day, 250);
+            if (historyList.size() != 0) {
+                dayListEnumMap.put(day, historyList);
+            }
+        }
+        return dayListEnumMap;
     }
 
-    private void initTabs(List<Day> nonEmptyDays) {
+    private void initViewPager(EnumMap<Day, List<History>> dayListEnumMap) {
+        List<List<History>> historyLists = new ArrayList<>(dayListEnumMap.values());
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(new GraphLogDayAdapter(getSupportFragmentManager(), historyLists));
+    }
+
+    private void initTabs(Set<Day> nonEmptyDays) {
         int nonEmptyDaysSize = nonEmptyDays.size();
         TabLayout tabLayout = findViewById(R.id.tab_layout_days_of_logging);
         if (nonEmptyDaysSize <= 3) {
@@ -73,7 +89,7 @@ public class PlanLogActivity extends AppCompatActivity {
 
     }
 
-    private void addDayNameTabs(TabLayout tabLayout, List<Day> nonEmptyDays) {
+    private void addDayNameTabs(TabLayout tabLayout, Set<Day> nonEmptyDays) {
         for (Day day : nonEmptyDays) {
             TabLayout.Tab tab = tabLayout.newTab();
             String dayName = Day.getStringRepresentation(this, day);
@@ -82,7 +98,7 @@ public class PlanLogActivity extends AppCompatActivity {
         }
     }
 
-    private void addDayAbbrevTabs(TabLayout tabLayout, List<Day> nonEmptyDays) {
+    private void addDayAbbrevTabs(TabLayout tabLayout, Set<Day> nonEmptyDays) {
         for (Day day : nonEmptyDays) {
             TabLayout.Tab tab = tabLayout.newTab();
             String dayAbbrev = day.getDayAbbrev();

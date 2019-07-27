@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="32dp"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        android:padding="8dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_plan"

@@ -36,11 +36,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_plans" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_graph" />
-
         </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

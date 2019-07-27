@@ -34,7 +34,7 @@ primaryKey | planId | uuid | typeNum |
 3, 1, ABCD-EFG3-LAK9, 3
 
 Exercise Log Table
-primary key | (exercises-table)1 | num_sets | num_reps | | value | | timestamp |
+primary key | (exercises-table primaryKey)1 | num_sets | num_reps | | value | | timestamp |
 1, 3, 3, 10, null, 52424222
 */
 public abstract class SQLLog {
