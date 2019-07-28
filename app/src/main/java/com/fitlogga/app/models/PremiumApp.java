@@ -1,7 +1,14 @@
 package com.fitlogga.app.models;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.fitlogga.app.R;
 
 /**
  * This class is used to edit the device's premium status.
@@ -45,6 +52,21 @@ public class PremiumApp {
         SharedPreferences pref = getSharedPreferences();
         String value = pref.getString(SECRET_PREMIUM_KEY, "");
         return SECRET_PREMIUM_VALUE.equals(value);
+    }
+
+    public static void popupPremiumAppDialog(Context context, String promptMessage) {
+        View dialogView = LayoutInflater.from(context)
+                .inflate(R.layout.dialog_premium_app, null);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .show();
+
+        TextView promptView = dialog.findViewById(R.id.tv_prompt_message);
+        promptView.setText(promptMessage);
+
+        Button cancelButton = dialog.findViewById(R.id.btn_cancel);
+        cancelButton.setOnClickListener(buttonView -> dialog.dismiss());
+
     }
 
 }
