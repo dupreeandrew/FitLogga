@@ -48,7 +48,7 @@ public class PlansFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rv_plans);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-        recyclerView.addItemDecoration(new ItemOffsetDecoration(8));
+        recyclerView.addItemDecoration(new ItemOffsetDecoration(0));
 
         List<PlanSummary> planSummaries = PlanReader.getPlanSummaries();
         recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries));
