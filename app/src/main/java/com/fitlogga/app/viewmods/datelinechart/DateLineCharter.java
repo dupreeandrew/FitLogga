@@ -123,7 +123,7 @@ public class DateLineCharter {
         List<Long> timestamps = unit.getTimestamps();
         Data[] dataPieces = unit.getDataObjects();
 
-        final int MAX_VISIBLE_POINTS = Math.min(timestamps.size(), 4);
+        final int MAX_VISIBLE_POINTS = Math.min(timestamps.size(), 6);
 
         LineData lineData = getLineData(dataPieces);
         lineChart.setData(lineData);
