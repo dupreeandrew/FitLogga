@@ -16,6 +16,8 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.adapters.plans.ItemOffsetDecoration;
 import com.fitlogga.app.adapters.plans.PlanSummaryRecyclerAdapter;
+import com.fitlogga.app.models.PremiumApp;
+import com.fitlogga.app.models.plan.FreeAppSettings;
 import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
@@ -74,7 +76,7 @@ public class PlansFragment extends Fragment {
                 .setItems(choices, (position, item) -> {
                     switch (position) {
                         case CREATE_NEW_PLAN_INDEX:
-                            openPlanCreator(view);
+                            tryToOpenPlanCreator(view);
                             break;
                         case DOWNLOAD_PLAN_INDEX:
                             break;
@@ -84,9 +86,17 @@ public class PlansFragment extends Fragment {
                 .show();
     }
 
-    private static void openPlanCreator(View view) {
-        Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
-        view.getContext().startActivity(intent);
+    private static void tryToOpenPlanCreator(View view) {
+        int numExistingPlans = PlanReader.getNumberOfPlans();
+        if (numExistingPlans < FreeAppSettings.MAX_PLANS) {
+            Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
+            view.getContext().startActivity(intent);
+        }
+        else {
+            String message = "You can only have 3 fitness plans at a time. " +
+                    "Upgrade your fitness experience today for unlimited!";
+            PremiumApp.popupPremiumAppDialog(view.getContext(), message);
+        }
     }
 
 

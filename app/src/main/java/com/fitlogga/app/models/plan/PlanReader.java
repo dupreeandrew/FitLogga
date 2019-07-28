@@ -159,16 +159,6 @@ public class PlanReader {
         return !planNamePref.contains(dayValueString);
     }
 
-    public List<Day> getNonEmptyDays() {
-        List<Day> dayList = new ArrayList<>();
-        for (Day day: Day.values()) {
-            if (!isDayEmpty(day)) {
-                dayList.add(day);
-            }
-        }
-        return dayList;
-    }
-
     @Nullable
     public DayCopierExercise getDayCopier(Day day) {
         Exercise exercise = getDailyRoutine(day).get(0);
@@ -190,6 +180,11 @@ public class PlanReader {
 
     public String getPlanName() {
         return this.planName;
+    }
+
+    public static int getNumberOfPlans() {
+        SharedPreferences sharedPref = getPlanSummaryPref();
+        return sharedPref.getAll().size();
     }
 
 
