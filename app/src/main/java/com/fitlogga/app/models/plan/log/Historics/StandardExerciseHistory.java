@@ -41,6 +41,6 @@ public class StandardExerciseHistory extends History {
 
     @Override
     public String getName() {
-        return getExerciseType().name();
+        return getExerciseType().getLocaleName();
     }
 }

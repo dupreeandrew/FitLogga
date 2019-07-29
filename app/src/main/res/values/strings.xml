@@ -18,6 +18,11 @@
         <item>@string/global_friday</item>
         <item>@string/global_saturday</item>
     </string-array>
+    <string name="global_exercise_timed_run">Timed Run</string>
+    <string name="global_exercise_meter_run">Meter Run</string>
+    <string name="global_exercise_repetition_exercise">Repetition Exercise</string>
+    <string name="global_exercise_free_weight_exercise">Free Weight Exercise</string>
+    <string name="global_exercise_rest_break">Rest Break</string>
     <!-- global strings end -->
 
     <!-- tab names start -->
@@ -56,11 +61,11 @@
         Another day is already copying this one.
     </string>
     <string-array name="daily_routine_creator_creation_options">
-        <item>Timed Run</item>
-        <item>Meter Run</item>
-        <item>Repetition Exercise</item>
-        <item>Free Weight Exercise</item>
-        <item>Time of Resting</item>
+        <item>@string/global_exercise_timed_run</item>
+        <item>@string/global_exercise_meter_run</item>
+        <item>@string/global_exercise_repetition_exercise</item>
+        <item>@string/global_exercise_free_weight_exercise</item>
+        <item>@string/global_exercise_rest_break</item>
         <item>Copy a day</item>
     </string-array>
     <!-- daily routine creator fragment end -->

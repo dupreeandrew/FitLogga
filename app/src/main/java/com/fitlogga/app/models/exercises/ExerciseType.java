@@ -1,5 +1,10 @@
 package com.fitlogga.app.models.exercises;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.fitlogga.app.R;
+import com.fitlogga.app.models.ApplicationContext;
 import com.google.gson.annotations.SerializedName;
 
 public enum ExerciseType {
@@ -31,6 +36,25 @@ public enum ExerciseType {
 
         throw new IndexOutOfBoundsException();
 
+    }
+
+    public String getLocaleName() {
+        Context context = ApplicationContext.getInstance();
+        Resources resources = context.getResources();
+        switch (this) {
+            case METER_RUN:
+                return resources.getString(R.string.global_exercise_meter_run);
+            case TIMED_RUN:
+                return resources.getString(R.string.global_exercise_timed_run);
+            case REPETITION_EXERCISE:
+                return resources.getString(R.string.global_exercise_repetition_exercise);
+            case FREE_WEIGHT_EXERCISE:
+                return resources.getString(R.string.global_exercise_free_weight_exercise);
+            case REST:
+                return resources.getString(R.string.global_exercise_rest_break);
+            default:
+                return null;
+        }
     }
 
     ExerciseType(int exerciseTypeValue) {
