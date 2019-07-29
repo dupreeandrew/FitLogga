@@ -11,8 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.graphlog.GraphLogDayAdapter;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.PremiumApp;
+import com.fitlogga.app.models.plan.FreeAppSettings;
 import com.fitlogga.app.models.plan.log.Historics.History;
 import com.fitlogga.app.models.plan.log.SQLLogReader;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ public class PlanLogActivity extends AppCompatActivity {
         Set<Day> nonEmptyDays = dayListEnumMap.keySet();
         initViewPager(dayListEnumMap);
         initTabs(nonEmptyDays);
+        initInfoFab();
 
     }
 
@@ -105,6 +109,23 @@ public class PlanLogActivity extends AppCompatActivity {
             tab.setText(dayAbbrev);
             tabLayout.addTab(tab);
         }
+    }
+
+    private void initInfoFab() {
+
+        FloatingActionButton infoFab = findViewById(R.id.fab_info);
+
+        if (PremiumApp.isEnabled()) {
+            infoFab.hide();
+            return;
+        }
+
+        infoFab.setOnClickListener(infoFabView -> {
+            int maxGraphsPerDay = FreeAppSettings.MAX_LOG_GRAPHS_PER_DAY;
+            String message = "You can only access " + maxGraphsPerDay + " graphs for every day. " +
+                    "Upgrade to unlock full-featured log graphing system & your existing exercises.";
+            PremiumApp.popupPremiumAppDialog(this, message);
+        });
     }
 
 
