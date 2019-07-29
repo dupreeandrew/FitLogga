@@ -84,6 +84,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btn_powerup" />
 
+
+        <!--
         <Button
             android:id="@+id/btn_calendar"
             style="@style/AppTheme.AccentButton"
@@ -109,6 +111,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/btn_powerup" />
+
+            -->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
