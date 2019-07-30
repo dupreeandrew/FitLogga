@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
@@ -35,11 +36,13 @@ public abstract class CollapsibleViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (isExpanded) {
-            Drawable upArrow = view.getResources().getDrawable(R.drawable.ic_arrow_up);
+            Drawable upArrow = ContextCompat
+                    .getDrawable(view.getContext(), R.drawable.ic_arrow_up);
             arrow.setImageDrawable(upArrow);
         }
         else {
-            Drawable downArrow = view.getResources().getDrawable(R.drawable.ic_arrow_down);
+            Drawable downArrow = ContextCompat
+                    .getDrawable(view.getContext(), R.drawable.ic_arrow_down);
             arrow.setImageDrawable(downArrow);
         }
 
