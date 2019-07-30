@@ -136,6 +136,8 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
 
     private void delete(int adapterPosition) {
 
+        collapsePresentExpandedViewHolder();
+
         Exercise exercise = exerciseList.get(adapterPosition);
         if (exercise instanceof DayCopierExercise) {
             fabController.setEnabled(true);
@@ -148,6 +150,7 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         notifyItemRemoved(adapterPosition);
         notifyItemRangeChanged(adapterPosition, exerciseList.size());
         lockViewHolderFocus(false);
+
     }
 
     @Override
