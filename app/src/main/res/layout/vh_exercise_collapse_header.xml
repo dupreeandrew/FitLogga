@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp">
+    android:paddingBottom="8dp">
 
     <ImageView
         android:id="@+id/iv_finish"
@@ -43,9 +43,7 @@
         android:id="@+id/iv_expand_collapse"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_exercise_title"
