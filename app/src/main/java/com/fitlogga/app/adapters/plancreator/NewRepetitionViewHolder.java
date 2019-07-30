@@ -166,27 +166,23 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
         Exercise builtExercise
                 = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
-                inputNumRepsString, inputRestMinutesString, inputRestSecondsString, uuid);
+                inputNumRepsString, totalRestSeconds, uuid);
         saveListener.onSave(builtExercise);
 
     }
 
     private Exercise buildExercise(String inputNameString, String inputDescriptionString, String inputNumSetsString,
-                                   String inputNumRepsString, String inputRestMinutesString,
-                                   String inputRestSecondsString, String uuid) {
+                                   String inputNumRepsString, int totalRestSeconds, String uuid) {
 
         int numSets = Integer.parseInt(inputNumSetsString);
         int numReps = Integer.parseInt(inputNumRepsString);
-        int numRestMinutes = Integer.parseInt(inputRestMinutesString);
-        int numRestSeconds = Integer.parseInt(inputRestSecondsString);
-        int numRestTotal = (numRestMinutes * 60) + numRestSeconds;
 
         return new RepetitionExercise.Builder()
                 .setName(inputNameString)
                 .setDescription(inputDescriptionString)
                 .setNumberOfSets(numSets)
                 .setNumberOfReps(numReps)
-                .setRestTimeBetweenSets(numRestTotal)
+                .setRestTimeBetweenSets(totalRestSeconds)
                 .setUuid(uuid)
                 .build();
 

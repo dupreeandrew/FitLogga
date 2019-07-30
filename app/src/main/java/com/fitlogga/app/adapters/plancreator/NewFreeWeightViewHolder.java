@@ -204,7 +204,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         Exercise builtExercise
                 = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
                 inputNumRepsString, inputNumWeightString, inputUnitsString,
-                inputRestMinutesString, inputRestSecondsString, uuid);
+                totalRestSeconds, uuid);
         saveListener.onSave(builtExercise);
 
     }
@@ -212,15 +212,11 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     private Exercise buildExercise(String inputNameString, String inputDescriptionString,
                                    String inputNumSetsString, String inputNumRepsString,
                                    String inputNumWeightString, String inputUnitsString,
-                                   String inputRestMinutesString, String inputRestSecondsString,
-                                   String uuid) {
+                                   int totalRestSeconds, String uuid) {
 
         int numSets = Integer.parseInt(inputNumSetsString);
         int numReps = Integer.parseInt(inputNumRepsString);
-        int numRestMinutes = Integer.parseInt(inputRestMinutesString);
-        int numRestSeconds = Integer.parseInt(inputRestSecondsString);
         int numWeight = Integer.parseInt(inputNumWeightString);
-        int numRestTotal = (numRestMinutes * 60) + numRestSeconds;
 
         return new FreeWeightExercise.Builder()
                 .setName(inputNameString)
@@ -229,7 +225,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
                 .setNumberOfReps(numReps)
                 .setAmountOfWeight(numWeight)
                 .setAmountOfWeightUnits(inputUnitsString)
-                .setRestTimeBetweenSets(numRestTotal)
+                .setRestTimeBetweenSets(totalRestSeconds)
                 .setUuid(uuid)
                 .build();
 
