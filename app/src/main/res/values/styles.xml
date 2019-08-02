@@ -33,6 +33,10 @@
         <item name="backgroundTint">@color/colorWarning</item>
     </style>
 
+    <style name="AppTheme.PrimaryButton" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
     <style name="AppTheme.TextInputLayoutAutoCompleteTextView">
         <item name="android:paddingStart">12dp</item>
         <item name="android:paddingEnd">12dp</item>

@@ -24,6 +24,7 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.activities.TrainingActivity;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.DaySuffix;
+import com.fitlogga.app.models.PremiumApp;
 import com.fitlogga.app.models.exercises.DayCopierDetector;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
@@ -82,6 +83,7 @@ public class PowerupFragment extends Fragment {
         initDateTextViews(view);
         initPowerupButton(view);
         initSelectDailyRoutineButton(view);
+        initEnablePremiumButton(view);
     }
 
     private void initPicture(View view) {
@@ -280,6 +282,14 @@ public class PowerupFragment extends Fragment {
 
         return new DayStringAdapterMapper(availableDailyRoutineStrings, dayIntegerMap);
 
+    }
+
+    private void initEnablePremiumButton(View view) {
+        Button enablePremiumButton = view.findViewById(R.id.btn_enable_premium);
+        enablePremiumButton.setOnClickListener(buttonView -> {
+            String message = "Unlock exclusive fitness features!";
+            PremiumApp.popupPremiumAppDialog(view.getContext(), message);
+        });
     }
 
 
