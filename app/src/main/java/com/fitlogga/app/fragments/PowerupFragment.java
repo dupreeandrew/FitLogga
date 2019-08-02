@@ -106,7 +106,7 @@ public class PowerupFragment extends Fragment {
         else if (hour >= 5) {
             background = ResourcesCompat.getDrawable(resources, R.drawable.five_am, null);
         }
-        else if (hour > 2) {
+        else if (hour >= 2) {
             background = ResourcesCompat.getDrawable(resources, R.drawable.two_am, null);
         }
         else {
