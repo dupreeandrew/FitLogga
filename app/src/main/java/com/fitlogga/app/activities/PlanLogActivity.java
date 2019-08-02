@@ -11,8 +11,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.graphlog.GraphLogDayAdapter;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.FreeAppSettings;
 import com.fitlogga.app.models.PremiumApp;
-import com.fitlogga.app.models.plan.FreeAppSettings;
 import com.fitlogga.app.models.plan.log.Historics.History;
 import com.fitlogga.app.models.plan.log.SQLLogReader;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -60,10 +60,14 @@ public class PlanLogActivity extends AppCompatActivity {
     }
 
     private EnumMap<Day, List<History>> getMapOfLoggedDays(String planName) {
+
+        // Why 500? That's a ton already. Maybe it'll be upgraded in the future.
+        int maxSnapshots = PremiumApp.isEnabled() ? 500 : FreeAppSettings.MAX_SNAPSHOTS_PER_EXERCISE;
+
         EnumMap<Day, List<History>> dayListEnumMap = new EnumMap<>(Day.class);
         SQLLogReader reader = new SQLLogReader(planName);
         for (Day day : Day.values()) {
-            List<History> historyList = reader.getHistoryList(day, 250);
+            List<History> historyList = reader.getHistoryList(day, maxSnapshots);
             if (historyList.size() != 0) {
                 dayListEnumMap.put(day, historyList);
             }
@@ -121,9 +125,9 @@ public class PlanLogActivity extends AppCompatActivity {
         }
 
         infoFab.setOnClickListener(infoFabView -> {
-            int maxGraphsPerDay = FreeAppSettings.MAX_LOG_GRAPHS_PER_DAY;
-            String message = "You can only access " + maxGraphsPerDay + " graphs for every day. " +
-                    "Upgrade to unlock full-featured log graphing system & your existing exercises.";
+            int maxSnapShotsPerDay = FreeAppSettings.MAX_SNAPSHOTS_PER_EXERCISE;
+            String message = "You can only access the latest " + maxSnapShotsPerDay + " log records" +
+                    " per exercise. Upgrade to view them all!";
             PremiumApp.popupPremiumAppDialog(this, message);
         });
     }

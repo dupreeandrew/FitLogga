@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.graphlog.viewholders.HistoryViewHolder;
 import com.fitlogga.app.adapters.graphlog.viewholders.LineChartUnitGen;
-import com.fitlogga.app.models.PremiumApp;
-import com.fitlogga.app.models.plan.FreeAppSettings;
 import com.fitlogga.app.models.plan.log.Historics.History;
 import com.fitlogga.app.viewmods.datelinechart.DateLineCharter;
 
@@ -62,12 +60,6 @@ public class GraphLogRecyclerAdapter extends RecyclerView.Adapter<HistoryViewHol
 
     @Override
     public int getItemCount() {
-        if (PremiumApp.isEnabled()) {
-            return historyList.size();
-        }
-        else {
-            int maxGraphs = FreeAppSettings.MAX_LOG_GRAPHS_PER_DAY;
-            return Math.min(historyList.size(), maxGraphs);
-        }
+        return historyList.size();
     }
 }
