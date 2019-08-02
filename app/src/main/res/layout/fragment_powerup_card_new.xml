@@ -61,6 +61,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:drawableStart="@drawable/ic_exercise"
             android:text="@string/powerup_start_todays_exercise"
             android:textColor="@color/colorPrimaryText"
@@ -73,12 +74,27 @@
             style="@style/AppTheme.DeepAccentButton"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/ic_event"
             app:layout_constraintBottom_toBottomOf="@+id/btn_powerup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/btn_powerup" />
 
-
+        <com.fitlogga.app.viewmods.BetterIconButton
+            android:id="@+id/btn_enable_premium"
+            style="@style/AppTheme.PrimaryButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="Enable Premium"
+            android:textColor="@color/colorPrimaryText"
+            app:iconSrc="@drawable/ic_star_border"
+            app:iconSize="32dp"
+            app:iconPadding="6dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_powerup" />
 
 
         <!--
