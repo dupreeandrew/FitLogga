@@ -87,14 +87,10 @@ public class PowerupFragment extends Fragment {
     }
 
     private void initPicture(View view) {
-        // 0 is 12AM
-        // 12 is 12PM
-        // 11PM is 23.
-
         Resources resources = getResources();
 
         Drawable background;
-        int hour = 2;//Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if (hour >= 22) {
             background = ResourcesCompat.getDrawable(resources, R.drawable.ten_pm, null);
         }
