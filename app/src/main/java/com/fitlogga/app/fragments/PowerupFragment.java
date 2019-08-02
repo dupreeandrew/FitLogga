@@ -2,6 +2,8 @@ package com.fitlogga.app.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -9,11 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.fitlogga.app.R;
@@ -74,12 +78,48 @@ public class PowerupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initCalendarView(view);
+        initPicture(view);
+        initDateTextViews(view);
         initPowerupButton(view);
         initSelectDailyRoutineButton(view);
     }
 
-    private void initCalendarView(View view) {
+    private void initPicture(View view) {
+        // 0 is 12AM
+        // 12 is 12PM
+        // 11PM is 23.
+
+        Resources resources = getResources();
+
+        Drawable background;
+        int hour = 2;//Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        if (hour >= 22) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.ten_pm, null);
+        }
+        else if (hour >= 18) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.six_pm, null);
+        }
+        else if (hour >= 14) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.two_pm, null);
+        }
+        else if (hour >= 9) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.nine_am, null);
+        }
+        else if (hour >= 5) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.five_am, null);
+        }
+        else if (hour > 2) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.two_am, null);
+        }
+        else {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.ten_pm, null);
+        }
+
+        ImageView timeImage = view.findViewById(R.id.iv_time_image);
+        timeImage.setImageDrawable(background);
+    }
+
+    private void initDateTextViews(View view) {
 
         Calendar calendar = Calendar.getInstance();
         String monthName = new SimpleDateFormat("LLLL", Locale.getDefault())
