@@ -23,7 +23,6 @@ import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.List;
 
@@ -64,7 +63,8 @@ public class PlansFragment extends Fragment {
     }
 
     static void promptCreatePlanDialog(Activity activity) {
-
+        tryToOpenPlanCreator(activity);
+        /*
         String[] choices = activity.getResources().getStringArray(R.array.plan_creation_options);
         final int CREATE_NEW_PLAN_INDEX = 0;
         final int DOWNLOAD_PLAN_INDEX = 1;
@@ -85,6 +85,7 @@ public class PlansFragment extends Fragment {
                     }
                 })
                 .show();
+                */
     }
 
     private static void tryToOpenPlanCreator(Activity activity) {
