@@ -30,6 +30,7 @@ import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
+import com.fitlogga.app.viewmods.ViewEnabler;
 import com.google.android.material.snackbar.Snackbar;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
@@ -178,7 +179,7 @@ public class PowerupFragment extends Fragment {
     private void showNoPlanSnackbar(View view) {
         Snackbar snackbar = Snackbar.make(view, "You do not have a plan.", Snackbar.LENGTH_LONG);
         snackbar.setAction("Create plan",
-                snackBarView -> PlansFragment.promptCreatePlanDialog(view));
+                snackBarView -> PlansFragment.promptCreatePlanDialog(getActivity()));
         snackbar.show();
     }
 
@@ -282,9 +283,15 @@ public class PowerupFragment extends Fragment {
 
     private void initEnablePremiumButton(View view) {
         Button enablePremiumButton = view.findViewById(R.id.btn_enable_premium);
+
+        if (PremiumApp.isEnabled()) {
+            ViewEnabler.setEnabled(enablePremiumButton, false);
+            return;
+        }
+
         enablePremiumButton.setOnClickListener(buttonView -> {
             String message = "Unlock exclusive fitness features!";
-            PremiumApp.popupPremiumAppDialog(view.getContext(), message);
+            PremiumApp.popupPremiumAppDialog(getActivity(), message);
         });
     }
 

@@ -1,20 +1,38 @@
 package com.fitlogga.app.models;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingClientStateListener;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.Purchase;
+import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
 import com.fitlogga.app.R;
+import com.fitlogga.app.activities.MainActivity;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This class is used to edit the device's premium status.
  * Premium Status costs money, and unlocks the full app.
  */
 public class PremiumApp {
+
+    private static BillingClient billingClient;
 
     /*
     There is no meaning behind this value. It's just to help prevent rooted users from opening
@@ -54,19 +72,79 @@ public class PremiumApp {
         return SECRET_PREMIUM_VALUE.equals(value);
     }
 
-    public static void popupPremiumAppDialog(Context context, String promptMessage) {
-        View dialogView = LayoutInflater.from(context)
+    public static void popupPremiumAppDialog(Activity activity, String promptMessage) {
+        View dialogView = LayoutInflater.from(activity)
                 .inflate(R.layout.dialog_premium_app, null);
-        AlertDialog dialog = new AlertDialog.Builder(context)
+        AlertDialog dialog = new AlertDialog.Builder(activity)
                 .setView(dialogView)
                 .show();
 
         TextView promptView = dialog.findViewById(R.id.tv_prompt_message);
         promptView.setText(promptMessage);
 
+        Button purchaseButton = dialog.findViewById(R.id.btn_purchase);
+        purchaseButton.setOnClickListener(buttonView -> startPaymentDialog(activity));
+
         Button cancelButton = dialog.findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(buttonView -> dialog.dismiss());
 
+    }
+
+    public static void startPaymentDialog(Activity activity) {
+
+        final String sku_id = "premium_fitness_bundle";
+        List<String> sku_id_list = Collections.singletonList(sku_id);
+
+        BillingClient billingClient = BillingClient.newBuilder(activity)
+                .enablePendingPurchases()
+                .setListener(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
+
+                        if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
+                            return;
+                        }
+
+                        if (purchases == null) {
+                            return;
+                        }
+
+                        PremiumApp.setEnabled(true);
+
+                        // Essentially restart app
+                        activity.finish();
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        activity.startActivity(intent);
+
+
+                    }
+                })
+                .build();
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingSetupFinished(BillingResult billingResult) {
+                SkuDetailsParams detailsParams = SkuDetailsParams.newBuilder()
+                        .setSkusList(sku_id_list)
+                        .setType(BillingClient.SkuType.INAPP)
+                        .build();
+
+                billingClient.querySkuDetailsAsync(detailsParams, (billingResult1, skuDetailsList) -> {
+                    SkuDetails skuDetails = skuDetailsList.get(0);
+                    BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                            .setSkuDetails(skuDetails)
+                            .build();
+                    billingClient.launchBillingFlow(activity, flowParams);
+
+
+                });
+
+            }
+
+            @Override
+            public void onBillingServiceDisconnected() {
+                billingClient.endConnection();
+            }
+        });
     }
 
 }

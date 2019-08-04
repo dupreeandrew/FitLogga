@@ -1,12 +1,14 @@
 package com.fitlogga.app.activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.MainPagerAdapter;
+import com.fitlogga.app.models.PremiumApp;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,10 +18,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        configureTitle();
         configureTabs();
-
         debug();
 
+    }
+
+    private void configureTitle() {
+        TextView appTitle = findViewById(R.id.tv_app_title);
+        if (PremiumApp.isEnabled()) {
+            String title = getResources().getString(R.string.global_app_name_premium);
+            appTitle.setText(title);
+        }
+        else {
+            String title = getResources().getString(R.string.global_app_name);
+            appTitle.setText(title);
+        }
     }
 
     private void configureTabs() {

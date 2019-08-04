@@ -2,6 +2,7 @@
 
     <!-- global strings start -->
     <string name="global_app_name">FitLogga</string>
+    <string name="global_app_name_premium">FitLogga - Premium</string>
     <string name="global_sunday">Sunday</string>
     <string name="global_monday">Monday</string>
     <string name="global_tuesday">Tuesday</string>

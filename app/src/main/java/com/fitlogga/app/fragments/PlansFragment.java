@@ -1,5 +1,6 @@
 package com.fitlogga.app.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -59,16 +60,16 @@ public class PlansFragment extends Fragment {
 
     private void initFabAddPost(View view) {
         FloatingActionButton fab = view.findViewById(R.id.fab_add_plan);
-        fab.setOnClickListener(fabView -> promptCreatePlanDialog(view));
+        fab.setOnClickListener(fabView -> promptCreatePlanDialog(getActivity()));
     }
 
-    static void promptCreatePlanDialog(View view) {
+    static void promptCreatePlanDialog(Activity activity) {
 
-        String[] choices = view.getResources().getStringArray(R.array.plan_creation_options);
+        String[] choices = activity.getResources().getStringArray(R.array.plan_creation_options);
         final int CREATE_NEW_PLAN_INDEX = 0;
         final int DOWNLOAD_PLAN_INDEX = 1;
 
-        new LovelyChoiceDialog(view.getContext())
+        new LovelyChoiceDialog(activity)
                 .setTopColorRes(R.color.colorPrimaryDark)
                 .setIcon(R.drawable.ic_add_white)
                 .setTitle("Plan Creator")
@@ -76,7 +77,7 @@ public class PlansFragment extends Fragment {
                 .setItems(choices, (position, item) -> {
                     switch (position) {
                         case CREATE_NEW_PLAN_INDEX:
-                            tryToOpenPlanCreator(view);
+                            tryToOpenPlanCreator(activity);
                             break;
                         case DOWNLOAD_PLAN_INDEX:
                             break;
@@ -86,16 +87,16 @@ public class PlansFragment extends Fragment {
                 .show();
     }
 
-    private static void tryToOpenPlanCreator(View view) {
+    private static void tryToOpenPlanCreator(Activity activity) {
         int numExistingPlans = PlanReader.getNumberOfPlans();
         if (numExistingPlans < FreeAppSettings.MAX_PLANS) {
-            Intent intent = new Intent(view.getContext(), PlanCreatorActivity.class);
-            view.getContext().startActivity(intent);
+            Intent intent = new Intent(activity, PlanCreatorActivity.class);
+            activity.startActivity(intent);
         }
         else {
             String message = "You can only have 3 fitness plans at a time. " +
                     "Upgrade your fitness experience today for unlimited!";
-            PremiumApp.popupPremiumAppDialog(view.getContext(), message);
+            PremiumApp.popupPremiumAppDialog(activity, message);
         }
     }
 
