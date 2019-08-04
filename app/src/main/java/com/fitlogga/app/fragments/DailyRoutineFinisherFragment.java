@@ -28,7 +28,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -143,7 +145,9 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
         String successMessage;
 
+        // Plan is being edited
         if (planSummary != null) {
+            removeAnyDeletedExercisesFromLogDatabase();
             deleteExistingPlan();
             // "Plan was updated"
             successMessage = getString(R.string.fragment_daily_routine_finisher_plan_was_updated);
@@ -175,6 +179,48 @@ public class DailyRoutineFinisherFragment extends Fragment {
         //noinspection ConstantConditions
         getActivity().finish();
         Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    private void removeAnyDeletedExercisesFromLogDatabase() {
+
+        /*
+        This is how this works.
+        Take the newly generated set of exercises, and retrieve their uuids.
+        Take the old generated set of exercises, before editing the plan, remove their uuids.
+
+        If the old set has uuids that the NEWLY created set does not have, then there's no need
+        to keep them in the logging database, so just delete it.
+         */
+
+        // a1, a2, a3, a6
+        Set<String> newUuids = new HashSet<>();
+        for (List<Exercise> exerciseList : dailyRoutineMap.values()) {
+            for (Exercise exercise : exerciseList) {
+                String uuid = exercise.getUuid();
+                newUuids.add(uuid);
+            }
+        }
+
+        // a1, a2, a3, a4, a5
+        Set<String> existingUuids = new HashSet<>();
+        PlanReader reader = PlanReader.attachTo(planSummary.getName());
+        EnumMap<Day, List<Exercise>> existingDailyRoutines = reader.getDailyRoutines();
+        for (List<Exercise> exerciseList : existingDailyRoutines.values()) {
+            for (Exercise exercise : exerciseList) {
+                String uuid = exercise.getUuid();
+                existingUuids.add(uuid);
+            }
+        }
+
+        // keep everything, EXCEPT a4, a5
+        existingUuids.removeAll(newUuids);
+
+        for (String uuidsToBeRemoved : existingUuids) {
+            SQLLogWriter.delete(uuidsToBeRemoved);
+        }
+
 
 
     }

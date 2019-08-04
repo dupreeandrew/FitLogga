@@ -26,6 +26,7 @@ import com.fitlogga.app.viewmods.FabController;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import java.util.List;
 
@@ -142,6 +143,18 @@ public class DailyRoutineCreatorFragment extends Fragment {
             return;
         }
 
+        new LovelyStandardDialog(getContext())
+                .setTopColorRes(R.color.colorWarning)
+                .setTitle("Are you sure?")
+                .setMessage("Copying another day will erase all of your exercises for today.")
+                .setPositiveButton("Copy anyways", posView -> addCopyDayExercise())
+                .setNegativeButton("Cancel", null)
+                .show();
+
+    }
+
+    private void addCopyDayExercise() {
+
         exerciseList.clear();
         exerciseList.add(getCopyDay());
 
@@ -150,7 +163,6 @@ public class DailyRoutineCreatorFragment extends Fragment {
 
         copierDays.setDayAsCopier(day, null);
         fabController.setEnabled(false);
-
     }
 
     public void notifyFragmentFocusLost(Event event) {
