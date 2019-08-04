@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -85,6 +86,7 @@ public class PowerupFragment extends Fragment {
         initPowerupButton(view);
         initSelectDailyRoutineButton(view);
         initEnablePremiumButton(view);
+        initSubmitFeedbackButton(view);
     }
 
     private void initPicture(View view) {
@@ -292,6 +294,15 @@ public class PowerupFragment extends Fragment {
         enablePremiumButton.setOnClickListener(buttonView -> {
             String message = "Unlock exclusive fitness features!";
             PremiumApp.popupPremiumAppDialog(getActivity(), message);
+        });
+    }
+
+    private void initSubmitFeedbackButton(View view) {
+        Button feedbackButton = view.findViewById(R.id.btn_feedback);
+        feedbackButton.setOnClickListener(buttonView -> {
+            Uri uri = Uri.parse("https://forms.gle/JLz6Pp2D3cGqma1T9");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         });
     }
 

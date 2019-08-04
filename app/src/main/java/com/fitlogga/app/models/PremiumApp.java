@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
@@ -95,7 +96,7 @@ public class PremiumApp {
         final String sku_id = "premium_fitness_bundle";
         List<String> sku_id_list = Collections.singletonList(sku_id);
 
-        BillingClient billingClient = BillingClient.newBuilder(activity)
+        billingClient = BillingClient.newBuilder(activity)
                 .enablePendingPurchases()
                 .setListener(new PurchasesUpdatedListener() {
                     @Override
@@ -109,17 +110,13 @@ public class PremiumApp {
                             return;
                         }
 
-                        PremiumApp.setEnabled(true);
-
-                        // Essentially restart app
-                        activity.finish();
-                        Intent intent = new Intent(activity, MainActivity.class);
-                        activity.startActivity(intent);
+                        executePurchase(activity, purchases.get(0));
 
 
                     }
                 })
                 .build();
+
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingSetupFinished(BillingResult billingResult) {
@@ -130,6 +127,7 @@ public class PremiumApp {
 
                 billingClient.querySkuDetailsAsync(detailsParams, (billingResult1, skuDetailsList) -> {
                     SkuDetails skuDetails = skuDetailsList.get(0);
+
                     BillingFlowParams flowParams = BillingFlowParams.newBuilder()
                             .setSkuDetails(skuDetails)
                             .build();
@@ -144,6 +142,27 @@ public class PremiumApp {
             public void onBillingServiceDisconnected() {
                 billingClient.endConnection();
             }
+        });
+    }
+
+    private static void executePurchase(Activity activity, Purchase purchase) {
+
+        AcknowledgePurchaseParams params = AcknowledgePurchaseParams.newBuilder()
+                .setDeveloperPayload(purchase.getDeveloperPayload())
+                .setPurchaseToken(purchase.getPurchaseToken())
+                .build();
+        billingClient.acknowledgePurchase(params, billingResult -> {
+
+            if (billingResult.getResponseCode() != BillingClient.BillingResponseCode.OK) {
+                return;
+            }
+
+            PremiumApp.setEnabled(true);
+
+            // Essentially restart app
+            activity.finish();
+            Intent intent = new Intent(activity, MainActivity.class);
+            activity.startActivity(intent);
         });
     }
 
