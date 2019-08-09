@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -76,7 +77,13 @@ public class MeterRunViewHolder extends ExerciseViewHolder {
     }
 
     private void initEnableGPSButton() {
-        // to be implemented
+        Button button = view.findViewById(R.id.btn_enable_gps);
+        button.setOnClickListener(buttonView -> {
+            // to be implemented
+            String msg = "This is soon to be implemented!";
+            Toast.makeText(view.getContext(), msg, Toast.LENGTH_SHORT).show();
+        });
+
     }
 
     @Override
