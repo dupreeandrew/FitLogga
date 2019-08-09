@@ -4,17 +4,26 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.fitlogga.app.R;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public enum Day {
+
+    @SerializedName("0")
     SUNDAY(0),
+    @SerializedName("1")
     MONDAY(1),
+    @SerializedName("2")
     TUESDAY(2),
+    @SerializedName("3")
     WEDNESDAY(3),
+    @SerializedName("4")
     THURSDAY(4),
+    @SerializedName("5")
     FRIDAY(5),
+    @SerializedName("6")
     SATURDAY(6);
 
     private int value;

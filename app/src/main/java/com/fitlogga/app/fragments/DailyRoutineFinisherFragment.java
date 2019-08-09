@@ -162,15 +162,9 @@ public class DailyRoutineFinisherFragment extends Fragment {
         }
 
         long currentTime = new Date().getTime();
-        if (setAsActivePlan) {
-            currentTime += 1000;
-        }
-
-
         PlanSummary planSummary = new PlanSummary(inputNameString, inputDescString, currentTime);
         PlanCreator.getBuilder()
-                .setContext(context)
-                .setPlanSummary(planSummary)
+                .setPlanSummary(planSummary, setAsActivePlan)
                 .setDailyRoutineMap(dailyRoutineMap)
                 .create();
 

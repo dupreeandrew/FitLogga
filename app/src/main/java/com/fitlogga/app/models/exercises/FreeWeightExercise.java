@@ -104,7 +104,7 @@ public class FreeWeightExercise extends TimerExercise {
     private String name;
     private String description;
     private int numberOfSets;
-    private int numSetsCompleted;
+    private transient int numSetsCompleted;
     private int numberOfRepetitions;
     private int amountOfWeight;
     private String amountOfWeightUnits;

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.fitlogga.app.models.ApplicationContext;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 
@@ -24,7 +25,6 @@ public class PlanCreator {
     }
 
     public static class Builder {
-        private Context context;
         private PlanSummary planSummary;
         private EnumMap<Day, List<Exercise>> dailyRoutineMap;
 
@@ -32,13 +32,20 @@ public class PlanCreator {
             // empty constructor
         }
 
-        public Builder setContext(Context context) {
-            this.context = context;
-            return this;
-        }
+        /**
+         * @param setAsActive Modify the timestamp of the PlanSummary, making it the active plan.
+         */
+        public Builder setPlanSummary(PlanSummary planSummary, boolean setAsActive) {
 
-        public Builder setPlanSummary(PlanSummary planSummary) {
-            this.planSummary = planSummary;
+            if (!setAsActive) {
+                this.planSummary = planSummary;
+                return this;
+            }
+
+            String name = planSummary.getName();
+            String description = planSummary.getDescription();
+            long timestamp = System.currentTimeMillis() + 300;
+            this.planSummary = new PlanSummary(name, description, timestamp);
             return this;
         }
 
@@ -46,6 +53,7 @@ public class PlanCreator {
             this.dailyRoutineMap = dailyRoutineMap;
             return this;
         }
+
 
         /**
          * Writes a Fitness Plan onto file.
@@ -55,11 +63,10 @@ public class PlanCreator {
          * the future. Adjust the given PlanSummary to compensate if needed.
          */
         public void create() {
-            new PlanCreator(context, planSummary, dailyRoutineMap).write();
+            new PlanCreator(planSummary, dailyRoutineMap).write();
         }
     }
 
-    private Context context;
     private PlanSummary planSummary;
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private SharedPreferences.Editor editor;
@@ -70,11 +77,11 @@ public class PlanCreator {
     }
 
     @SuppressLint("CommitPrefEdits")
-    private PlanCreator(Context context, PlanSummary planSummary, EnumMap<Day, List<Exercise>> dailyRoutineMap) {
-        this.context = context;
+    private PlanCreator(PlanSummary planSummary, EnumMap<Day, List<Exercise>> dailyRoutineMap) {
         this.planSummary = planSummary;
         this.dailyRoutineMap = dailyRoutineMap;
 
+        Context context = ApplicationContext.getInstance();
         String preferenceName = PlanIOUtils.getIOSafeFileID(planSummary.getName());
         editor = context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)
@@ -105,7 +112,7 @@ public class PlanCreator {
         }
 
 
-        PlanWritingUtils.writePlanSummary(context, planSummary);
+        PlanWritingUtils.writePlanSummary(planSummary);
 
         editor.apply();
 
@@ -131,7 +138,7 @@ public class PlanCreator {
                 new Date().getTime() + 1
         );
 
-        PlanWritingUtils.writePlanSummary(context, editedActivePlanSummary);
+        PlanWritingUtils.writePlanSummary(editedActivePlanSummary);
 
     }
 

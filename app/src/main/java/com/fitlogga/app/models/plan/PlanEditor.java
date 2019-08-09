@@ -48,14 +48,12 @@ public class PlanEditor {
                 .clear()
                 .apply();
 
-        deleteFileFromStorage(preferenceName);
+        deleteFileFromStorage(planName);
         deleted = true;
     }
 
-    private void deleteFileFromStorage(String preferenceName) {
-        String prefFilePath = "/data/data/" + context.getPackageName() + "/shared_prefs/"
-                + preferenceName + ".xml";
-        File prefFile = new File(prefFilePath);
+    private void deleteFileFromStorage(String planName) {
+        File prefFile = PlanIOUtils.getSharedPrefFile(planName);
         prefFile.delete();
     }
 
@@ -87,7 +85,7 @@ public class PlanEditor {
                 planSummary.getName(),
                 planSummary.getDescription(),
                 new Date().getTime() + 2000);
-        PlanWritingUtils.writePlanSummary(context, editedPlanSummary);
+        PlanWritingUtils.writePlanSummary(editedPlanSummary);
     }
 
     public static void openGUI(Context context, String planName) {

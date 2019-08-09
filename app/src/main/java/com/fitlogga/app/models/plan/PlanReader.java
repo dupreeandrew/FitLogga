@@ -12,10 +12,9 @@ import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseTranslator;
 import com.fitlogga.app.utils.CollectionSortHelper;
+import com.fitlogga.app.utils.GsonHelper;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -110,7 +109,7 @@ public class PlanReader {
     }
 
     private List<Exercise> getExerciseList(String exerciseListJson) {
-        Map<String, Map<String, Object>> jsonMap = getNestedMapFromJsonString(exerciseListJson);
+        Map<String, Map<String, Object>> jsonMap = GsonHelper.getNestedMapFromJsonString(exerciseListJson);
         List<Exercise> exerciseList = new ArrayList<>();
         for (Map<String, Object> exerciseMap : jsonMap.values()) {
             Exercise exercise = ExerciseTranslator.toExercise(exerciseMap);
@@ -118,12 +117,6 @@ public class PlanReader {
         }
 
         return exerciseList;
-    }
-
-    private Map<String, Map<String, Object>> getNestedMapFromJsonString(String jsonString) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, Object>>(){}.getType();
-        return gson.fromJson(jsonString, type);
     }
 
     @Nullable

@@ -3,6 +3,7 @@ package com.fitlogga.app.models.plan;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.fitlogga.app.models.ApplicationContext;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.google.gson.Gson;
 
@@ -12,7 +13,8 @@ import java.util.Map;
 
 class PlanWritingUtils {
 
-    static void writePlanSummary(Context context, PlanSummary planSummary) {
+    static void writePlanSummary(PlanSummary planSummary) {
+        Context context = ApplicationContext.getInstance();
         SharedPreferences.Editor editor = context
                 .getSharedPreferences("registered_plans", Context.MODE_PRIVATE)
                 .edit();

@@ -107,8 +107,8 @@ public class ExerciseTranslator {
     }
 
     private static DayCopierExercise toCopier(Map<String, Object> exerciseMap) {
-        String dayString = String.valueOf(exerciseMap.get("dayBeingCopied"));
-        Day day = Day.valueOf(dayString);
+        int dayNum = Integer.parseInt(String.valueOf(exerciseMap.get("dayBeingCopied")));
+        Day day = Day.fromValue(dayNum);
         return new DayCopierExercise(day);
     }
 }
