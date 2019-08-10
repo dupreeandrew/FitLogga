@@ -28,6 +28,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getCopyDay;
@@ -54,6 +55,12 @@ public class DailyRoutineCreatorFragment extends Fragment {
     public DailyRoutineCreatorFragment(
             List<Exercise> exerciseList, ViewPagerPlus.Controller viewPagerController,
             Day day, CopierDays copierDays) {
+
+        if (exerciseList == null) {
+            exerciseList = new ArrayList<>();
+        }
+
+
         this.exerciseList = exerciseList;
         this.viewPagerController = viewPagerController;
         this.day = day;
@@ -74,6 +81,7 @@ public class DailyRoutineCreatorFragment extends Fragment {
         FloatingActionButton fab = view.findViewById(R.id.fab_add_exercise);
         fab.setOnClickListener(fabView -> promptAddExercise(view, this.adapter));
         fabController = new FabController(fab);
+
 
         if (exerciseList.size() > 0 && exerciseList.get(0) instanceof DayCopierExercise) {
             fabController.setEnabled(false);

@@ -39,15 +39,18 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private PlanSummary planSummary;
+    private boolean importedPlan;
 
     public DailyRoutineFinisherFragment() {
         // Required empty public constructor
     }
 
     // Plan Summary will be non-null IF user is editing a plan, and not editing.
-    public DailyRoutineFinisherFragment(EnumMap<Day, List<Exercise>> dailyRoutineMap, @Nullable PlanSummary planSummary) {
+    public DailyRoutineFinisherFragment(EnumMap<Day, List<Exercise>> dailyRoutineMap,
+                                        @Nullable PlanSummary planSummary, boolean importedPlan) {
         this.dailyRoutineMap = dailyRoutineMap;
         this.planSummary = planSummary;
+        this.importedPlan = importedPlan;
     }
 
     @Override
@@ -119,10 +122,11 @@ public class DailyRoutineFinisherFragment extends Fragment {
             canCreate = false;
         }
         else if (PlanReader.planExists(inputNameString) && planSummary == null) {
-            Toast.makeText(getContext(),
-                    getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists),
-                    Toast.LENGTH_LONG)
-                    .show();
+            toastToPlanAlreadyExists();
+            canCreate = false;
+        }
+        else if (importedPlan && inputNameString.equals(planSummary.getName())) {
+            toastToPlanAlreadyExists();
             canCreate = false;
         }
 
@@ -141,12 +145,19 @@ public class DailyRoutineFinisherFragment extends Fragment {
         createPlan(view.getContext(), inputNameString, inputDescString, checkBox.isChecked());
     }
 
+    private void toastToPlanAlreadyExists() {
+        Toast.makeText(getContext(),
+                getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists),
+                Toast.LENGTH_LONG)
+                .show();
+    }
+
     private void createPlan(Context context, String inputNameString, String inputDescString, boolean setAsActivePlan) {
 
         String successMessage;
 
         // Plan is being edited
-        if (planSummary != null) {
+        if (planSummary != null && !importedPlan) {
             removeAnyDeletedExercisesFromLogDatabase();
             deleteExistingPlan();
             // "Plan was updated"

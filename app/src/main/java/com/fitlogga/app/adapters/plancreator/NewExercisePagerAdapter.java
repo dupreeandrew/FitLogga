@@ -14,7 +14,8 @@ import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
-import com.fitlogga.app.models.plan.PlanReader;
+import com.fitlogga.app.models.plan.PlanExchanger;
+import com.fitlogga.app.models.plan.PlanSource;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
 
@@ -27,20 +28,23 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
     @Nullable
     private PlanSummary planSummary;
+    @Nullable
+    private PlanSource planSource;
     private ViewPagerPlus.Controller viewPagerController;
     private EnumMap<Day, List<Exercise>> dailyRoutineMap;
     private Fragment currentFragment;
     private CopierDays copierDays = new CopierDays();
 
-    public NewExercisePagerAdapter(FragmentManager fm, @Nullable PlanReader planReader,
+    public NewExercisePagerAdapter(FragmentManager fm, @Nullable PlanSource planSource,
                                    ViewPagerPlus.Controller viewPagerController) {
         super(fm);
+        this.planSource = planSource;
 
         this.viewPagerController = viewPagerController;
 
-        if (planReader != null) {
-            this.planSummary = planReader.getPlanSummary();
-            this.dailyRoutineMap = planReader.getDailyRoutines();
+        if (planSource != null) {
+            this.planSummary = planSource.getPlanSummary();
+            this.dailyRoutineMap = planSource.getDailyRoutines();
             fillCopierDays();
         }
         else {
@@ -72,9 +76,10 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-
         if (position == 7) {
-            return new DailyRoutineFinisherFragment(dailyRoutineMap, planSummary);
+            // quick and dirty :). to-do: clean up code.
+            boolean importedPlan = (planSource instanceof PlanExchanger.Plan);
+            return new DailyRoutineFinisherFragment(dailyRoutineMap, planSummary, importedPlan);
         }
 
         Day dayOfFragment = Day.fromValue(position);

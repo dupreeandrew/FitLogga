@@ -22,6 +22,20 @@ public class MainActivity extends AppCompatActivity {
         configureTabs();
         debug();
 
+        /*
+        PlanExchanger.exportPlan("mynewplanyay", new PlanExchanger.RequestListener() {
+            @Override
+            public void onSuccess(String planId) {
+                Log.d("planIdKey", planId);
+            }
+
+            @Override
+            public void onFail() {
+                Log.d("planIdKey", "failure");
+            }
+        });
+        */
+
     }
 
     private void configureTitle() {

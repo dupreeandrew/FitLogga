@@ -21,7 +21,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlanReader {
+public class PlanReader implements PlanSource {
 
     private static final String PLAN_SUMMARY_PREF_STRING = "registered_plans";
 

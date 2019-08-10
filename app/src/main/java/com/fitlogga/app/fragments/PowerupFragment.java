@@ -181,7 +181,7 @@ public class PowerupFragment extends Fragment {
     private void showNoPlanSnackbar(View view) {
         Snackbar snackbar = Snackbar.make(view, "You do not have a plan.", Snackbar.LENGTH_LONG);
         snackbar.setAction("Create plan",
-                snackBarView -> PlansFragment.promptCreatePlanDialog(getActivity()));
+                snackBarView -> PlansFragment.tryOpenPlanCreatorDialog(getActivity()));
         snackbar.show();
     }
 
