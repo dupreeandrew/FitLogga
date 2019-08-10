@@ -141,10 +141,9 @@ public class PlansFragment extends Fragment {
         });
 
         Button cancelButton = dialog.findViewById(R.id.btn_cancel);
-        cancelButton.setOnClickListener(buttonView -> {
-            dialogListener.abortTask();
-            dialog.dismiss();
-        });
+        cancelButton.setOnClickListener(buttonView -> dialog.dismiss());
+
+        dialog.setOnDismissListener(dialogInterface -> dialogListener.abortTask());
     }
 
 

@@ -103,8 +103,9 @@
     <string name="plan_exchange_error_invalid_plan">
         The plan code you have entered does not exist.
     </string>
+
     <string name="plan_exchange_error_could_not_retrieve_plan">
-        We\'re sorry, but the server could not be contacted. Do you have internet?
+        The server could not be contacted. Do you have internet?
     </string>
 
     <!-- vh_copy_day begin -->
