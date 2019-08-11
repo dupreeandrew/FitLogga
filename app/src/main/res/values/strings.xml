@@ -108,6 +108,10 @@
         The server could not be contacted. Do you have internet?
     </string>
 
+    <string name="plan_exchange_error_export_please_wait">
+        Please wait a couple hours before sharing another plan.
+    </string>
+
     <!-- vh_copy_day begin -->
     <string name="vh_copy_day_copy_day_exercise">Copy Day Exercise</string>
     <string name="vh_copy_day_day_to_copy">Day to copy</string>

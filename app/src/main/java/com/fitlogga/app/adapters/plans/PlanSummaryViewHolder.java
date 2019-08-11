@@ -96,6 +96,11 @@ public class PlanSummaryViewHolder extends RecyclerView.ViewHolder {
         editButton.setOnClickListener(listener);
     }
 
+    void setShareButtonClickListener(View.OnClickListener listener) {
+        ImageView shareButton = view.findViewById(R.id.iv_share);
+        shareButton.setOnClickListener(listener);
+    }
+
 
 
 }

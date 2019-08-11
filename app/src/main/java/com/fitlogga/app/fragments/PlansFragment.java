@@ -60,7 +60,7 @@ public class PlansFragment extends Fragment {
         recyclerView.addItemDecoration(new ItemOffsetDecoration(0));
 
         List<PlanSummary> planSummaries = PlanReader.getPlanSummaries();
-        recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(planSummaries));
+        recyclerView.setAdapter(new PlanSummaryRecyclerAdapter(getActivity(), planSummaries));
 
     }
 
@@ -115,7 +115,9 @@ public class PlansFragment extends Fragment {
         ProgressBar progressBar = dialog.findViewById(R.id.pb_enter_plan);
         progressBar.setVisibility(View.GONE);
 
-        PlanExchanger.DialogListener dialogListener = new PlanExchanger.DialogListener() {
+        Button okButton = dialog.findViewById(R.id.btn_ok);
+
+        PlanExchanger.ImportDialogListener listener = new PlanExchanger.ImportDialogListener() {
             @Override
             public void onSuccess() {
                 progressBar.setVisibility(View.GONE);
@@ -124,26 +126,26 @@ public class PlansFragment extends Fragment {
 
             @Override
             public void onFail(String localizedErrorMessage) {
+                okButton.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 TextInputLayout planCodeLayout = dialogView.findViewById(R.id.input_plan_code_layout);
                 planCodeLayout.setError(localizedErrorMessage);
             }
         };
 
-        Button okButton = dialog.findViewById(R.id.btn_ok);
         okButton.setOnClickListener(buttonView -> {
             progressBar.setVisibility(View.VISIBLE);
-            okButton.setEnabled(true);
+            okButton.setEnabled(false);
 
             EditText planCodeView = dialogView.findViewById(R.id.input_plan_code);
             String planCode = planCodeView.getText().toString();
-            PlanExchanger.openImportPlanDialog(activity, planCode, dialogListener);
+            PlanExchanger.openImportPlanDialog(activity, planCode, listener);
         });
 
         Button cancelButton = dialog.findViewById(R.id.btn_cancel);
         cancelButton.setOnClickListener(buttonView -> dialog.dismiss());
 
-        dialog.setOnDismissListener(dialogInterface -> dialogListener.abortTask());
+        dialog.setOnDismissListener(dialogInterface -> listener.abortTask());
     }
 
 

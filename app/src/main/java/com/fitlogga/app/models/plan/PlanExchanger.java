@@ -3,6 +3,7 @@ package com.fitlogga.app.models.plan;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -14,6 +15,7 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.models.ApplicationContext;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.Quota;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseTranslator;
 import com.fitlogga.app.utils.GsonHelper;
@@ -66,14 +68,24 @@ public class PlanExchanger {
     }
 
     public static abstract class DialogListener {
+        private boolean isAborted = false;
 
-        private boolean isAbortted = false;
-
-        public void abortTask() {
-            this.isAbortted = true;
+        boolean isAborted() {
+            return isAborted;
         }
 
+        public void abortTask() {
+            this.isAborted = true;
+        }
+    }
+
+    public static abstract class ImportDialogListener extends DialogListener {
         public abstract void onSuccess();
+        public abstract void onFail(String localizedErrorMessage);
+    }
+
+    public static abstract class ExportDialogListener extends DialogListener {
+        public abstract void onSuccess(String planCode);
         public abstract void onFail(String localizedErrorMessage);
     }
 
@@ -85,14 +97,26 @@ public class PlanExchanger {
 
     private static final String DELIMITER = "!%@%@%!";
 
+    private static final String QUOTA_NAME = "plan_export";
+    private static final int QUOTA_MAX_EXPORTS_PER_HOUR = 10;
+
 
     /**
      * @param listener This will contain the plan id key.
      */
-    public static void exportPlan(String planName, RequestListener listener) {
+    public static void exportPlan(String planName, ExportDialogListener listener) {
+
+        if (!exportQuotaIsOKAY()) {
+            String error = getString(R.string.plan_exchange_error_export_please_wait);
+            listener.onFail(error);
+
+
+            return;
+        }
+
         PlanReader planReader = PlanReader.attachTo(planName);
         if (planReader == null) {
-            listener.onFail();
+            listener.onFail("Plan does not exist"); // should not be called.
             return;
         }
 
@@ -114,13 +138,47 @@ public class PlanExchanger {
 
         exportPlanToWebServer(planPayload, listener);
 
+    }
+
+    private static boolean exportQuotaIsOKAY() {
+        Quota quota = Quota.get(QUOTA_NAME);
+
+        if (quota.getMillisSinceLastReset() > 3600000)  { // 1 hour
+            quota.resetQuota();
+            return true;
+        }
+
+        if (quota.getNumUses() < QUOTA_MAX_EXPORTS_PER_HOUR) {
+            return true;
+        }
+
+        return false;
 
     }
 
-    private static void exportPlanToWebServer(String planPayload, RequestListener listener) {
+    private static void resetQuotaTimestamp(SharedPreferences pref) {
+        final String TIMESTAMP_KEY = "timestamp";
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putLong(TIMESTAMP_KEY, System.currentTimeMillis());
+        editor.apply();
+    }
+
+    private static void exportPlanToWebServer(String planPayload, ExportDialogListener listener) {
         OkHttpClient client = new OkHttpClient();
         Request uploadRequest = getUploadRequest(planPayload);
-        Callback callback = getFinishedDownloadingCallback(listener);
+        Callback callback = getFinishedDownloadingCallback(new RequestListener() {
+            @Override
+            public void onSuccess(String content) {
+                Quota.get(QUOTA_NAME).addUse();
+                listener.onSuccess(content);
+            }
+
+            @Override
+            public void onFail() {
+                String msg = getString(R.string.plan_exchange_error_could_not_retrieve_plan);
+                listener.onFail(msg);
+            }
+        });
         client.newCall(uploadRequest).enqueue(callback);
     }
 
@@ -164,12 +222,12 @@ public class PlanExchanger {
         };
     }
 
-    public static void openImportPlanDialog(Activity activity, String planId, DialogListener listener) {
+    public static void openImportPlanDialog(Activity activity, String planId, ImportDialogListener listener) {
         getPlanJson(planId, new RequestListener() {
             @Override
             public void onSuccess(String exportPlanPayload) {
 
-                if (listener.isAbortted) {
+                if (listener.isAborted()) {
                     return;
                 }
 
@@ -189,7 +247,7 @@ public class PlanExchanger {
             @Override
             public void onFail() {
 
-                if (listener.isAbortted) {
+                if (listener.isAborted()) {
                     return;
                 }
 
