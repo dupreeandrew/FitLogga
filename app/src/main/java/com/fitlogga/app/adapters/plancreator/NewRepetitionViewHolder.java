@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
     private View view;
+    private RepetitionExercise repetitionExercise;
 
     NewRepetitionViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -25,7 +26,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
     @Override
     public void manifest(Exercise exercise) {
-        RepetitionExercise repetitionExercise = (RepetitionExercise)exercise;
+        this.repetitionExercise = (RepetitionExercise)exercise;
 
         String name = repetitionExercise.getName();
         String description = repetitionExercise.getDescription();
@@ -59,23 +60,31 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
     }
 
     private void setNumSets(int numSets) {
-        TextInputEditText inputSets = view.findViewById(R.id.input_num_sets);
-        inputSets.setText(String.valueOf(numSets));
+        if (numSets != 0) {
+            TextInputEditText inputSets = view.findViewById(R.id.input_num_sets);
+            inputSets.setText(String.valueOf(numSets));
+        }
     }
 
     private void setNumReps(int numReps) {
-        TextInputEditText inputNumReps = view.findViewById(R.id.input_num_reps);
-        inputNumReps.setText(String.valueOf(numReps));
+        if (numReps != 0) {
+            TextInputEditText inputNumReps = view.findViewById(R.id.input_num_reps);
+            inputNumReps.setText(String.valueOf(numReps));
+        }
     }
 
     private void setNumMinRest(int numMinRest) {
-        TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_minutes);
-        inputNumSecsRest.setText(String.valueOf(numMinRest));
+        if (numMinRest != 0) {
+            TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_minutes);
+            inputNumSecsRest.setText(String.valueOf(numMinRest));
+        }
     }
 
     private void setNumSecsRest(int numSecsRest) {
-        TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_seconds);
-        inputNumSecsRest.setText(String.valueOf(numSecsRest));
+        if (numSecsRest != 0) {
+            TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_seconds);
+            inputNumSecsRest.setText(String.valueOf(numSecsRest));
+        }
     }
 
     private void initExerciseNameAutoComplete() {
@@ -106,7 +115,7 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener, String uuid) {
+    protected void tryToSave(SaveListener saveListener) {
         AutoCompleteTextView inputNameView = view.findViewById(R.id.input_exercise_name);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
         TextInputEditText inputNumSetsView = view.findViewById(R.id.input_num_sets);
@@ -120,7 +129,6 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
         String inputNumRepsString = inputNumRepsView.getText().toString();
         String inputRestMinutesString = inputRestMinutesView.getText().toString();
         String inputRestSecondsString = inputRestSecondsView.getText().toString();
-        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
 
         boolean isSaveable = true;
 
@@ -153,6 +161,10 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
             isSaveable = false;
         }
 
+        int inputNumSets = Integer.parseInt(inputNumSetsString);
+        int inputNumReps = Integer.parseInt(inputNumRepsString);
+        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
+
         if (totalRestSeconds <= 0) {
             applyErrorBackground(R.id.input_rest_time_minutes_layout);
             applyBadNumberError(R.id.input_rest_time_seconds_layout);
@@ -164,26 +176,57 @@ public class NewRepetitionViewHolder extends NewExerciseViewHolder {
             return;
         }
 
+        if (!changesWereMade(inputNameString, inputDescriptionString,
+                inputNumSets, inputNumReps, totalRestSeconds)) {
+            saveListener.onNothingChanged();
+            return;
+        }
+
         Exercise builtExercise
-                = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
-                inputNumRepsString, totalRestSeconds, uuid);
+                = buildExercise(inputNameString, inputDescriptionString, inputNumSets,
+                inputNumReps, totalRestSeconds);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputNameString, String inputDescriptionString, String inputNumSetsString,
-                                   String inputNumRepsString, int totalRestSeconds, String uuid) {
+    private boolean changesWereMade(String inputNameString, String inputDescriptionString,
+                                    int inputNumSets, int inputNumReps, int totalRestSeconds) {
 
-        int numSets = Integer.parseInt(inputNumSetsString);
-        int numReps = Integer.parseInt(inputNumRepsString);
+        if (!repetitionExercise.getName().equals(inputNameString)) {
+            return true;
+        }
+
+        if (!repetitionExercise.getDescription().equals(inputDescriptionString)) {
+            return true;
+        }
+
+        if (inputNumSets != repetitionExercise.getNumberOfSets()) {
+            return true;
+        }
+
+        if (inputNumReps != repetitionExercise.getNumberOfRepetitions()) {
+            return true;
+        }
+
+        if (totalRestSeconds != repetitionExercise.getRestTimeBetweenSets()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private Exercise buildExercise(String inputNameString, String inputDescriptionString, int inputNumSets,
+                                   int inputNumReps, int totalRestSeconds) {
+
 
         return new RepetitionExercise.Builder()
                 .setName(inputNameString)
                 .setDescription(inputDescriptionString)
-                .setNumberOfSets(numSets)
-                .setNumberOfReps(numReps)
+                .setNumberOfSets(inputNumSets)
+                .setNumberOfReps(inputNumReps)
                 .setRestTimeBetweenSets(totalRestSeconds)
-                .setUuid(uuid)
+                .setUuid(repetitionExercise.getUuid())
                 .build();
 
     }

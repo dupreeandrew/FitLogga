@@ -98,7 +98,7 @@ public class NewCopyDayViewHolder extends NewExerciseViewHolder {
     }
 
     @Override
-    protected void tryToSave(SaveListener listener, String uuid) {
+    protected void tryToSave(SaveListener listener) {
         Spinner spinner = view.findViewById(R.id.spinner_day);
         int selectedIndex = spinner.getSelectedItemPosition();
         int dayValue = availableDaysIntMapper.get(selectedIndex);

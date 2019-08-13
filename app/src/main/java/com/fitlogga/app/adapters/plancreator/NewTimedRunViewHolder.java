@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NewTimedRunViewHolder extends NewExerciseViewHolder {
 
     private View view;
+    private TimedRunExercise exercise;
 
     NewTimedRunViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -21,6 +22,7 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
 
     @Override
     public void manifest(Exercise exercise) {
+        this.exercise = (TimedRunExercise)exercise;
         TimedRunExercise timedRunExercise = (TimedRunExercise)exercise;
 
         int numSecondsTotal = timedRunExercise.getSeconds();
@@ -68,7 +70,7 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener, String uuid) {
+    protected void tryToSave(SaveListener saveListener) {
         TextInputEditText inputMinutesView = view.findViewById(R.id.input_run_minutes);
         TextInputEditText inputSecondsView = view.findViewById(R.id.input_run_seconds);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
@@ -92,14 +94,33 @@ public class NewTimedRunViewHolder extends NewExerciseViewHolder {
             return;
         }
 
+        if (!changesWereMade(totalRunSeconds, inputDescriptionString)) {
+            saveListener.onNothingChanged();
+            return;
+        }
+
         Exercise builtExercise
-                = buildExercise(totalRunSeconds, inputDescriptionString, uuid);
+                = buildExercise(totalRunSeconds, inputDescriptionString);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(int totalRunSeconds, String inputDescriptionString, String uuid) {
-        return new TimedRunExercise(inputDescriptionString, totalRunSeconds, false,  uuid);
+    private boolean changesWereMade(int totalRunSeconds, String inputDescriptionString) {
+
+        if (totalRunSeconds != exercise.getSeconds()) {
+            return true;
+        }
+
+        if (!exercise.getDescription().equals(inputDescriptionString)) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private Exercise buildExercise(int totalRunSeconds, String inputDescriptionString) {
+        return new TimedRunExercise(inputDescriptionString, totalRunSeconds, false, exercise.getUuid());
     }
 
 

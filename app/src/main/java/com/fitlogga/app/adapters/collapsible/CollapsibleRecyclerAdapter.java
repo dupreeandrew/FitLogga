@@ -119,6 +119,8 @@ public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolde
         notifyItemChanged(expandedPosition);
         notifyItemChanged(previousExpandedPosition);
         onViewHolderExpanded(position);
+
+        expandedViewHolder = (VH) recyclerView.findViewHolderForAdapterPosition(position);
     }
 
     protected final void collapsePresentExpandedViewHolder() {
@@ -134,6 +136,11 @@ public abstract class CollapsibleRecyclerAdapter<VH extends CollapsibleViewHolde
 
     @Nullable
     protected VH getExpandedViewHolder() {
-        return this.expandedViewHolder;
+        if (this.expandedViewHolder != null) {
+            return this.expandedViewHolder;
+        }
+        else {
+            return (VH) recyclerView.findViewHolderForAdapterPosition(expandedPosition);
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NewRestViewHolder extends NewExerciseViewHolder {
 
     private View view;
+    private RestExercise exercise;
 
     NewRestViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -21,6 +22,7 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
 
     @Override
     public void manifest(Exercise exercise) {
+        this.exercise = (RestExercise) exercise;
         RestExercise restExercise = (RestExercise)exercise;
 
         int numSecsOfRestTotal = restExercise.getSecondsOfRest();
@@ -37,8 +39,11 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
 
         setTitle("Rest Break");
         setSubtitle(numMinRest + ":" + numSecRestString + " rest break");
-        setNumMinRestField(numMinRest);
-        setNumSecRestField(numSecRestString);
+
+        if (numSecsOfRestTotal != 0) {
+            setNumMinRestField(numMinRest);
+            setNumSecRestField(numSecRestString);
+        }
 
     }
 
@@ -65,7 +70,7 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener listener, String uuid) {
+    protected void tryToSave(SaveListener listener) {
 
         TextInputEditText inputRestMinutesView = view.findViewById(R.id.input_rest_time_minutes);
         TextInputEditText inputRestSecondsView = view.findViewById(R.id.input_rest_time_seconds);
@@ -87,12 +92,21 @@ public class NewRestViewHolder extends NewExerciseViewHolder {
             return;
         }
 
-        Exercise builtExercise = buildExercise(totalRestSeconds, uuid);
+        if (!changesWereMade(totalRestSeconds)) {
+            listener.onNothingChanged();
+            return;
+        }
+
+        Exercise builtExercise = buildExercise(totalRestSeconds);
         listener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(int totalRestSeconds, String uuid) {
-        return new RestExercise(totalRestSeconds, false, uuid);
+    private boolean changesWereMade(int totalRestSeconds) {
+        return totalRestSeconds != exercise.getSecondsOfRest();
+    }
+
+    private Exercise buildExercise(int totalRestSeconds) {
+        return new RestExercise(totalRestSeconds, false, exercise.getUuid());
     }
 }

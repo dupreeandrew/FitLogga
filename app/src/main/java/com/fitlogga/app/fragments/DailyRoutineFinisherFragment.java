@@ -17,9 +17,11 @@ import androidx.fragment.app.Fragment;
 
 import com.fitlogga.app.R;
 import com.fitlogga.app.models.Day;
+import com.fitlogga.app.models.ReservedPreferences;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanEditor;
+import com.fitlogga.app.models.plan.PlanIOUtils;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.fitlogga.app.models.plan.log.SQLLogWriter;
@@ -116,17 +118,24 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
         boolean canCreate = true;
 
+        TextInputLayout inputNameLayout = view.findViewById(R.id.input_plan_name_layout);
         if (TextUtils.isEmpty(inputNameString)) {
-            TextInputLayout inputNameLayout = view.findViewById(R.id.input_plan_name_layout);
             inputNameLayout.setError("* Required");
             canCreate = false;
         }
-        else if (PlanReader.planExists(inputNameString) && planSummary == null) {
-            toastToPlanAlreadyExists();
+        else if (ReservedPreferences.contains(PlanIOUtils.getIOSafeFileID(inputNameString))) {
+            String error = getString(R.string.fragment_daily_routine_finisher_plan_you_can_not_use_this_plan_name);
+            inputNameLayout.setError(error);
             canCreate = false;
         }
-        else if (importedPlan && inputNameString.equals(planSummary.getName())) {
-            toastToPlanAlreadyExists();
+        else if (PlanReader.planExists(inputNameString) && planSummary == null) {
+            String error = getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists);
+            inputNameLayout.setError(error);
+            canCreate = false;
+        }
+        else if (importedPlan && PlanReader.planExists(inputNameString)) {
+            String error = getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists);
+            inputNameLayout.setError(error);
             canCreate = false;
         }
 
@@ -143,13 +152,6 @@ public class DailyRoutineFinisherFragment extends Fragment {
         CheckBox checkBox = view.findViewById(R.id.cb_set_as_current_plan);
 
         createPlan(view.getContext(), inputNameString, inputDescString, checkBox.isChecked());
-    }
-
-    private void toastToPlanAlreadyExists() {
-        Toast.makeText(getContext(),
-                getString(R.string.fragment_daily_routine_finisher_plan_error_plan_already_exists),
-                Toast.LENGTH_LONG)
-                .show();
     }
 
     private void createPlan(Context context, String inputNameString, String inputDescString, boolean setAsActivePlan) {
@@ -178,8 +180,6 @@ public class DailyRoutineFinisherFragment extends Fragment {
                 .setPlanSummary(planSummary, setAsActivePlan)
                 .setDailyRoutineMap(dailyRoutineMap)
                 .create();
-
-        // todo:: handle new plans w/ same name of existing plan. This will overwrite it.
 
         //noinspection ConstantConditions
         getActivity().finish();

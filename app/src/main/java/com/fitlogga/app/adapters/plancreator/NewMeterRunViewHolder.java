@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class NewMeterRunViewHolder extends NewExerciseViewHolder {
 
     private View view;
+    private MeterRunExercise meterRunExercise;
 
     NewMeterRunViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -22,7 +23,7 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
 
     @Override
     public void manifest(Exercise exercise) {
-        MeterRunExercise meterRunExercise = (MeterRunExercise)exercise;
+        this.meterRunExercise = (MeterRunExercise)exercise;
 
         String description = meterRunExercise.getDescription();
         int distance = meterRunExercise.getDistance();
@@ -36,8 +37,10 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
     }
 
     private void setDistanceField(int distance) {
-        TextInputEditText inputDistance = view.findViewById(R.id.input_run_distance);
-        inputDistance.setText(String.valueOf(distance));
+        if (distance != 0) {
+            TextInputEditText inputDistance = view.findViewById(R.id.input_run_distance);
+            inputDistance.setText(String.valueOf(distance));
+        }
     }
 
     private void setDistanceUnitsField(String units) {
@@ -64,7 +67,7 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener, String uuid) {
+    protected void tryToSave(SaveListener saveListener) {
         TextInputEditText inputDistanceView = view.findViewById(R.id.input_run_distance);
         TextInputEditText inputUnitsView = view.findViewById(R.id.input_run_units);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
@@ -92,14 +95,38 @@ public class NewMeterRunViewHolder extends NewExerciseViewHolder {
             return;
         }
 
+        int inputDistance = Integer.parseInt(inputDistanceString);
+
+        if (!changesWereMade(inputDistance, inputUnitsString, inputDescriptionString)) {
+            saveListener.onNothingChanged();
+            return;
+        }
+
         Exercise builtExercise
-                = buildExercise(inputDistanceString, inputUnitsString, inputDescriptionString, uuid);
+                = buildExercise(inputDistance, inputUnitsString, inputDescriptionString, meterRunExercise.getUuid());
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputDistanceString, String inputUnitsString, String inputDescriptionString, String uuid) {
-        int inputDistance = Integer.parseInt(inputDistanceString);
+    private boolean changesWereMade(int inputDistance, String inputUnitsString,
+                                    String inputDescriptionString) {
+        if (meterRunExercise.getDistance() != inputDistance) {
+            return true;
+        }
+
+        if (!meterRunExercise.getDistanceUnits().equals(inputUnitsString)) {
+            return true;
+        }
+
+        if (!meterRunExercise.getDescription().equals(inputDescriptionString)) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private Exercise buildExercise(int inputDistance, String inputUnitsString, String inputDescriptionString, String uuid) {
         return new MeterRunExercise(inputDescriptionString, inputDistance, inputUnitsString, false, uuid);
     }
 

@@ -2,7 +2,6 @@ package com.fitlogga.app.adapters.plancreator;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -101,8 +100,6 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         Exercise exercise = exerciseList.get(position);
         viewHolder.manifest(exercise);
 
-        Log.d("testtting", exercise.getUuid());
-
         viewHolder.resetRequiredErrors();
 
         viewHolder.setDragHandleTouchListener((view, motionEvent) -> {
@@ -160,7 +157,6 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
     @Override
     protected void onViewHolderCollapsed(Event event, NewExerciseViewHolder viewHolder, Context context) {
         int adapterPosition = viewHolder.getAdapterPosition();
-        String uuid = exerciseList.get(adapterPosition).getUuid();
         viewHolder.tryToSave(new NewExerciseViewHolder.SaveListener() {
             @Override
             public void onSave(Exercise savedExercise) {
@@ -173,13 +169,18 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
             }
 
             @Override
+            public void onNothingChanged() {
+                lockViewHolderFocus(false);
+                viewHolder.removeAnyFocuses();
+            }
+
+            @Override
             public void onFail() {
-                Log.d("heh", event.toString());
                 event.setCancelled(true);
                 String errorMessage =  context.getString(R.string.please_finish_making_changes_first);
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
             }
-        }, uuid);
+        });
 
     }
 
@@ -204,21 +205,14 @@ public class NewDailyRoutineAdapter extends CollapsibleRecyclerAdapter<NewExerci
         recyclerView.scrollToPosition(adapterPos);
     }
 
-    public void notifyFragmentFocusLost(Event event, Context context) {
+    public void tryToSaveCurrentViewHolder(NewExerciseViewHolder.SaveListener saveListener) {
 
-        String tag = "sup";
-
-        Log.d(tag, "NOTIFYING..");
-
-        NewExerciseViewHolder expandedViewHolder = getExpandedViewHolder();
-
-        if (expandedViewHolder == null) {
-            Log.d(tag, "NOTHING IS EXPANDED.");
+        if (getExpandedViewHolder() == null) {
+            saveListener.onNothingChanged();
             return;
         }
 
-        onViewHolderCollapsed(event, expandedViewHolder, context);
-        Log.d(tag, "NOTIFIED SUCCESS.");
+        getExpandedViewHolder().tryToSave(saveListener);
 
 
     }

@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fitlogga.app.Event;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.drag.DefaultSimpleCallback;
 import com.fitlogga.app.adapters.plancreator.CopierDays;
 import com.fitlogga.app.adapters.plancreator.NewDailyRoutineAdapter;
+import com.fitlogga.app.adapters.plancreator.NewExerciseViewHolder;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
@@ -151,6 +151,11 @@ public class DailyRoutineCreatorFragment extends Fragment {
             return;
         }
 
+        if (exerciseList.size() == 0) {
+            addCopyDayExercise();
+            return;
+        }
+
         new LovelyStandardDialog(getContext())
                 .setTopColorRes(R.color.colorWarning)
                 .setTitle("Are you sure?")
@@ -173,8 +178,8 @@ public class DailyRoutineCreatorFragment extends Fragment {
         fabController.setEnabled(false);
     }
 
-    public void notifyFragmentFocusLost(Event event) {
-        adapter.notifyFragmentFocusLost(event, getContext());
+    public void tryToSaveAnyOpenViewHolder(NewExerciseViewHolder.SaveListener saveListener) {
+        adapter.tryToSaveCurrentViewHolder(saveListener);
     }
 
 

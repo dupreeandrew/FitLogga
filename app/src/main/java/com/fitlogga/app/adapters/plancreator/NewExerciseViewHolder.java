@@ -20,8 +20,9 @@ import java.util.List;
 
 public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
 
-    interface SaveListener {
+    public interface SaveListener {
         void onSave(Exercise exercise);
+        void onNothingChanged();
         void onFail();
     }
 
@@ -45,7 +46,7 @@ public abstract class NewExerciseViewHolder extends CollapsibleViewHolder  {
         subtitleView.setText(subtitle);
     }
 
-    protected abstract void tryToSave(SaveListener listener, String uuid);
+    protected abstract void tryToSave(SaveListener listener);
 
     final void setDeleteButtonClickListener(View.OnClickListener listener) {
         Button deleteButton = view.findViewById(R.id.btn_delete);

@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
 
     private View view;
+    private FreeWeightExercise freeWeightExercise;
 
     NewFreeWeightViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -25,7 +26,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
 
     @Override
     public void manifest(Exercise exercise) {
-        FreeWeightExercise freeWeightExercise = (FreeWeightExercise)exercise;
+        this.freeWeightExercise = (FreeWeightExercise)exercise;
 
         String name = freeWeightExercise.getName();
         String description = freeWeightExercise.getDescription();
@@ -63,18 +64,24 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     }
 
     private void setNumSets(int numSets) {
-        TextInputEditText inputSets = view.findViewById(R.id.input_num_sets);
-        inputSets.setText(String.valueOf(numSets));
+        if (numSets != 0) {
+            TextInputEditText inputSets = view.findViewById(R.id.input_num_sets);
+            inputSets.setText(String.valueOf(numSets));
+        }
     }
 
     private void setNumReps(int numReps) {
-        TextInputEditText inputNumReps = view.findViewById(R.id.input_num_reps);
-        inputNumReps.setText(String.valueOf(numReps));
+        if (numReps != 0) {
+            TextInputEditText inputNumReps = view.findViewById(R.id.input_num_reps);
+            inputNumReps.setText(String.valueOf(numReps));
+        }
     }
 
     private void setNumWeight(int numWeight) {
-        TextInputEditText inputNumWeight = view.findViewById(R.id.input_num_weight);
-        inputNumWeight.setText(String.valueOf(numWeight));
+        if (numWeight != 0) {
+            TextInputEditText inputNumWeight = view.findViewById(R.id.input_num_weight);
+            inputNumWeight.setText(String.valueOf(numWeight));
+        }
     }
 
     private void setNumWeightUnits(String units) {
@@ -83,13 +90,17 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
     }
 
     private void setNumMinRest(int numMinRest) {
-        TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_minutes);
-        inputNumSecsRest.setText(String.valueOf(numMinRest));
+        if (numMinRest != 0) {
+            TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_minutes);
+            inputNumSecsRest.setText(String.valueOf(numMinRest));
+        }
     }
 
     private void setNumSecsRest(int numSecsRest) {
-        TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_seconds);
-        inputNumSecsRest.setText(String.valueOf(numSecsRest));
+        if (numSecsRest != 0) {
+            TextInputEditText inputNumSecsRest = view.findViewById(R.id.input_rest_time_seconds);
+            inputNumSecsRest.setText(String.valueOf(numSecsRest));
+        }
     }
 
     private void initExerciseNameAutoComplete() {
@@ -121,7 +132,7 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    protected void tryToSave(SaveListener saveListener, String uuid) {
+    protected void tryToSave(SaveListener saveListener) {
         AutoCompleteTextView inputNameView = view.findViewById(R.id.input_exercise_name);
         TextInputEditText inputDescriptionView = view.findViewById(R.id.input_exercise_description);
         TextInputEditText inputNumSetsView = view.findViewById(R.id.input_num_sets);
@@ -139,10 +150,8 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         String inputUnitsString = inputUnitsView.getText().toString();
         String inputRestMinutesString = inputRestMinutesView.getText().toString();
         String inputRestSecondsString = inputRestSecondsView.getText().toString();
-        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
 
         boolean isSaveable = true;
-
 
         resetRequiredErrors();
 
@@ -187,6 +196,11 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
             isSaveable = false;
         }
 
+        int inputNumSets = Integer.parseInt(inputNumSetsString);
+        int inputNumReps = Integer.parseInt(inputNumRepsString);
+        int inputNumWeight = Integer.parseInt(inputNumWeightString);
+        int totalRestSeconds = Time.getSeconds(inputRestMinutesString, inputRestSecondsString);
+
         if (totalRestSeconds <= 0) {
             applyErrorBackground(R.id.input_rest_time_minutes_layout);
             applyBadNumberError(R.id.input_rest_time_seconds_layout);
@@ -194,39 +208,70 @@ public class NewFreeWeightViewHolder extends NewExerciseViewHolder {
         }
 
 
-        //
-
         if (!isSaveable) {
             saveListener.onFail();
             return;
         }
 
+        if (!changesWereMade(inputNameString, inputDescriptionString,
+                inputNumSets, inputNumReps, inputNumWeight, totalRestSeconds)) {
+            saveListener.onNothingChanged();
+            return;
+        }
+
         Exercise builtExercise
-                = buildExercise(inputNameString, inputDescriptionString, inputNumSetsString,
-                inputNumRepsString, inputNumWeightString, inputUnitsString,
-                totalRestSeconds, uuid);
+                = buildExercise(inputNameString, inputDescriptionString, inputNumSets,
+                inputNumReps, inputNumWeight, inputUnitsString,
+                totalRestSeconds);
         saveListener.onSave(builtExercise);
 
     }
 
-    private Exercise buildExercise(String inputNameString, String inputDescriptionString,
-                                   String inputNumSetsString, String inputNumRepsString,
-                                   String inputNumWeightString, String inputUnitsString,
-                                   int totalRestSeconds, String uuid) {
+    private boolean changesWereMade(String inputNameString, String inputDescriptionString,
+                                    int inputNumSets, int inputNumReps, int inputNumWeight, int totalRestSeconds) {
 
-        int numSets = Integer.parseInt(inputNumSetsString);
-        int numReps = Integer.parseInt(inputNumRepsString);
-        int numWeight = Integer.parseInt(inputNumWeightString);
+        if (!freeWeightExercise.getName().equals(inputNameString)) {
+            return true;
+        }
+
+        if (!freeWeightExercise.getDescription().equals(inputDescriptionString)) {
+            return true;
+        }
+
+        if (inputNumSets != freeWeightExercise.getNumberOfSets()) {
+            return true;
+        }
+
+        if (inputNumReps != freeWeightExercise.getNumberOfRepetitions()) {
+            return true;
+        }
+
+        if (inputNumWeight != freeWeightExercise.getAmountOfWeight()) {
+            return true;
+        }
+
+        if (totalRestSeconds != freeWeightExercise.getRestTimeBetweenSets()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private Exercise buildExercise(String inputNameString, String inputDescriptionString,
+                                   int inputNumSets, int inputNumReps,
+                                   int inputNumWeight, String inputUnitsString,
+                                   int totalRestSeconds) {
 
         return new FreeWeightExercise.Builder()
                 .setName(inputNameString)
                 .setDescription(inputDescriptionString)
-                .setNumberOfSets(numSets)
-                .setNumberOfReps(numReps)
-                .setAmountOfWeight(numWeight)
+                .setNumberOfSets(inputNumSets)
+                .setNumberOfReps(inputNumReps)
+                .setAmountOfWeight(inputNumWeight)
                 .setAmountOfWeightUnits(inputUnitsString)
                 .setRestTimeBetweenSets(totalRestSeconds)
-                .setUuid(uuid)
+                .setUuid(freeWeightExercise.getUuid())
                 .build();
 
     }
