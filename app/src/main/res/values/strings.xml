@@ -96,7 +96,10 @@
     <string name="fragment_daily_routine_finisher_plan_was_created">Plan was created.</string>
     <string name="fragment_daily_routine_finisher_plan_was_updated">Plan was updated.</string>
     <string name="fragment_daily_routine_finisher_plan_error_plan_already_exists">
-        This plan name already exists. Please choose another.
+        Plan name already exists.
+    </string>
+    <string name="fragment_daily_routine_finisher_plan_you_can_not_use_this_plan_name">
+        Please use another name.
     </string>
     <!-- fragment_daily_routine_finisher end -->
 

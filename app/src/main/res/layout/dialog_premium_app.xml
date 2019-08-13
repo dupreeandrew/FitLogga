@@ -7,14 +7,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/colorPrimary">
+        android:layout_height="40dp"
+        android:background="@color/colorPrimaryDark">
 
+        <!--
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:background="@drawable/ic_exercise" />
+            -->
 
     </RelativeLayout>
 
@@ -51,6 +53,7 @@
 Great Perks:\n
 - Unlock full-access to exercise logs\n
 - Have more than 3 fitness plans\n
+- Share unlimited fitness plans to everyone\n
 - &amp; access to future premium features\n
 "
             />

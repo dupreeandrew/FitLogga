@@ -78,6 +78,7 @@ public class PlanReader implements PlanSource {
     /**
      * Quicker way of calling #getDailyRoutine() 7x.
      */
+    @Override
     public EnumMap<Day, List<Exercise>> getDailyRoutines() {
         EnumMap<Day, List<Exercise>> dailyRoutineMap = new EnumMap<>(Day.class);
         for (Day day : Day.values()) {
@@ -164,6 +165,7 @@ public class PlanReader implements PlanSource {
     }
 
     @Nullable
+    @Override
     public PlanSummary getPlanSummary() {
         SharedPreferences summaryPref = getPlanSummaryPref();
         String planNamePrefString = PlanIOUtils.getIOSafeFileID(planName);

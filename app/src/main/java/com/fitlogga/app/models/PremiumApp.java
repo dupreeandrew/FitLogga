@@ -158,12 +158,31 @@ public class PremiumApp {
             }
 
             PremiumApp.setEnabled(true);
+            cachePurchaseDetails(purchase);
 
             // Essentially restart app
             activity.finish();
             Intent intent = new Intent(activity, MainActivity.class);
             activity.startActivity(intent);
         });
+    }
+
+    private static void cachePurchaseDetails(Purchase purchase) {
+        SharedPreferences pref = ApplicationContext.getInstance()
+                .getSharedPreferences("purchases", Context.MODE_PRIVATE);
+
+        String keyPrefix = "premiumapp";
+
+        String purchaseTokenKey = keyPrefix + "_purchase_token";
+        String purchaseToken = purchase.getPurchaseToken();
+
+        String orderIdKey = keyPrefix + "_order_id";
+        String orderId = purchase.getOrderId();
+
+        pref.edit()
+                .putString(purchaseTokenKey, purchaseToken)
+                .putString(orderIdKey, orderId)
+                .apply();
     }
 
 }

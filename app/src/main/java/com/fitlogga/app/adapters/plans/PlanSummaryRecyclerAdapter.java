@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fitlogga.app.R;
+import com.fitlogga.app.models.PremiumApp;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanExchanger;
 import com.fitlogga.app.models.plan.PlanSummary;
@@ -52,7 +53,15 @@ public class PlanSummaryRecyclerAdapter extends RecyclerView.Adapter<PlanSummary
         holder.setActivateButtonClickListener(view -> activatePlan(view, planSummary, holder.getAdapterPosition()));
         holder.setDeleteButtonClickListener(view -> promptDeletePlan(view, planSummary, position));
         holder.setEditButtonClickListener(view -> PlanEditor.openGUI(view.getContext(), planSummary.getName()));
-        holder.setShareButtonClickListener(view -> openStartShareDialog(planSummary.getName()));
+        holder.setShareButtonClickListener(view -> {
+            if (PremiumApp.isEnabled()) {
+                openStartShareDialog(planSummary.getName());
+            }
+            else {
+                PremiumApp.popupPremiumAppDialog(activity, "Upgrade to premium to " +
+                        "share unlimited fitness plans!");
+            }
+        });
     }
 
     private void activatePlan(View view, PlanSummary planSummary, int position) {

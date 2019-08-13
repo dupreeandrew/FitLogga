@@ -3,7 +3,6 @@ package com.fitlogga.app.models.plan;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -62,7 +61,7 @@ public class PlanExchanger {
         }
     }
 
-    public interface RequestListener {
+    private interface RequestListener {
         void onSuccess(String content);
         void onFail();
     }
@@ -93,12 +92,12 @@ public class PlanExchanger {
     private static final String EXCHANGE_SERVER_UPLOAD_URL = "https://fitlogga.com/exchange-server/upload.php";
     private static final String EXCHANGE_SERVER_POST_UPLOAD_PARAM = "payload";
     private static final String EXCHANGE_SERVER_GET_KEY_URL = "https://fitlogga.com/exchange-server/download.php?key=";
-
+    private static final String EXCHANGE_SERVER_ERROR_QUOTA_EXCEEDED = "quota-exceeded";
 
     private static final String DELIMITER = "!%@%@%!";
 
     private static final String QUOTA_NAME = "plan_export";
-    private static final int QUOTA_MAX_EXPORTS_PER_HOUR = 10;
+    private static final int QUOTA_MAX_EXPORTS_PER_HOUR = 15;
 
 
     /**
@@ -156,19 +155,19 @@ public class PlanExchanger {
 
     }
 
-    private static void resetQuotaTimestamp(SharedPreferences pref) {
-        final String TIMESTAMP_KEY = "timestamp";
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putLong(TIMESTAMP_KEY, System.currentTimeMillis());
-        editor.apply();
-    }
-
     private static void exportPlanToWebServer(String planPayload, ExportDialogListener listener) {
         OkHttpClient client = new OkHttpClient();
         Request uploadRequest = getUploadRequest(planPayload);
         Callback callback = getFinishedDownloadingCallback(new RequestListener() {
             @Override
             public void onSuccess(String content) {
+
+                if (content.equals(EXCHANGE_SERVER_ERROR_QUOTA_EXCEEDED)) {
+                    String error = getString(R.string.plan_exchange_error_export_please_wait);
+                    listener.onFail(error);
+                    return;
+                }
+
                 Quota.get(QUOTA_NAME).addUse();
                 listener.onSuccess(content);
             }
