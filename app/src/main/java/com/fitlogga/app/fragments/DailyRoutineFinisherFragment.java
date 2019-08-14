@@ -19,6 +19,7 @@ import com.fitlogga.app.R;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.ReservedPreferences;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.models.plan.PlanCreator;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanIOUtils;
@@ -31,7 +32,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class DailyRoutineFinisherFragment extends Fragment {
 
-    private EnumMap<Day, List<Exercise>> dailyRoutineMap;
+    private EnumMap<Day, DailyRoutine> dailyRoutineMap;
     private PlanSummary planSummary;
     private boolean importedPlan;
 
@@ -48,7 +48,7 @@ public class DailyRoutineFinisherFragment extends Fragment {
     }
 
     // Plan Summary will be non-null IF user is editing a plan, and not editing.
-    public DailyRoutineFinisherFragment(EnumMap<Day, List<Exercise>> dailyRoutineMap,
+    public DailyRoutineFinisherFragment(EnumMap<Day, DailyRoutine> dailyRoutineMap,
                                         @Nullable PlanSummary planSummary, boolean importedPlan) {
         this.dailyRoutineMap = dailyRoutineMap;
         this.planSummary = planSummary;
@@ -201,8 +201,8 @@ public class DailyRoutineFinisherFragment extends Fragment {
 
         // a1, a2, a3, a6
         Set<String> newUuids = new HashSet<>();
-        for (List<Exercise> exerciseList : dailyRoutineMap.values()) {
-            for (Exercise exercise : exerciseList) {
+        for (DailyRoutine dailyRoutine : dailyRoutineMap.values()) {
+            for (Exercise exercise : dailyRoutine.getExercises()) {
                 String uuid = exercise.getUuid();
                 newUuids.add(uuid);
             }
@@ -211,9 +211,9 @@ public class DailyRoutineFinisherFragment extends Fragment {
         // a1, a2, a3, a4, a5
         Set<String> existingUuids = new HashSet<>();
         PlanReader reader = PlanReader.attachTo(planSummary.getName());
-        EnumMap<Day, List<Exercise>> existingDailyRoutines = reader.getDailyRoutines();
-        for (List<Exercise> exerciseList : existingDailyRoutines.values()) {
-            for (Exercise exercise : exerciseList) {
+        EnumMap<Day, DailyRoutine> existingDailyRoutines = reader.getDailyRoutines();
+        for (DailyRoutine dailyRoutine : existingDailyRoutines.values()) {
+            for (Exercise exercise : dailyRoutine.getExercises()) {
                 String uuid = exercise.getUuid();
                 existingUuids.add(uuid);
             }

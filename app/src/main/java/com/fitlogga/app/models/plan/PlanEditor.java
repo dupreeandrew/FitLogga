@@ -5,11 +5,9 @@ import android.content.Intent;
 
 import com.fitlogga.app.activities.PlanCreatorActivity;
 import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.exercises.Exercise;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 
 public class PlanEditor {
@@ -57,12 +55,12 @@ public class PlanEditor {
         prefFile.delete();
     }
 
-    public void updateDailyRoutine(Day day, List<Exercise> dailyRoutine) {
+    public void updateDailyRoutine(Day day, DailyRoutine dailyRoutine) {
 
         checkForDeleted();
 
         String preferenceName = PlanIOUtils.getIOSafeFileID(planName);
-        String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
+        String exerciseListJson = PlanWritingUtils.getDailyRoutineJson(dailyRoutine);
 
         context
                 .getSharedPreferences(preferenceName, Context.MODE_PRIVATE)

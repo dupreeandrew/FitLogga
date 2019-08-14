@@ -21,23 +21,22 @@ import com.fitlogga.app.adapters.training.viewholders.TimedRunViewHolder;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.log.SQLLogWriter;
-
-import java.util.List;
 
 
 public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<ExerciseViewHolder> {
 
     public static class Builder {
-        private List<Exercise> exerciseList;
+        private DailyRoutine exercises;
         private Context context;
         private ViewGroup viewGroup;
         private String planName;
         private Day day;
 
-        public Builder setExerciseList(List<Exercise> exerciseList) {
-            this.exerciseList = exerciseList;
+        public Builder setDailyRoutine(DailyRoutine exercises) {
+            this.exercises = exercises;
             return this;
         }
 
@@ -63,11 +62,11 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
 
         public TrainingRecyclerAdapter build() {
             checkForNull();
-            return new TrainingRecyclerAdapter(planName, exerciseList, day, context, viewGroup);
+            return new TrainingRecyclerAdapter(planName, exercises, day, context, viewGroup);
         }
 
         private void checkForNull() {
-            if (exerciseList == null) {
+            if (exercises == null) {
                 throw new NullPointerException("exercise list is null.");
             }
 
@@ -87,16 +86,18 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
     }
 
 
-    private List<Exercise> exerciseList;
+    private DailyRoutine dailyRoutine;
+    private DailyRoutine.Exercises exercises;
     private Context context;
     private ViewGroup viewGroup;
     private String planName;
     private Day day;
     private boolean alreadyCompleted = false;
 
-    private TrainingRecyclerAdapter(String planName, List<Exercise> exerciseList, Day day, Context applicationContext, ViewGroup viewGroup) {
+    private TrainingRecyclerAdapter(String planName, DailyRoutine dailyRoutine, Day day, Context applicationContext, ViewGroup viewGroup) {
         this.planName = planName;
-        this.exerciseList = exerciseList;
+        this.dailyRoutine = dailyRoutine;
+        this.exercises = dailyRoutine.getExercises();
         this.context = applicationContext;
         this.viewGroup = viewGroup;
         this.day = day;
@@ -132,13 +133,13 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
 
     @Override
     public int getItemViewType(int position) {
-        ExerciseType exerciseType = exerciseList.get(position).getExerciseType();
+        ExerciseType exerciseType = exercises.get(position).getExerciseType();
         return exerciseType.getExerciseTypeValue();
     }
 
     @Override
     protected void onPostConfigBindViewHolder(ExerciseViewHolder viewHolder, int position) {
-        Exercise exercise = exerciseList.get(position);
+        Exercise exercise = exercises.get(position);
         viewHolder.manifest(exercise);
         viewHolder.setOnUpdateListener(() -> {
             viewHolder.setCheckmarkVisible(true);
@@ -152,7 +153,7 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
             return;
         }
 
-        for (Exercise exercise : exerciseList) {
+        for (Exercise exercise : exercises) {
             if (!exercise.isCompleted()) {
                 return;
             }
@@ -185,12 +186,12 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
 
     private void updateDailyRoutineToStorage() {
         PlanEditor planEditor = new PlanEditor(context, planName);
-        planEditor.updateDailyRoutine(day, exerciseList);
+        planEditor.updateDailyRoutine(day, dailyRoutine);
     }
 
     private void logAllExercises() {
         SQLLogWriter writer = new SQLLogWriter(planName);
-        writer.append(exerciseList, day);
+        writer.append(exercises, day);
     }
 
     @Override
@@ -205,6 +206,6 @@ public class TrainingRecyclerAdapter extends CollapsibleRecyclerAdapter<Exercise
 
     @Override
     public int getItemCount() {
-        return exerciseList.size();
+        return exercises.size();
     }
 }

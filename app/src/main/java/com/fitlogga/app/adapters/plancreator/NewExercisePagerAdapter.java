@@ -11,17 +11,16 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.fitlogga.app.fragments.DailyRoutineCreatorFragment;
 import com.fitlogga.app.fragments.DailyRoutineFinisherFragment;
 import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.ObservedList;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
 import com.fitlogga.app.models.exercises.ExerciseType;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.models.plan.PlanExchanger;
 import com.fitlogga.app.models.plan.PlanSource;
 import com.fitlogga.app.models.plan.PlanSummary;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
 
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Map;
 
 public class NewExercisePagerAdapter extends FragmentPagerAdapter {
@@ -33,8 +32,7 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
     @Nullable
     private PlanSource planSource;
     private ViewPagerPlus.Controller viewPagerController;
-    private EnumMap<Day, List<Exercise>> initialDailyRoutineMap;
-    private EnumMap<Day, List<Exercise>> dailyRoutineMap;
+    private EnumMap<Day, DailyRoutine> dailyRoutineMap;
     private Fragment currentFragment;
     private CopierDays copierDays = new CopierDays();
 
@@ -47,7 +45,8 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
 
         if (planSource != null) {
             this.planSummary = planSource.getPlanSummary();
-            this.dailyRoutineMap = getDailyRoutines(planSource);
+            this.dailyRoutineMap = planSource.getDailyRoutines();
+            enableObserving();
             fillCopierDays();
         }
         else {
@@ -55,27 +54,18 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
         }
     }
 
-    // Basically converts the received list into an Observed List.
-    private EnumMap<Day, List<Exercise>> getDailyRoutines(PlanSource planSource) {
-        EnumMap<Day, List<Exercise>> dailyRoutines = planSource.getDailyRoutines();
-        EnumMap<Day, List<Exercise>> newDailyRoutines = new EnumMap<>(Day.class);
-
-        for (Map.Entry<Day, List<Exercise>> entry : dailyRoutines.entrySet()) {
-            Day key = entry.getKey();
-            List<Exercise> value = entry.getValue();
-            ObservedList<Exercise> observedList = new ObservedList<>(value);
-            newDailyRoutines.put(key, observedList);
+    private void enableObserving() {
+        for (DailyRoutine dailyRoutine : dailyRoutineMap.values()) {
+            dailyRoutine.getExercises().setStartObserving(true);
         }
-
-        return newDailyRoutines;
     }
 
     private void fillCopierDays() {
-        for (Map.Entry<Day, List<Exercise>> entry : dailyRoutineMap.entrySet()) {
+        for (Map.Entry<Day, DailyRoutine> entry : dailyRoutineMap.entrySet()) {
             Day day = entry.getKey();
-            List<Exercise> exerciseList = entry.getValue();
+            DailyRoutine dailyRoutine = entry.getValue();
 
-            for (Exercise exercise : exerciseList) {
+            for (Exercise exercise : dailyRoutine.getExercises()) {
                 if (exercise.getExerciseType() == ExerciseType.COPIER) {
                     DayCopierExercise dayCopierExercise = (DayCopierExercise) exercise;
                     Day dayBeingCopied = dayCopierExercise.getDayBeingCopied();
@@ -88,7 +78,9 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
     private void fillDailyRoutineMap() {
         dailyRoutineMap = new EnumMap<>(Day.class);
         for (Day day : Day.values()) {
-            dailyRoutineMap.put(day, new ObservedList<>());
+            DailyRoutine dailyRoutine = new DailyRoutine();
+            dailyRoutine.getExercises().setStartObserving(true);
+            dailyRoutineMap.put(day, dailyRoutine);
         }
     }
 
@@ -119,9 +111,8 @@ public class NewExercisePagerAdapter extends FragmentPagerAdapter {
     }
 
     public boolean changesWereMade() {
-        for (List<Exercise> exerciseList : dailyRoutineMap.values()) {
-            ObservedList<Exercise> observedExerciseList = (ObservedList<Exercise>) exerciseList;
-            if (observedExerciseList.wereChangesMade()) {
+        for (DailyRoutine dailyRoutine : dailyRoutineMap.values()) {
+            if (dailyRoutine.getExercises().wereChangesMade()) {
                 return true;
             }
         }

@@ -4,12 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.fitlogga.app.models.ApplicationContext;
-import com.fitlogga.app.models.exercises.Exercise;
 import com.google.gson.Gson;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 class PlanWritingUtils {
 
@@ -30,17 +25,9 @@ class PlanWritingUtils {
     }
 
 
-    static String getExerciseListJson(List<Exercise> listOfExercises) {
-
+    static String getDailyRoutineJson(DailyRoutine dailyRoutine) {
         Gson gson = new Gson();
-
-        Map<String, Object> exerciseMap = new LinkedHashMap<>();
-        for (int i = 0; i < listOfExercises.size(); i++) {
-            Exercise exercise = listOfExercises.get(i);
-            exerciseMap.put(String.valueOf(i), exercise);
-        }
-
-        return gson.toJson(exerciseMap);
+        return gson.toJson(dailyRoutine);
     }
 
 

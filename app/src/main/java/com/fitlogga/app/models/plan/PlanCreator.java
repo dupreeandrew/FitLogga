@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.fitlogga.app.models.ApplicationContext;
 import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.exercises.Exercise;
 
 import java.util.Date;
 import java.util.EnumMap;
@@ -26,7 +25,7 @@ public class PlanCreator {
 
     public static class Builder {
         private PlanSummary planSummary;
-        private EnumMap<Day, List<Exercise>> dailyRoutineMap;
+        private EnumMap<Day, DailyRoutine> dailyRoutineMap;
 
         private Builder() {
             // empty constructor
@@ -49,7 +48,7 @@ public class PlanCreator {
             return this;
         }
 
-        public Builder setDailyRoutineMap(EnumMap<Day, List<Exercise>> dailyRoutineMap) {
+        public Builder setDailyRoutineMap(EnumMap<Day, DailyRoutine> dailyRoutineMap) {
             this.dailyRoutineMap = dailyRoutineMap;
             return this;
         }
@@ -68,7 +67,7 @@ public class PlanCreator {
     }
 
     private PlanSummary planSummary;
-    private EnumMap<Day, List<Exercise>> dailyRoutineMap;
+    private EnumMap<Day, DailyRoutine> dailyRoutineMap;
     private SharedPreferences.Editor editor;
     private static PlanCreationListener planCreationListener;
 
@@ -77,7 +76,7 @@ public class PlanCreator {
     }
 
     @SuppressLint("CommitPrefEdits")
-    private PlanCreator(PlanSummary planSummary, EnumMap<Day, List<Exercise>> dailyRoutineMap) {
+    private PlanCreator(PlanSummary planSummary, EnumMap<Day, DailyRoutine> dailyRoutineMap) {
         this.planSummary = planSummary;
         this.dailyRoutineMap = dailyRoutineMap;
 
@@ -97,17 +96,17 @@ public class PlanCreator {
 
         // 0 = Sunday. 6 = Saturday.
         for (Day usedDay : usedDays) {
-            List<Exercise> dailyRoutine = dailyRoutineMap.get(usedDay);
+            DailyRoutine dailyRoutine = dailyRoutineMap.get(usedDay);
 
-            if (dailyRoutine == null || dailyRoutine.size() == 0) {
+            if (dailyRoutine == null || dailyRoutine.getExercises().size() == 0) {
                 continue;
             }
 
             int dayNumber = usedDay.ordinal();
 
-            String exerciseListJson = PlanWritingUtils.getExerciseListJson(dailyRoutine);
-            editor.putString(String.valueOf(dayNumber), exerciseListJson);
-            Log.d("boo11", exerciseListJson);
+            String dailyRoutineJson = PlanWritingUtils.getDailyRoutineJson(dailyRoutine);
+            editor.putString(String.valueOf(dayNumber), dailyRoutineJson);
+            Log.d("boo11", dailyRoutineJson);
 
         }
 

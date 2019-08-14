@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GsonHelper {
-    public static Map<String, Map<String, Object>> getNestedMapFromJsonString(String jsonString) {
+    public static Map<String, Object> getMapFromJson(String jsonString) {
         Gson gson = new Gson();
         Type type = new TypeToken<Map<String, Object>>(){}.getType();
         return gson.fromJson(jsonString, type);

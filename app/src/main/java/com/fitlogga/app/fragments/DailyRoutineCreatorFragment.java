@@ -21,15 +21,12 @@ import com.fitlogga.app.adapters.plancreator.NewDailyRoutineAdapter;
 import com.fitlogga.app.adapters.plancreator.NewExerciseViewHolder;
 import com.fitlogga.app.models.Day;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
-import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.viewmods.FabController;
 import com.fitlogga.app.viewmods.ViewPagerPlus;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 import com.yarolegovich.lovelydialog.LovelyStandardDialog;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getCopyDay;
 import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getFreeWeight;
@@ -40,7 +37,8 @@ import static com.fitlogga.app.models.exercises.BlankExerciseGenerator.getTimedR
 
 public class DailyRoutineCreatorFragment extends Fragment {
 
-    private List<Exercise> exerciseList;
+    private String dailyRoutineName;
+    private DailyRoutine.Exercises exercises;
     private ViewPagerPlus.Controller viewPagerController;
     private Day day;
     private ItemTouchHelper itemTouchHelper;
@@ -53,15 +51,11 @@ public class DailyRoutineCreatorFragment extends Fragment {
     }
 
     public DailyRoutineCreatorFragment(
-            List<Exercise> exerciseList, ViewPagerPlus.Controller viewPagerController,
+            DailyRoutine dailyRoutine, ViewPagerPlus.Controller viewPagerController,
             Day day, CopierDays copierDays) {
-
-        if (exerciseList == null) {
-            exerciseList = new ArrayList<>();
-        }
-
-
-        this.exerciseList = exerciseList;
+        
+        this.dailyRoutineName = dailyRoutine.getName();
+        this.exercises = dailyRoutine.getExercises();
         this.viewPagerController = viewPagerController;
         this.day = day;
         this.copierDays = copierDays;
@@ -83,11 +77,11 @@ public class DailyRoutineCreatorFragment extends Fragment {
         fabController = new FabController(fab);
 
 
-        if (exerciseList.size() > 0 && exerciseList.get(0) instanceof DayCopierExercise) {
+        if (exercises.size() > 0 && exercises.get(0) instanceof DayCopierExercise) {
             fabController.setEnabled(false);
         }
 
-        this.adapter = new NewDailyRoutineAdapter(exerciseList,
+        this.adapter = new NewDailyRoutineAdapter(exercises,
                 viewHolder -> itemTouchHelper.startDrag(viewHolder), viewPagerController, fabController, day, copierDays);
         initRecyclerView(view);
     }
@@ -117,27 +111,27 @@ public class DailyRoutineCreatorFragment extends Fragment {
                 .setItems(choices, (position, item) -> {
                     switch (position) {
                         case TIMED_RUN_INDEX:
-                            exerciseList.add(getTimedRun());
+                            exercises.add(getTimedRun());
                             break;
                         case METER_RUN_INDEX:
-                            exerciseList.add(getMeterRun());
+                            exercises.add(getMeterRun());
                             break;
                         case REPETITION_EXERCISE_INDEX:
-                            exerciseList.add(getRepetition());
+                            exercises.add(getRepetition());
                             break;
                         case FREE_WEIGHT_EXERCISE_INDEX:
-                            exerciseList.add(getFreeWeight());
+                            exercises.add(getFreeWeight());
                             break;
                         case REST_BREAK_INDEX:
-                            exerciseList.add(getRest());
+                            exercises.add(getRest());
                             break;
                         case COPY_A_DAY_INDEX:
                             handleCopyDay();
                             return;
                     }
 
-                    adapter.notifyItemInserted(exerciseList.size() - 1);
-                    adapter.expandViewHolder(exerciseList.size() - 1);
+                    adapter.notifyItemInserted(exercises.size() - 1);
+                    adapter.expandViewHolder(exercises.size() - 1);
 
                 })
                 .show();
@@ -151,7 +145,7 @@ public class DailyRoutineCreatorFragment extends Fragment {
             return;
         }
 
-        if (exerciseList.size() == 0) {
+        if (exercises.size() == 0) {
             addCopyDayExercise();
             return;
         }
@@ -168,8 +162,8 @@ public class DailyRoutineCreatorFragment extends Fragment {
 
     private void addCopyDayExercise() {
 
-        exerciseList.clear();
-        exerciseList.add(getCopyDay());
+        exercises.clear();
+        exercises.add(getCopyDay());
 
         adapter.notifyDataSetChanged();
         adapter.expandViewHolder(0);

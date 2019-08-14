@@ -27,12 +27,10 @@ public class PlanReader implements PlanSource {
 
     private SharedPreferences planNamePref;
     private String planName;
-    private Context context;
 
     private PlanReader(SharedPreferences planNamePref, String planName) {
         this.planNamePref = planNamePref;
         this.planName = planName;
-        this.context = ApplicationContext.getInstance();
     }
 
     @Nullable
@@ -79,10 +77,10 @@ public class PlanReader implements PlanSource {
      * Quicker way of calling #getDailyRoutine() 7x.
      */
     @Override
-    public EnumMap<Day, List<Exercise>> getDailyRoutines() {
-        EnumMap<Day, List<Exercise>> dailyRoutineMap = new EnumMap<>(Day.class);
+    public EnumMap<Day, DailyRoutine> getDailyRoutines() {
+        EnumMap<Day, DailyRoutine> dailyRoutineMap = new EnumMap<>(Day.class);
         for (Day day : Day.values()) {
-            List<Exercise> dailyRoutine = getDailyRoutine(day);
+            DailyRoutine dailyRoutine = getDailyRoutine(day);
             dailyRoutineMap.put(day, dailyRoutine);
         }
 
@@ -94,7 +92,7 @@ public class PlanReader implements PlanSource {
      * This will always at the very minimum return an empty list.
      */
     @NonNull
-    public List<Exercise> getDailyRoutine(Day day) {
+    public DailyRoutine getDailyRoutine(Day day) {
 
         final String NO_DAILY_ROUTINE_STRING = "empty";
 
@@ -102,22 +100,28 @@ public class PlanReader implements PlanSource {
         String exerciseListJson = planNamePref.getString(dayValueString, NO_DAILY_ROUTINE_STRING);
 
         if (NO_DAILY_ROUTINE_STRING.equals(exerciseListJson)) {
-            return new ArrayList<>();
+            return new DailyRoutine();
         }
 
-        return getExerciseList(exerciseListJson);
+        return getDailyRoutine(exerciseListJson);
 
     }
 
-    private List<Exercise> getExerciseList(String exerciseListJson) {
-        Map<String, Map<String, Object>> jsonMap = GsonHelper.getNestedMapFromJsonString(exerciseListJson);
-        List<Exercise> exerciseList = new ArrayList<>();
-        for (Map<String, Object> exerciseMap : jsonMap.values()) {
+    private DailyRoutine getDailyRoutine(String dailyRoutineJson) {
+        Map<String, Object> jsonMap = GsonHelper.getMapFromJson(dailyRoutineJson);
+        List<Map<String, Object>> rawExercises = (List<Map<String, Object>>) jsonMap.get("exercises");
+
+        DailyRoutine dailyRoutine = new DailyRoutine();
+        for (Map<String, Object> exerciseMap : rawExercises) {
             Exercise exercise = ExerciseTranslator.toExercise(exerciseMap);
-            exerciseList.add(exercise);
+            dailyRoutine.getExercises().add(exercise);
         }
 
-        return exerciseList;
+        String dailyRoutineName = (String) jsonMap.get("name");
+        dailyRoutine.setName(dailyRoutineName);
+
+
+        return dailyRoutine;
     }
 
     @Nullable
@@ -155,7 +159,7 @@ public class PlanReader implements PlanSource {
 
     @Nullable
     public DayCopierExercise getDayCopier(Day day) {
-        Exercise exercise = getDailyRoutine(day).get(0);
+        Exercise exercise = getDailyRoutine(day).getExercises().get(0);
         if (exercise instanceof DayCopierExercise) {
             return (DayCopierExercise)exercise;
         }

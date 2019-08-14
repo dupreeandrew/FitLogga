@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -22,7 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +43,9 @@ public class PlanExchanger {
 
     public static class Plan implements PlanSource {
         private PlanSummary planSummary;
-        private EnumMap<Day, List<Exercise>> dailyRoutines;
+        private EnumMap<Day, DailyRoutine> dailyRoutines;
 
-        public Plan(PlanSummary planSummary, EnumMap<Day, List<Exercise>> dailyRoutines) {
+        public Plan(PlanSummary planSummary, EnumMap<Day, DailyRoutine> dailyRoutines) {
             this.planSummary = planSummary;
             this.dailyRoutines = dailyRoutines;
         }
@@ -56,7 +56,7 @@ public class PlanExchanger {
         }
 
         @Override
-        public EnumMap<Day, List<Exercise>> getDailyRoutines() {
+        public EnumMap<Day, DailyRoutine> getDailyRoutines() {
             return dailyRoutines;
         }
     }
@@ -120,11 +120,11 @@ public class PlanExchanger {
         }
 
         PlanSummary planSummary = planReader.getPlanSummary();
-        EnumMap<Day, List<Exercise>> dailyRoutines = planReader.getDailyRoutines();
+        EnumMap<Day, DailyRoutine> dailyRoutines = planReader.getDailyRoutines();
 
-        for (Map.Entry<Day, List<Exercise>> entry : dailyRoutines.entrySet()) {
-            List<Exercise> dailyRoutine = entry.getValue();
-            if (dailyRoutine.isEmpty()) {
+        for (Map.Entry<Day, DailyRoutine> entry : dailyRoutines.entrySet()) {
+            DailyRoutine.Exercises exercises = entry.getValue().getExercises();
+            if (exercises.isEmpty()) {
                 Day day = entry.getKey();
                 dailyRoutines.remove(day);
             }
@@ -134,6 +134,8 @@ public class PlanExchanger {
         String planSummaryJson = gson.toJson(planSummary);
         String dailyRoutinesJson = gson.toJson(dailyRoutines);
         String planPayload = planSummaryJson + DELIMITER + dailyRoutinesJson;
+
+        Log.d("testyy-", dailyRoutinesJson);
 
         exportPlanToWebServer(planPayload, listener);
 
@@ -287,7 +289,7 @@ public class PlanExchanger {
 
         Map<String, List<Map<String, Object>>> dailyRoutineRawMap
                 = GsonHelper.getMapOfListsOfMaps(dailyRoutinesMapJson);
-        EnumMap<Day, List<Exercise>> dailyRoutineMap = new EnumMap<>(Day.class);
+        EnumMap<Day, DailyRoutine> dailyRoutineMap = new EnumMap<>(Day.class);
 
         /*
         entry.key = Day # as string
@@ -297,13 +299,13 @@ public class PlanExchanger {
             int dayValue = Integer.parseInt(entry.getKey());
             Day day = Day.fromValue(dayValue);
 
-            List<Exercise> exerciseList = new ArrayList<>();
+            DailyRoutine dailyRoutine = new DailyRoutine();
             for (Map<String, Object> exerciseMap : entry.getValue()) {
                 Exercise exercise = ExerciseTranslator.toExercise(exerciseMap);
-                exerciseList.add(exercise);
+                dailyRoutine.getExercises().add(exercise);
             }
 
-            dailyRoutineMap.put(day, exerciseList);
+            dailyRoutineMap.put(day, dailyRoutine);
 
         }
 

@@ -22,10 +22,6 @@ import com.google.android.material.tabs.TabLayout;
 
 public class PlanCreatorActivity extends AppCompatActivity {
 
-    public static class UnsavedChangesDialog {
-        private boolean show;
-    }
-
     public static String PREFILLED_PLAN_NAME_JSON_KEY = "preFilledPlanName";
     public static String PREFILLED_EXPORT_PLAN_PAYLOAD = "prefilledExportPlanPayload";
 

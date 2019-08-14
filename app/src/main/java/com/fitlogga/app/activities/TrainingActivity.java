@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fitlogga.app.R;
 import com.fitlogga.app.adapters.training.TrainingRecyclerAdapter;
 import com.fitlogga.app.models.Day;
-import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.models.plan.PlanReader;
 
-import java.util.List;
 import java.util.Objects;
 
 public class TrainingActivity extends AppCompatActivity {
@@ -58,14 +57,14 @@ public class TrainingActivity extends AppCompatActivity {
 
     private TrainingRecyclerAdapter getAdapter() {
         PlanReader planReader = PlanReader.attachTo(planNameValue);
-        List<Exercise> exerciseList = Objects.requireNonNull(planReader).getDailyRoutine(day);
+        DailyRoutine exerciseList = Objects.requireNonNull(planReader).getDailyRoutine(day);
 
         ViewGroup viewGroup = findViewById(android.R.id.content);
         return new TrainingRecyclerAdapter.Builder()
                 .setContext(this)
                 .setViewGroup(viewGroup)
                 .setPlanName(planNameValue)
-                .setExerciseList(exerciseList)
+                .setDailyRoutine(exerciseList)
                 .setDay(day)
                 .build();
     }

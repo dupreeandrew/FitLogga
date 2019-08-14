@@ -29,6 +29,7 @@ import com.fitlogga.app.models.PremiumApp;
 import com.fitlogga.app.models.exercises.DayCopierDetector;
 import com.fitlogga.app.models.exercises.DayCopierExercise;
 import com.fitlogga.app.models.exercises.Exercise;
+import com.fitlogga.app.models.plan.DailyRoutine;
 import com.fitlogga.app.models.plan.PlanEditor;
 import com.fitlogga.app.models.plan.PlanReader;
 import com.fitlogga.app.viewmods.ViewEnabler;
@@ -207,7 +208,7 @@ public class PowerupFragment extends Fragment {
             return;
         }
 
-        EnumMap<Day, List<Exercise>> dailyRoutines = planReader.getDailyRoutines();
+        EnumMap<Day, DailyRoutine> dailyRoutines = planReader.getDailyRoutines();
         DayStringAdapterMapper availableDayStringAdapterMapper =
                 getAvailableDayStringAdapterMapper(dailyRoutines, view);
         List<String> availableDayStrings = availableDayStringAdapterMapper.getDayStrings();
@@ -235,31 +236,32 @@ public class PowerupFragment extends Fragment {
     }
 
     private DayStringAdapterMapper getAvailableDayStringAdapterMapper(
-            EnumMap<Day, List<Exercise>> dailyRoutines, View view
+            EnumMap<Day, DailyRoutine> dailyRoutines, View view
     ) {
 
         SparseIntArray dayIntegerMap = new SparseIntArray();
         List<String> availableDailyRoutineStrings = new ArrayList<>();
 
         int i = 0;
-        for (Map.Entry<Day, List<Exercise>> entry : dailyRoutines.entrySet()) {
+        for (Map.Entry<Day, DailyRoutine> entry : dailyRoutines.entrySet()) {
 
             Day day = entry.getKey();
-            List<Exercise> exerciseList = entry.getValue();
+            DailyRoutine dailyRoutine = entry.getValue();
+            DailyRoutine.Exercises exercises = dailyRoutine.getExercises();
 
-            if (exerciseList.size() == 0) {
+            if (exercises.size() == 0) {
                 continue;
             }
 
 
             int dayValue;
-            if (DayCopierDetector.isDayCopier(exerciseList)) {
-                Exercise firstExercise = exerciseList.get(0);
+            if (DayCopierDetector.isDayCopier(exercises)) {
+                Exercise firstExercise = exercises.get(0);
                 DayCopierExercise dayCopierExercise = (DayCopierExercise) firstExercise;
                 Day dayBeingCopied = dayCopierExercise.getDayBeingCopied();
 
-                List<Exercise> copiedDailyRoutine = dailyRoutines.get(dayBeingCopied);
-                if (copiedDailyRoutine.size() == 0) {
+                DailyRoutine copiedDailyRoutine = dailyRoutines.get(dayBeingCopied);
+                if (copiedDailyRoutine.getExercises().size() == 0) {
                     continue;
                 }
 
