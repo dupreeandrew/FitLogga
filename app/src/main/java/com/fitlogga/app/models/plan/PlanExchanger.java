@@ -287,25 +287,37 @@ public class PlanExchanger {
 
         PlanSummary planSummary = new Gson().fromJson(planSummaryJson, PlanSummary.class);
 
-        Map<String, List<Map<String, Object>>> dailyRoutineRawMap
-                = GsonHelper.getMapOfListsOfMaps(dailyRoutinesMapJson);
+        Map<String, Object> rawDailyRoutineMap = GsonHelper.getMapFromJson(dailyRoutinesMapJson);
         EnumMap<Day, DailyRoutine> dailyRoutineMap = new EnumMap<>(Day.class);
 
         /*
         entry.key = Day # as string
-        entry.value = List of exercises, written in a Map.
+        entry.value = DailyRoutine, written as a map
          */
-        for (Map.Entry<String, List<Map<String, Object>>> entry : dailyRoutineRawMap.entrySet()) {
+        for (Map.Entry<String, Object> entry : rawDailyRoutineMap.entrySet()) {
             int dayValue = Integer.parseInt(entry.getKey());
             Day day = Day.fromValue(dayValue);
 
             DailyRoutine dailyRoutine = new DailyRoutine();
-            for (Map<String, Object> exerciseMap : entry.getValue()) {
-                Exercise exercise = ExerciseTranslator.toExercise(exerciseMap);
+
+            Map<String, Object> dailyRoutineDetails
+                    = (Map<String, Object>) entry.getValue();
+
+            List<Map<String, Object>> rawExerciseList
+                    = (List<Map<String, Object>>) dailyRoutineDetails.get("exercises");
+
+            for (Map<String, Object> rawExercise : rawExerciseList) {
+                Exercise exercise = ExerciseTranslator.toExercise(rawExercise);
                 dailyRoutine.getExercises().add(exercise);
             }
 
+            String name = (String) dailyRoutineDetails.get("name");
+
+            dailyRoutine.setName(name);
+
             dailyRoutineMap.put(day, dailyRoutine);
+
+
 
         }
 

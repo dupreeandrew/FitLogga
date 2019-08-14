@@ -53,9 +53,16 @@ public class DailyRoutineCreatorFragment extends Fragment {
     public DailyRoutineCreatorFragment(
             DailyRoutine dailyRoutine, ViewPagerPlus.Controller viewPagerController,
             Day day, CopierDays copierDays) {
-        
-        this.dailyRoutineName = dailyRoutine.getName();
-        this.exercises = dailyRoutine.getExercises();
+
+        if (dailyRoutine == null) {
+            this.dailyRoutineName = "";
+            this.exercises = new DailyRoutine.Exercises();
+        }
+        else {
+            this.dailyRoutineName = dailyRoutine.getName();
+            this.exercises = dailyRoutine.getExercises();
+        }
+
         this.viewPagerController = viewPagerController;
         this.day = day;
         this.copierDays = copierDays;

@@ -1,5 +1,7 @@
 package com.fitlogga.app.models.plan;
 
+import androidx.annotation.Nullable;
+
 import com.fitlogga.app.models.exercises.Exercise;
 
 import java.util.ArrayList;
@@ -79,8 +81,13 @@ public class DailyRoutine {
         this.exercises = exercises;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(@Nullable String name) {
+        if (name == null) {
+            this.name = " ";
+        }
+        else {
+            this.name = name;
+        }
     }
 
     public String getName() {
